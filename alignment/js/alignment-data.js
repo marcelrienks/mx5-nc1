@@ -1,0 +1,452 @@
+/* This file is generated from alignment/data/measurements.json. */
+/* Run node alignment/scripts/generate-alignment-data.mjs after editing the JSON source. */
+window.ALIGNMENT_DATA = {
+  "measurements": {
+    "frontRight": {
+      "wheel": "Front Right",
+      "camber": {
+        "target": {
+          "mm": -9,
+          "deg": -1.1
+        },
+        "measured": {
+          "mm": -7,
+          "deg": -0.85
+        },
+        "shortfall": {
+          "mm": -2,
+          "deg": -0.25
+        },
+        "matrix": [
+          [
+            6,
+            12.5,
+            8
+          ],
+          [
+            -1,
+            1,
+            0
+          ],
+          [
+            -7,
+            -5,
+            -5
+          ],
+          [
+            0,
+            0,
+            2
+          ]
+        ],
+        "rawBottom": [
+          [
+            94,
+            94.5,
+            95
+          ],
+          [
+            87,
+            89,
+            89
+          ],
+          [
+            83,
+            84,
+            84
+          ],
+          [
+            89,
+            89,
+            90
+          ]
+        ],
+        "rawTop": [
+          [
+            88,
+            82,
+            87
+          ],
+          [
+            88,
+            88,
+            89
+          ],
+          [
+            90,
+            89,
+            89
+          ],
+          [
+            89,
+            89,
+            88
+          ]
+        ],
+        "frontPositions": [
+          -6,
+          0,
+          6,
+          12
+        ],
+        "rearPositions": [
+          -6,
+          0,
+          6
+        ],
+        "recommendedFront": 6,
+        "recommendedRear": -6,
+        "note": "Factory eccentric bolt range exhausted. Aftermarket eccentric bolts needed for -1.1°"
+      },
+      "caster": {
+        "target": 5,
+        "unit": "degrees",
+        "range": {
+          "min": 4.48,
+          "max": 7.78
+        },
+        "washerPositions": [
+          -6,
+          0,
+          6
+        ],
+        "measurements": [
+          {
+            "washer": -6,
+            "top_pos15": 78,
+            "bot_pos15": 82,
+            "top_neg15": 101,
+            "bot_neg15": 86
+          },
+          {
+            "washer": 0,
+            "top_pos15": 75,
+            "bot_pos15": 83,
+            "top_neg15": 103,
+            "bot_neg15": 85
+          },
+          {
+            "washer": 6,
+            "top_pos15": 72,
+            "bot_pos15": 84,
+            "top_neg15": 105,
+            "bot_neg15": 84
+          }
+        ],
+        "wheelDiameter": 469,
+        "sweepAngle": 15,
+        "sweepMultiplier": 1.93,
+        "recommended": {
+          "washer": -4,
+          "degrees": 5
+        },
+        "note": "Rear bolt dominates caster; front bolt locked at +2"
+      },
+      "toe": {
+        "target": {
+          "mm": 0.58,
+          "arcmin": 4.25
+        },
+        "front": {
+          "mm": 0.58,
+          "arcmin": 4.25
+        },
+        "rear": {
+          "mm": 0.58,
+          "arcmin": 4.25
+        },
+        "wheelDiameter": 469,
+        "symmetryTarget": {
+          "leftRightDiff": 0.2,
+          "mm": "mm"
+        }
+      },
+      "systemInfo": {
+        "wheelbase": 2330,
+        "trackWidth": {
+          "front": 1490,
+          "rear": 1495
+        },
+        "wheelSpec": "17×7 ET55",
+        "boltPattern": "5×114.3",
+        "wheelDiameter": 469
+      }
+    },
+    "frontLeft": {
+      "wheel": "Front Left",
+      "camber": {
+        "target": {
+          "mm": -9,
+          "deg": -1.1
+        },
+        "measured": {
+          "mm": -10,
+          "deg": -1.222
+        },
+        "shortfall": {
+          "mm": 1,
+          "deg": 0.122
+        },
+        "matrix": [
+          [
+            -7,
+            0,
+            9
+          ],
+          [
+            -8,
+            -3,
+            6
+          ],
+          [
+            -10,
+            -2,
+            2
+          ]
+        ],
+        "rawBottom": [
+          [
+            87,
+            91,
+            95
+          ],
+          [
+            90,
+            92,
+            93
+          ],
+          [
+            88,
+            89,
+            92
+          ]
+        ],
+        "rawTop": [
+          [
+            94,
+            91,
+            86
+          ],
+          [
+            98,
+            95,
+            87
+          ],
+          [
+            98,
+            91,
+            90
+          ]
+        ],
+        "frontPositions": [
+          -6,
+          0,
+          6
+        ],
+        "rearPositions": [
+          -6,
+          0,
+          6
+        ],
+        "recommendedFront": 6,
+        "recommendedRear": -6,
+        "note": "Front left achieves better than target camber at Front +6 / Rear -6 position (-1.22°)"
+      },
+      "caster": {
+        "target": 5,
+        "unit": "degrees",
+        "wheelDiameter": 469,
+        "sweepAngle": 15,
+        "sweepMultiplier": 1.93,
+        "measurements": [
+          {
+            "steerAngle": 15,
+            "washer": -6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              117,
+              115,
+              117
+            ],
+            "bottom": [
+              100,
+              102,
+              105
+            ]
+          },
+          {
+            "steerAngle": 15,
+            "washer": 0,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              116,
+              112,
+              113
+            ],
+            "bottom": [
+              101,
+              101,
+              106
+            ]
+          },
+          {
+            "steerAngle": 15,
+            "washer": 6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              106,
+              105,
+              106
+            ],
+            "bottom": [
+              94,
+              101,
+              104
+            ]
+          },
+          {
+            "steerAngle": 0,
+            "washer": -6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              94,
+              91,
+              86
+            ],
+            "bottom": [
+              87,
+              91,
+              95
+            ]
+          },
+          {
+            "steerAngle": 0,
+            "washer": 0,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              98,
+              95,
+              87
+            ],
+            "bottom": [
+              90,
+              92,
+              93
+            ]
+          },
+          {
+            "steerAngle": 0,
+            "washer": 6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              98,
+              91,
+              90
+            ],
+            "bottom": [
+              88,
+              89,
+              92
+            ]
+          },
+          {
+            "steerAngle": -15,
+            "washer": -6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              92,
+              81,
+              79
+            ],
+            "bottom": [
+              105,
+              105,
+              111
+            ]
+          },
+          {
+            "steerAngle": -15,
+            "washer": 0,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              97,
+              93,
+              93
+            ],
+            "bottom": [
+              108,
+              108,
+              108
+            ]
+          },
+          {
+            "steerAngle": -15,
+            "washer": 6,
+            "camberPos": [
+              -6,
+              0,
+              6
+            ],
+            "top": [
+              103,
+              101,
+              94
+            ],
+            "bottom": [
+              107,
+              105,
+              109
+            ]
+          }
+        ]
+      },
+      "systemInfo": {
+        "wheelbase": 2330,
+        "trackWidth": {
+          "front": 1490,
+          "rear": 1495
+        },
+        "wheelSpec": "17×7 ET55",
+        "boltPattern": "5×114.3",
+        "wheelDiameter": 469
+      }
+    }
+  },
+  "constants": {
+    "mmPerDegree": 8.18,
+    "sinApproximation": "For angles < 2°, sin(θ) ≈ tan(θ) ≈ θ_rad",
+    "casterSweepFormula": "caster_deg = |Δ_camber| / (2 × sin(sweep_angle°)) = |Δ_camber| × 1.93 for 15° sweep"
+  }
+};

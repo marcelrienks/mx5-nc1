@@ -1,5 +1,9 @@
 # MX-5 NC1 Alignment Documents — Review Report
 
+> Superseded on March 8, 2026 by the implemented report refactor in `alignment/`.
+>
+> Several findings below described the pre-refactor state, including embedded CSS, hardcoded measurement duplication, and incomplete shared-asset wiring. Those items are kept here as historical context, not as the current state of the folder.
+
 ## Executive Summary
 Reviewed 4 documents (1 Markdown, 3 HTML reports). **Overall quality is good**, but identified several inconsistencies, verbose sections, and data redundancy issues.
 

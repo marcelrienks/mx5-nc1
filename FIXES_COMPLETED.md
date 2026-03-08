@@ -1,5 +1,12 @@
 # Alignment Documents — Fixes Completed
 
+> Superseded on March 8, 2026.
+>
+> The alignment folder now uses shared assets across all front-left/front-right report pages:
+> `alignment/styles/shared.css`, `alignment/js/alignment-shared.js`, and generated browser data from `alignment/data/measurements.json` via `alignment/scripts/generate-alignment-data.mjs`.
+>
+> This file remains as a historical note from the earlier partial cleanup pass. Where it conflicts with the current implementation, trust the files in `alignment/`.
+
 **Date:** March 8, 2026  
 **Status:** ✅ All major issues fixed
 

@@ -3,202 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<title>Front Alignment — Complete Camber Report</title>
+<link rel="stylesheet" href="styles/shared.css">
+<script src="js/alignment-data.js"></script>
+<script src="js/alignment-shared.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<style>
-  
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #0d1117;
-    color: #e6edf3;
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    padding: 32px 24px;
-  }
-
-  /* ── HEADER ── */
-  .header { text-align: center; margin-bottom: 28px; }
-  .header h1 {
-    font-size: 2.5rem; font-weight: 800;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #e6edf3;
-  }
-  .header p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; color: #8b949e; letter-spacing: 0.12em; margin-top: 6px;
-  }
-
-  /* ── SECTION LABELS ── */
-  .section-label {
-    max-width: 1100px; margin: 0 auto 10px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; color: #484f58; letter-spacing: 0.2em;
-    text-transform: uppercase; border-left: 3px solid #30363d; padding-left: 10px;
-  }
-
-  /* ── INFO STRIP ── */
-  .info-strip {
-    max-width: 1100px; margin: 0 auto 24px;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-  }
-  @media (max-width: 700px) { .info-strip { grid-template-columns: 1fr 1fr; } }
-
-  .info-tile {
-    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
-    padding: 14px 16px; font-family: 'Share Tech Mono', monospace;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .info-tile .label { font-size: 0.62rem; color: #8b949e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .info-tile .value { font-size: 1.25rem; font-weight: 700; color: #e6edf3; }
-  .info-tile .sub   { font-size: 0.66rem; color: #8b949e; margin-top: 3px; }
-  .info-tile.target  { border-color: #58a6ff; border-left: 4px solid #58a6ff; }
-  .info-tile.target .value { color: #58a6ff; }
-  .info-tile.best  { border-color: #3fb950; border-left: 4px solid #3fb950; }
-  .info-tile.best .value { color: #3fb950; }
-  .info-tile.warning { border-color: #d29922; border-left: 4px solid #d29922; }
-  .info-tile.warning .value { color: #d29922; }
-  .info-tile.recommend { border-color: #bc8cff; border-left: 4px solid #bc8cff; }
-  .info-tile.recommend .value { color: #bc8cff; }
-
-  /* ── CONCLUSION BANNER ── */
-  .conclusion {
-    max-width: 1100px; margin: 0 auto 28px;
-    background: #1c1208; border: 1px solid #d29922;
-    border-left: 4px solid #d29922; border-radius: 4px;
-    padding: 13px 18px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.76rem;
-    color: #d29922; line-height: 1.9;
-  }
-  .conclusion strong { color: #d29922; }
-
-  /* ── CARDS / CHART WRAPPERS ── */
-  .full-card {
-    max-width: 1100px; margin: 0 auto 24px;
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 24px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .full-card h2 {
-    font-size: 0.95rem; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 6px;
-  }
-  .full-card .sub {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8b949e; margin-bottom: 18px; line-height: 1.6;
-  }
-
-  .grid2 {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 24px; max-width: 1100px; margin: 0 auto 24px;
-  }
-  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
-
-  .card {
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 22px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .card h2 {
-    font-size: 0.9rem; font-weight: 600;
-    letter-spacing: 0.13em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 14px;
-  }
-
-  /* ── CHART LEGEND ROW ── */
-  .legend-row {
-    display: flex; gap: 24px; margin-bottom: 16px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
-    flex-wrap: wrap; align-items: center;
-  }
-  .leg-item { display: flex; align-items: center; gap: 7px; color: #c9d1d9; }
-  .leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
-  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .leg-note { color: #8b949e; font-size: 0.62rem; font-style: italic; }
-
-  canvas { width: 100% !important; }
-
-  .chart-note {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
-    color: #8b949e; margin-top: 12px; line-height: 1.75; text-align: center;
-  }
-
-  /* ── DATA TABLE ── */
-  table.data-table {
-    width: 100%; border-collapse: collapse;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.78rem;
-  }
-  table.data-table th {
-    background: #0d1117; color: #8b949e;
-    padding: 8px 10px; text-align: center;
-    letter-spacing: 0.07em; font-size: 0.66rem;
-    border-bottom: 2px solid #30363d;
-  }
-  table.data-table th.sec { color: #58a6ff; }
-  table.data-table td {
-    padding: 8px 10px; text-align: center;
-    border-bottom: 1px solid #21262d; color: #c9d1d9;
-  }
-  table.data-table tr:last-child td { border-bottom: none; }
-  table.data-table tr.best-row td { background: #0d2818; }
-  table.data-table tr.rev-row  td { background: #2a1a0a; }
-  td.config-cell { font-weight: 700; color: #58a6ff; text-align: left; white-space: nowrap; }
-  td.washer-cell  { color: #8b949e; font-size: 0.7rem; }
-  td.meas-cell   { color: #c9d1d9; }
-
-  .tag {
-    display: inline-block; padding: 2px 7px;
-    border-radius: 3px; font-size: 0.7rem; font-weight: 700;
-  }
-  .tag-pos  { background: #3d1f1f; color: #f85149; }
-  .tag-neg  { background: #0d2d1b; color: #3fb950; }
-  .tag-zero { background: #0d1117; color: #6e7681; }
-  .tag-best { background: #163b25; color: #3fb950; border: 1px solid #3fb950; }
-  .tag-rev  { background: #3d2a10; color: #d29922; border: 1px solid #d29922; }
-
-  /* ── HEATMAP ── */
-  .heatmap {
-    display: grid; grid-template-columns: 88px repeat(3, 1fr);
-    gap: 5px; font-family: 'Share Tech Mono', monospace;
-  }
-  .hm-col-header {
-    text-align: center; color: #8b949e;
-    font-size: 0.66rem; letter-spacing: 0.08em; padding-bottom: 4px;
-  }
-  .hm-row-label {
-    display: flex; flex-direction: column; justify-content: center;
-    color: #58a6ff; font-weight: 700; font-size: 0.68rem; line-height: 1.5;
-  }
-  .hm-row-label span { color: #8b949e; font-size: 0.58rem; font-weight: 400; }
-  .cell {
-    padding: 10px 4px; border-radius: 5px; text-align: center;
-    font-weight: 700; font-size: 0.82rem; cursor: default;
-    border: 1px solid transparent; transition: transform 0.12s;
-  }
-  .cell:hover { transform: scale(1.06); }
-  .cell.is-best { border: 2px solid #3fb950 !important; box-shadow: 0 0 7px #3fb95044; }
-  .cell.is-rev  { border: 2px solid #d29922 !important; }
-  .cell .deg { display: block; font-size: 0.56rem; font-weight: 400; opacity: 0.72; margin-top: 2px; }
-  .hm-legend {
-    margin-top: 10px; display: flex; align-items: center; gap: 8px;
-    font-size: 0.63rem; font-family: 'Share Tech Mono', monospace; color: #8b949e;
-  }
-  .hm-legend-bar {
-    flex: 1; height: 6px; border-radius: 3px;
-    background: linear-gradient(to right, #60b0ff, #2d333d, #ffb0a0, #ff6060);
-  }
-  .hm-note { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #8b949e; margin-top: 8px; }
-
-  /* ── CLOCK / DIAL DIAGRAMS ── */
-  .clock-wrap, .dial-wrap { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
-  .clock-item, .dial-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .clock-svg, .dial-svg  { width: 120px; height: 120px; }
-  .clock-label, .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #58a6ff; font-weight: 700; }
-  .clock-val, .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #6e7681; }
-  .clock-note, .dial-note  { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: #8b949e; margin-top: 10px; line-height: 1.65; }
-</style>
+<title>Front Alignment — Right Camber Report</title>
 </head>
 <body>
 
@@ -346,46 +155,30 @@
 
 <script>
 // ═══════════════════ DATA ═══════════════════
-// Matrix [front position 0-3][rear position 0-2]
-// Front: 0=9°clock, 1=6°clock, 2=3°clock, 3=12°clock
-// Rear:  0=9°clock, 1=6°clock, 2=3°clock
-const matrix = [
-  [ 6,   12.5,  8  ],
-  [-1,    1,    0  ],
-  [-7,   -5,   -5  ],
-  [ 0,    0,    2  ],
-];
-
-const rawBottom = [
-  [94,   94.5,  95 ],
-  [87,   89,    89 ],
-  [83,   84,    84 ],
-  [89,   89,    90 ],
-];
-const rawTop = [
-  [88,   82,    87 ],
-  [88,   88,    89 ],
-  [90,   89,    89 ],
-  [89,   89,    88 ],
-];
+const { getCamberSource } = AlignmentShared;
+const camberSource = getCamberSource('frontRight');
+const matrix = camberSource.matrix;
+const rawBottom = camberSource.rawBottom;
+const rawTop = camberSource.rawTop;
 
 // Clock labels (kept for washer/dial diagrams only)
 const frontClock = ["9 o'clock", "6 o'clock", "3 o'clock", "12 o'clock"];
 const rearClock  = ["9 o'clock", "6 o'clock", "3 o'clock"];
 // Numeric washer positions (used for charts, tables, tiles)
-const frontPos = ['-6', '0', '+6', '+12'];
-const rearPos  = ['-6', '0', '+6'];
+const frontPos = camberSource.frontPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
+const rearPos  = camberSource.rearPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
 
-const TARGET   = -9;
-const MM_PER_DEG = 9 / 1.1;
-const MIN_VAL  = -7, MAX_VAL = 12.5;
+const TARGET   = camberSource.targetMm;
+const MM_PER_DEG = camberSource.mmPerDegree;
+const MIN_VAL  = Math.min(...matrix.flat());
+const MAX_VAL  = Math.max(...matrix.flat());
 
 function toDeg(mm) {
   const d = (mm / MM_PER_DEG).toFixed(2);
   return (d > 0 ? '+' : '') + d + '°';
 }
-function isBest(v)      { return v === -7; }
-function isReversal(fi) { return fi === 3; }
+function isBest(v)      { return v === camberSource.bestMeasuredMm; }
+function isReversal(fi) { return camberSource.frontPositions[fi] > 6; }
 
 // ═══════════════════ OVERLAY CHART ═══════════════════
 // Best camber per front position (most negative across all rear)

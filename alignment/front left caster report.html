@@ -3,195 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<title>Front Alignment — Left Caster Report</title>
+<link rel="stylesheet" href="styles/shared.css">
+<script src="js/alignment-data.js"></script>
+<script src="js/alignment-shared.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<style>
-  
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #0d1117;
-    color: #e6edf3;
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    padding: 32px 24px;
-  }
-
-  .header { text-align: center; margin-bottom: 28px; }
-  .header h1 {
-    font-size: 2.5rem; font-weight: 800;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #e6edf3;
-  }
-  .header p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; color: #8b949e; letter-spacing: 0.12em; margin-top: 6px;
-  }
-
-  .section-label {
-    max-width: 1100px; margin: 0 auto 10px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; color: #484f58; letter-spacing: 0.2em;
-    text-transform: uppercase; border-left: 3px solid #30363d; padding-left: 10px;
-  }
-
-  .info-strip {
-    max-width: 1100px; margin: 0 auto 24px;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-  }
-  @media (max-width: 700px) { .info-strip { grid-template-columns: 1fr 1fr; } }
-
-  .info-tile {
-    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
-    padding: 14px 16px; font-family: 'Share Tech Mono', monospace;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .info-tile .label { font-size: 0.62rem; color: #8b949e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .info-tile .value { font-size: 1.25rem; font-weight: 700; color: #e6edf3; }
-  .info-tile .sub   { font-size: 0.66rem; color: #8b949e; margin-top: 3px; }
-  .info-tile.target  { border-color: #58a6ff; border-left: 4px solid #58a6ff; }
-  .info-tile.target .value { color: #58a6ff; }
-  .info-tile.best  { border-color: #3fb950; border-left: 4px solid #3fb950; }
-  .info-tile.best .value { color: #3fb950; }
-  .info-tile.warning { border-color: #d29922; border-left: 4px solid #d29922; }
-  .info-tile.warning .value { color: #d29922; }
-  .info-tile.recommend { border-color: #bc8cff; border-left: 4px solid #bc8cff; }
-  .info-tile.recommend .value { color: #bc8cff; }
-
-  .conclusion {
-    max-width: 1100px; margin: 0 auto 28px;
-    background: #0d1520; border: 1px solid #58a6ff;
-    border-left: 4px solid #58a6ff; border-radius: 4px;
-    padding: 13px 18px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.76rem;
-    color: #58a6ff; line-height: 1.9;
-  }
-  .conclusion strong { color: #79c0ff; }
-
-  .full-card {
-    max-width: 1100px; margin: 0 auto 24px;
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 24px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .full-card h2 {
-    font-size: 0.95rem; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 6px;
-  }
-  .full-card .sub {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8b949e; margin-bottom: 18px; line-height: 1.6;
-  }
-
-  .grid2 {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 24px; max-width: 1100px; margin: 0 auto 24px;
-  }
-  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
-
-  .card {
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 22px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .card h2 {
-    font-size: 0.9rem; font-weight: 600;
-    letter-spacing: 0.13em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 14px;
-  }
-
-  .legend-row {
-    display: flex; gap: 24px; margin-bottom: 16px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
-    flex-wrap: wrap; align-items: center;
-  }
-  .leg-item { display: flex; align-items: center; gap: 7px; color: #c9d1d9; }
-  .leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
-  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-
-  canvas { width: 100% !important; }
-
-  .chart-note {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
-    color: #8b949e; margin-top: 12px; line-height: 1.75; text-align: center;
-  }
-
-  /* ── CASTER FORMULA BOX ── */
-  .formula-box {
-    max-width: 1100px; margin: 0 auto 24px;
-    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
-    padding: 20px 24px; display: flex; gap: 32px; flex-wrap: wrap;
-    align-items: center; box-shadow: 0 1px 4px #0004;
-  }
-  .formula-box .formula-title {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.65rem;
-    color: #8b949e; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px;
-  }
-  .formula-box .formula-expr {
-    font-family: 'Share Tech Mono', monospace; font-size: 1.05rem;
-    color: #c9d1d9; font-weight: 700;
-  }
-  .formula-box .formula-note {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
-    color: #8b949e; margin-top: 6px; line-height: 1.6;
-  }
-
-  /* ── DATA TABLE ── */
-  table.data-table {
-    width: 100%; border-collapse: collapse;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.78rem;
-  }
-  table.data-table th {
-    background: #0d1117; color: #8b949e;
-    padding: 8px 10px; text-align: center;
-    letter-spacing: 0.07em; font-size: 0.66rem;
-    border-bottom: 2px solid #30363d;
-  }
-  table.data-table th.sec { color: #58a6ff; }
-  table.data-table td {
-    padding: 8px 10px; text-align: center;
-    border-bottom: 1px solid #21262d; color: #c9d1d9;
-  }
-  table.data-table tr:last-child td { border-bottom: none; }
-  table.data-table tr.best-row td { background: #0d2818; }
-  td.config-cell { font-weight: 700; color: #58a6ff; text-align: left; }
-  td.washer-cell  { color: #c9d1d9; font-weight: 600; }
-  td.meas-cell   { color: #c9d1d9; }
-
-  .tag {
-    display: inline-block; padding: 2px 7px;
-    border-radius: 3px; font-size: 0.7rem; font-weight: 700;
-  }
-  .tag-pos  { background: #0d2d1b; color: #3fb950; }
-  .tag-neg  { background: #3d1f1f; color: #f85149; }
-  .tag-zero { background: #0d1117; color: #6e7681; }
-  .tag-best { background: #163b25; color: #3fb950; border: 1px solid #3fb950; }
-
-  /* ── WASHER DIAL DIAGRAMS ── */
-  .dial-wrap { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
-  .dial-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .dial-svg  { width: 120px; height: 120px; }
-  .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #58a6ff; font-weight: 700; }
-  .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #6e7681; }
-
-  /* ── CASTER TREND ARROWS ── */
-  .trend-row {
-    display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
-  }
-  .trend-item {
-    background: #161b22; border: 1px solid #30363d; border-radius: 5px;
-    padding: 10px 14px; flex: 1; min-width: 160px;
-  }
-  .trend-item .t-label { color: #8b949e; font-size: 0.62rem; letter-spacing: 0.1em; margin-bottom: 5px; }
-  .trend-item .t-val   { color: #e6edf3; font-size: 1rem; font-weight: 700; }
-  .trend-item .t-note  { color: #8b949e; font-size: 0.62rem; margin-top: 3px; }
-  .trend-item.up   { border-left: 3px solid #3fb950; }
-  .trend-item.down { border-left: 3px solid #f85149; }
-  .trend-item.neut { border-left: 3px solid #8b949e; }
-</style>
+<title>Front Alignment — Left Caster Report</title>
 </head>
 <body>
 
@@ -336,57 +152,29 @@
 </div>
 
 <script>
-// ═══════════════════ RAW DATA (Front Left @ camberPos 0) ═══════════════════
-// Data extracted from measurements.json frontLeft array — using middle camber position (index 1 of 3)
-// to match the simplified front right pattern
-const washerPos   = [-6,   0,  +6];
-const top_pos15   = [115, 112, 105];  // @ +15° steering angle
-const bot_pos15   = [102, 101, 101];
-const top_neg15   = [ 81,  93, 101];  // @ -15° steering angle
-const bot_neg15   = [105, 108, 105];
-
-const washerLabels = ['-6', '0', '+6'];
-
-// ── Derived offsets (Top − Bot at each angle) ──
-const offset_pos15 = washerPos.map((_,i) => top_pos15[i] - bot_pos15[i]);
-const offset_neg15 = washerPos.map((_,i) => top_neg15[i] - bot_neg15[i]);
-
-// ── Caster Indication: Δ = offset@+15 − offset@-15 ──
-const casterDelta  = washerPos.map((_,i) => offset_pos15[i] - offset_neg15[i]);
-
-// ── Convert Δ mm → caster degrees (±15° sweep formula) ──
-const MM_PER_DEG = 9 / 1.1;
-const SWEEP_K    = 1.93;
-const casterDeg  = casterDelta.map(d => parseFloat((Math.abs(d) / MM_PER_DEG * SWEEP_K).toFixed(2)));
-const TARGET_DEG = 5.0;
-// Left side: positive Δ = more caster, so TARGET_MM is positive
-const TARGET_MM  = TARGET_DEG * MM_PER_DEG / SWEEP_K;
-
-// ── Find the measured point nearest to the target ──
-const closestIdx = casterDelta.reduce((best, v, i) =>
-  Math.abs(v - TARGET_MM) < Math.abs(casterDelta[best] - TARGET_MM) ? i : best, 0);
-
-// ── Interpolate the recommended washer segment for TARGET_DEG ──
-let recWasher, recDeg, bracketLo = 0, bracketHi = 1;
-{
-  let lo = null, hi = null;
-  for (let i = 0; i < washerPos.length - 1; i++) {
-    const d0 = casterDelta[i], d1 = casterDelta[i + 1];
-    if ((d0 >= TARGET_MM && d1 <= TARGET_MM) || (d0 <= TARGET_MM && d1 >= TARGET_MM)) {
-      lo = i; hi = i + 1; break;
-    }
-  }
-  if (lo !== null) {
-    bracketLo = lo; bracketHi = hi;
-    const t = (TARGET_MM - casterDelta[lo]) / (casterDelta[hi] - casterDelta[lo]);
-    recWasher = parseFloat((washerPos[lo] + t * (washerPos[hi] - washerPos[lo])).toFixed(1));
-    recDeg    = parseFloat((casterDeg[lo]  + t * (casterDeg[hi]  - casterDeg[lo])).toFixed(2));
-  } else {
-    recWasher = washerPos[closestIdx];
-    recDeg    = casterDeg[closestIdx];
-  }
-}
-const recWasherInt = Math.round(recWasher);
+// ═══════════════════ RAW DATA (Front Left @ front washer 0 during caster sweep) ═══════════════════
+const { getCasterSource } = AlignmentShared;
+const casterSource = getCasterSource('frontLeft');
+const washerPos = casterSource.washerPositions;
+const top_pos15 = casterSource.top_pos15;
+const bot_pos15 = casterSource.bot_pos15;
+const top_neg15 = casterSource.top_neg15;
+const bot_neg15 = casterSource.bot_neg15;
+const washerLabels = casterSource.washerLabels;
+const offset_pos15 = casterSource.offset_pos15;
+const offset_neg15 = casterSource.offset_neg15;
+const casterDelta = casterSource.casterDelta;
+const MM_PER_DEG = casterSource.mmPerDegree;
+const SWEEP_K = AlignmentShared.SWEEP_K;
+const casterDeg = casterSource.casterDeg;
+const TARGET_DEG = casterSource.targetDeg;
+const TARGET_MM = casterSource.targetMmSigned;
+const closestIdx = casterSource.closestIndex;
+const bracketLo = casterSource.bracketLo;
+const bracketHi = casterSource.bracketHi;
+const recWasher = casterSource.recommendedWasher;
+const recDeg = casterSource.recommendedDegrees;
+const recWasherInt = casterSource.recommendedWasherInt;
 
 // ── Populate summary tiles ──
 const minDegIdx = casterDeg.indexOf(Math.min(...casterDeg));

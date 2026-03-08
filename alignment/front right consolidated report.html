@@ -3,188 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<title>Front Alignment — Consolidated Report</title>
+<link rel="stylesheet" href="styles/shared.css">
+<script src="js/alignment-data.js"></script>
+<script src="js/alignment-shared.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<style>
-  
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #0d1117;
-    color: #e6edf3;
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    padding: 32px 24px;
-  }
-
-  /* ── HEADER ── */
-  .header { text-align: center; margin-bottom: 28px; }
-  .header h1 {
-    font-size: 2.5rem; font-weight: 800;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #e6edf3;
-  }
-  .header p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; color: #8b949e; letter-spacing: 0.12em; margin-top: 6px;
-  }
-
-  /* ── SECTION LABELS ── */
-  .section-label {
-    max-width: 1100px; margin: 0 auto 10px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; color: #484f58; letter-spacing: 0.2em;
-    text-transform: uppercase; border-left: 3px solid #30363d; padding-left: 10px;
-  }
-
-  /* ── INFO STRIP ── */
-  .info-strip {
-    max-width: 1100px; margin: 0 auto 24px;
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;
-  }
-  @media (max-width: 900px) { .info-strip { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 600px) { .info-strip { grid-template-columns: 1fr 1fr; } }
-
-  .info-tile {
-    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
-    padding: 14px 16px; font-family: 'Share Tech Mono', monospace;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .info-tile .label { font-size: 0.62rem; color: #8b949e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .info-tile .value { font-size: 1.2rem; font-weight: 700; color: #e6edf3; }
-  .info-tile .sub   { font-size: 0.62rem; color: #8b949e; margin-top: 3px; line-height: 1.4; }
-  .info-tile.target-camber  { border-left: 4px solid #3fb950; }
-  .info-tile.target-camber .value { color: #2ea043; }
-  .info-tile.target-caster  { border-left: 4px solid #58a6ff; }
-  .info-tile.target-caster .value { color: #58a6ff; }
-  .info-tile.best    { border-left: 4px solid #3fb950; }
-  .info-tile.best .value { color: #3fb950; }
-  .info-tile.range   { border-left: 4px solid #bc8cff; }
-  .info-tile.range .value { color: #bc8cff; }
-  .info-tile.warn    { border-left: 4px solid #d29922; }
-  .info-tile.warn .value { color: #d29922; }
-  .info-tile.recommend { border-left: 4px solid #d29922; }
-  .info-tile.recommend .value { color: #d29922; }
-
-  /* ── CONCLUSION BANNER ── */
-  .conclusion {
-    max-width: 1100px; margin: 0 auto 28px;
-    background: #1c1208; border: 1px solid #d29922;
-    border-left: 4px solid #d29922; border-radius: 4px;
-    padding: 13px 18px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.76rem;
-    color: #d29922; line-height: 2;
-  }
-  .conclusion strong { color: #d29922; }
-
-  /* ── FULL CARD ── */
-  .full-card {
-    max-width: 1100px; margin: 0 auto 24px;
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 24px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .full-card h2 {
-    font-size: 0.95rem; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 6px;
-  }
-  .full-card .sub {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8b949e; margin-bottom: 18px; line-height: 1.6;
-  }
-
-  /* ── 2-COL GRID ── */
-  .grid2 {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 24px; max-width: 1100px; margin: 0 auto 24px;
-  }
-  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
-
-  .card {
-    background: #161b22; border: 1px solid #30363d;
-    border-radius: 8px; padding: 22px;
-    box-shadow: 0 1px 4px #0004;
-  }
-  .card h2 {
-    font-size: 0.9rem; font-weight: 600;
-    letter-spacing: 0.13em; text-transform: uppercase;
-    color: #58a6ff; margin-bottom: 14px;
-  }
-  .card .sub {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.64rem;
-    color: #8b949e; margin-bottom: 14px; line-height: 1.5;
-  }
-
-  /* ── LEGEND ROW ── */
-  .legend-row {
-    display: flex; gap: 20px; margin-bottom: 16px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
-    flex-wrap: wrap; align-items: center;
-  }
-  .leg-item { display: flex; align-items: center; gap: 7px; color: #c9d1d9; }
-  .leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
-  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-
-  canvas { width: 100% !important; }
-
-  .chart-note {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
-    color: #8b949e; margin-top: 12px; line-height: 1.75; text-align: center;
-  }
-
-  /* ── HEATMAP ── */
-  .heatmap {
-    display: grid; grid-template-columns: 88px repeat(3, 1fr);
-    gap: 5px; font-family: 'Share Tech Mono', monospace;
-  }
-  .hm-col-header {
-    text-align: center; color: #8b949e;
-    font-size: 0.66rem; letter-spacing: 0.08em; padding-bottom: 4px;
-  }
-  .hm-row-label {
-    display: flex; flex-direction: column; justify-content: center;
-    color: #58a6ff; font-weight: 700; font-size: 0.68rem; line-height: 1.5;
-  }
-  .hm-row-label span { color: #8b949e; font-size: 0.58rem; font-weight: 400; }
-  .cell {
-    padding: 10px 4px; border-radius: 5px; text-align: center;
-    font-weight: 700; font-size: 0.82rem; cursor: default;
-    border: 1px solid transparent;
-  }
-  .cell.is-best { border: 2px solid #3fb950 !important; box-shadow: 0 0 7px #3fb95044; }
-  .cell.is-rev  { border: 2px solid #d29922 !important; }
-  .cell .deg { display: block; font-size: 0.56rem; font-weight: 400; opacity: 0.72; margin-top: 2px; }
-  .hm-legend {
-    margin-top: 10px; display: flex; align-items: center; gap: 8px;
-    font-size: 0.63rem; font-family: 'Share Tech Mono', monospace; color: #8b949e;
-  }
-  .hm-legend-bar {
-    flex: 1; height: 6px; border-radius: 3px;
-    background: linear-gradient(to right, #60b0ff, #2d333d, #ffb0a0, #ff6060);
-  }
-  .hm-note { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #8b949e; margin-top: 8px; }
-
-  /* ── DIALS ── */
-  .dial-wrap { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
-  .dial-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .dial-svg  { width: 140px; height: 140px; }
-  .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #58a6ff; font-weight: 700; text-align: center; }
-  .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: #6e7681; text-align: center; }
-
-  /* ── TRADE-OFF ANNOTATION ── */
-  .tradeoff-note {
-    max-width: 1100px; margin: -12px auto 24px;
-    font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8b949e; line-height: 1.8; padding: 0 4px;
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
-  }
-  .tradeoff-note .tn {
-    background: #161b22; border: 1px solid #30363d; border-radius: 5px; padding: 10px 12px;
-  }
-  .tradeoff-note .tn strong { display: block; margin-bottom: 3px; }
-</style>
+<title>Front Alignment — Consolidated Report (Right)</title>
 </head>
 <body>
 
@@ -233,7 +56,7 @@
 <div class="conclusion">
   <strong>CAMBER:</strong> Maximum achievable camber is <strong>−7mm (−0.85°)</strong> — 2mm / 0.25° short of the −9mm target — the factory eccentric bolt range is exhausted at front=+6. Aftermarket eccentric bolts with a larger lobe radius are required to reach −1.1°.<br>
   <strong>CASTER:</strong> The rear bolt is the dominant caster variable. With the front bolt locked at +2, measured caster spans 4.48° (rear=−6) to 7.78° (rear=+6). The 5.0° target interpolates to rear≈−4.<br>
-  <strong>CONFLICT:</strong> The rear bolt simultaneously affects both camber and caster. Setting rear=−6 maximises camber contribution (−7mm with front=+6) but gives only 4.48° caster. Setting rear=−4 hits the 5.0° caster target at the cost of ≈0.5mm of camber (≈−2.5mm vs −3mm at rear=−6, both with front=+2; front=+6 not independently measurable).<br>
+  <strong>CONFLICT:</strong> The rear bolt simultaneously affects both camber and caster. Setting rear=−6 maximises camber contribution (−7mm with front=+6) but gives only 4.48° caster. Setting rear=−4 hits the 5.0° caster target with an estimated camber of ≈−6.3mm at front=+6 (interpolated between rear −6 and 0 on the measured front +6 row).<br>
   <strong>RECOMMENDATION:</strong> Set <strong>front bolt → +6</strong> and <strong>rear bolt → −4</strong> to prioritise the on-target caster while accepting a camber shortfall that is inherent to the factory bolt design. Re-measure and fine-tune rear bolt one segment at a time to confirm 5.0° caster.
 </div>
 
@@ -243,7 +66,7 @@
   <h2>Camber &amp; Caster vs Washer Position — Merged Trade-off</h2>
   <div class="sub">
     Shared x-axis: washer position (segments) · Left y: Camber (mm, negative = desired) · Right y: Caster (°)<br>
-    Front bolt series uses best camber per position across all rear positions · Rear bolt camber series interpolated at front=+2 (the physical condition during caster measurements) · Caster series directly measured with front locked at +2
+    Front bolt series uses best camber per position across all rear positions · Rear bolt camber series uses the measured front=+6 row (recommended front setting) · Caster series directly measured with front locked at +2
   </div>
 
   <div class="legend-row">
@@ -255,7 +78,7 @@
     <div class="leg-item">
       <div class="leg-swatch" style="background:#58a6ff"></div>
       <div class="leg-dot" style="background:#58a6ff"></div>
-      <span>Rear bolt — camber at front=+2 (interpolated)</span>
+      <span>Rear bolt — camber at front=+6 (recommended front)</span>
     </div>
     <div class="leg-item">
       <div class="leg-swatch" style="background:#3fb950"></div>
@@ -268,15 +91,15 @@
 
   <p class="chart-note">
     Front bolt x-positions: −6, 0, +6, +12 · Rear bolt x-positions: −6, 0, +6 · Both share the same washer segment scale<br>
-    Reconciliation point: front=+2 is the locked camber bolt condition during all caster measurements · interpolated from front=0→+6 matrix rows (linear, t=⅓)<br>
+    Rear-bolt camber uses the measured front=+6 row · Caster remains the separately measured front=+2 sweep<br>
     <span style="color:#f85149">▎ Red drop line (x=−6)</span> = camber-primary recommendation: rear=−6 maximises negative camber (−0.85°) but gives only 4.48° caster &nbsp;|&nbsp;
-    <span style="color:#f85149">▎ Red drop line (x=−4)</span> = caster-compromise recommendation: rear=−4 hits 5.0° caster target at ≈−2.5mm camber
+    <span style="color:#f85149">▎ Red drop line (x=−4)</span> = caster-compromise recommendation: rear=−4 hits 5.0° caster target at ≈−6.3mm camber
   </p>
 </div>
 
 <div class="tradeoff-note">
   <div class="tn"><strong style="color:#58a6ff">Front bolt (blue) — camber axis</strong>Peaks at −7mm at position +6, then reverses at +12. The eccentric apex is at +6 — this is the maximum negative camber achievable with factory bolts regardless of rear bolt position.</div>
-  <div class="tn"><strong style="color:#58a6ff">Rear bolt camber (thin blue) — camber axis</strong>Interpolated from the full matrix at front=+2. Moving rear bolt from −6 to +6 costs ≈1.3mm of negative camber (−3mm → −1.7mm). The rear bolt is camber-secondary only.</div>
+  <div class="tn"><strong style="color:#58a6ff">Rear bolt camber (thin blue) — camber axis</strong>Uses the measured front=+6 row. Moving rear bolt from −6 to +6 costs 2mm of negative camber (−7mm → −5mm). The rear bolt trims camber modestly once the front bolt is fixed at +6.</div>
   <div class="tn"><strong style="color:#3fb950">Rear bolt caster (green) — caster axis</strong>Directly measured with front=+2. Moving rear from −6 to +6 adds ≈3.3° of caster (4.48° → 7.78°). This is the rear bolt's dominant effect. Target 5.0° sits at rear≈−4.</div>
 </div>
 
@@ -292,7 +115,7 @@
       <div class="hm-legend-bar"></div>
       <span>+12.5mm pos</span>
     </div>
-    <p class="hm-note">■ green border = best achieved (−7mm) &nbsp;|&nbsp; <span style="color:#d29922">■ orange border = reversal zone (front +12)</span><br>Row front=+2 is interpolated between front=0 and front=+6 rows (not directly measured)</p>
+    <p class="hm-note">■ green border = best achieved (−7mm) &nbsp;|&nbsp; <span style="color:#d29922">■ orange border = reversal zone (front +12)</span></p>
   </div>
 
   <div class="card">
@@ -335,48 +158,30 @@
 // SHARED DATA
 // ═══════════════════════════════════════
 
-// ── Camber matrix [front position 0-3][rear position 0-2] ──
-// Front positions: index 0=-6, 1=0, 2=+6, 3=+12
-// Rear  positions: index 0=-6, 1=0,  2=+6
-const matrix = [
-  [ 6,   12.5,  8  ],  // front=-6
-  [-1,    1,    0  ],  // front= 0
-  [-7,   -5,   -5  ],  // front=+6
-  [ 0,    0,    2  ],  // front=+12 (reversal zone)
-];
-const frontPos    = ['-6', '0', '+6', '+12'];
-const rearPos     = ['-6', '0', '+6'];
-const frontNums   = [-6, 0, 6, 12];
-const rearNums    = [-6, 0, 6];
+const { getCamberSource, getCasterSource, getRearSeriesAtFront, BASE_MM_PER_DEG, SWEEP_K } = AlignmentShared;
+const camberSource = getCamberSource('frontRight');
+const casterSource = getCasterSource('frontRight');
+const matrix = camberSource.matrix;
+const frontPos = camberSource.frontPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
+const rearPos = camberSource.rearPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
+const frontNums = camberSource.frontPositions;
+const rearNums = camberSource.rearPositions;
+const camberAtRecommendedFront = getRearSeriesAtFront('frontRight', camberSource.recommendedFront);
+const washerPos = casterSource.washerPositions;
+const top_pos15 = casterSource.top_pos15;
+const bot_pos15 = casterSource.bot_pos15;
+const top_neg15 = casterSource.top_neg15;
+const bot_neg15 = casterSource.bot_neg15;
+const washerLabels = casterSource.washerLabels;
+const offset_pos15 = casterSource.offset_pos15;
+const offset_neg15 = casterSource.offset_neg15;
+const casterDelta = casterSource.casterDelta;
+const MM_PER_DEG = casterSource.mmPerDegree;
+const casterDeg = casterSource.casterDeg;
 
-// ── Interpolated camber at front=+2 (t=1/3 between front=0 row and front=+6 row) ──
-// front=0: [-1, 1, 0]  front=+6: [-7, -5, -5]
-// front+2: = front0 + (1/3)*(front6 - front0)
-const camberAtFront2 = rearNums.map((_, ri) => {
-  const v = matrix[1][ri] + (1/3) * (matrix[2][ri] - matrix[1][ri]);
-  return Math.round(v * 10) / 10;
-});
-// Expected: rear-6 ≈ -3.0, rear0 ≈ -0.3... let's allow it to compute naturally
-
-// ── Caster raw data (measured with front bolt locked at +2) ──
-const washerPos  = [-6,  0, +6];
-const top_pos15  = [ 78, 75,  72];
-const bot_pos15  = [ 82, 83,  84];
-const top_neg15  = [101,103, 105];
-const bot_neg15  = [ 86, 85,  84];
-const washerLabels = ['-6', '0', '+6'];
-
-const offset_pos15 = washerPos.map((_,i) => top_pos15[i] - bot_pos15[i]);
-const offset_neg15 = washerPos.map((_,i) => top_neg15[i] - bot_neg15[i]);
-const casterDelta  = washerPos.map((_,i) => offset_pos15[i] - offset_neg15[i]);
-
-const MM_PER_DEG = 9 / 1.1;
-const SWEEP_K    = 1.93;
-const casterDeg  = casterDelta.map(d => parseFloat((Math.abs(d) / MM_PER_DEG * SWEEP_K).toFixed(2)));
-
-const TARGET_CAMBER = -9;
-const TARGET_CASTER = 5.0;
-const CAMBER_MM_DEG = 9 / 1.1;
+const TARGET_CAMBER = camberSource.targetMm;
+const TARGET_CASTER = casterSource.targetDeg;
+const CAMBER_MM_DEG = BASE_MM_PER_DEG;
 
 function toDeg(mm) {
   const d = (mm / CAMBER_MM_DEG).toFixed(2);
@@ -594,10 +399,10 @@ new Chart(document.getElementById('tradeoffChart'), {
         pointHoverRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, yAxisID: 'y', order: 1,
       },
-      // Series 2: Rear bolt — camber at front=+2 (thin blue, left y)
+      // Series 2: Rear bolt — camber at the recommended front setting (+6)
       {
-        label: 'Rear bolt — camber at front=+2 (interp.)',
-        data: expandTo13(rearNums, camberAtFront2),
+        label: 'Rear bolt — camber at front=+6',
+        data: expandTo13(rearNums, camberAtRecommendedFront),
         borderColor: '#58a6ff',
         backgroundColor: '#58a6ff15',
         borderWidth: 1.5,
@@ -708,7 +513,7 @@ matrix.forEach((row, fi) => {
   });
 });
 
-// Interpolated row for front=+2 (shown as a visual footnote, not added to heatmap — data encoded in chart)
+// Rear-bolt camber series uses the measured front=+6 row encoded in the trade-off chart.
 
 // ═══════════════════════════════════════
 // SECTION 04b: REAR BOLT SWEEP CHART
