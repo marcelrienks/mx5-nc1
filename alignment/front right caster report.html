@@ -471,7 +471,7 @@ const expandToFull = arr => {
   return full;
 };
 
-// Plugin: intersection diamond where data line meets target + dotted drop line to x-axis
+// Plugin: intersection marker where Caster Δ line meets the 5.0° target — red dotted drop line + circle markers on all series
 const intersectPlugin = {
   id: 'intersect',
   afterDatasetsDraw(chart) {
@@ -486,31 +486,19 @@ const intersectPlugin = {
     const ix = pxLo + t * (pxHi - pxLo);
     const iy = scales.y.getPixelForValue(TARGET_MM);
     const bottom = chartArea.bottom;
+    const DROP_COLOR = '#e53935'; // consistent red across all reports
     ctx.save();
-    // Dotted vertical drop line from intersection to x-axis
-    ctx.setLineDash([4, 5]);
-    ctx.strokeStyle = '#1e8449bb';
-    ctx.lineWidth = 1.5;
+    // Red dotted vertical drop line from intersection down to x-axis
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = DROP_COLOR + 'cc';
+    ctx.lineWidth = 1.8;
     ctx.beginPath();
     ctx.moveTo(ix, iy);
     ctx.lineTo(ix, bottom);
     ctx.stroke();
     ctx.setLineDash([]);
-    // Diamond marker at intersection point
-    const r = 6;
-    ctx.strokeStyle = '#1e8449';
-    ctx.fillStyle = '#e8f8ee';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(ix,     iy - r);
-    ctx.lineTo(ix + r, iy);
-    ctx.lineTo(ix,     iy + r);
-    ctx.lineTo(ix - r, iy);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    // Small downward triangle at x-axis to mark the ideal position
-    ctx.fillStyle = '#1e8449';
+    // Triangle at x-axis
+    ctx.fillStyle = DROP_COLOR;
     ctx.beginPath();
     ctx.moveTo(ix - 6, bottom + 2);
     ctx.lineTo(ix + 6, bottom + 2);
@@ -518,6 +506,44 @@ const intersectPlugin = {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
+
+    // Circle markers on each dataset at the drop line x-position (interpolated pixel)
+    // Data is sparse (indices 0, 6, 12 in the 13-label axis) — find the surrounding data indices
+    // Dataset 0: Caster Δ (green, bold)  → green circle, r=7
+    // Dataset 2: Offset @ +15° (blue)    → blue circle, r=5
+    // Dataset 3: Offset @ −15° (purple)  → purple circle, r=5
+    const dataIdxs = [0, 6, 12];
+    let ldIdx = 0, hdIdx = 6;
+    for (let i = 0; i < dataIdxs.length - 1; i++) {
+      if (xIdxFloat >= dataIdxs[i] && xIdxFloat <= dataIdxs[i + 1]) {
+        ldIdx = dataIdxs[i]; hdIdx = dataIdxs[i + 1]; break;
+      }
+    }
+    const tData = (xIdxFloat - ldIdx) / (hdIdx - ldIdx);
+    const markerDefs = [
+      { di: 0, color: '#1e8449', r: 7 },  // Caster Δ primary
+      { di: 2, color: '#7ab3f5', r: 5 },  // Offset +15°
+      { di: 3, color: '#c4a0e8', r: 5 },  // Offset -15°
+    ];
+    markerDefs.forEach(({ di, color, r }) => {
+      const dataset = chart.data.datasets[di];
+      if (!dataset) return;
+      // Interpolate between the actual data points (not the sparse nulls)
+      const loVal = dataset.data[ldIdx], hiVal = dataset.data[hdIdx];
+      if (loVal == null || hiVal == null) return;
+      const val = loVal + tData * (hiVal - loVal);
+      const py = scales.y.getPixelForValue(val);
+      if (py < chartArea.top || py > chartArea.bottom) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ix, py, r, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    });
   }
 };
 
@@ -942,12 +968,12 @@ const sweepColors = { pos15: '#7ab3f5', neg15: '#c4a0e8' };
 new Chart(document.getElementById('topChart'), {
   type: 'line',
   data: {
-    labels: washerLabels,
+    labels: allWasherLabels,
     datasets: [
-      { label: 'Top @ +15°', data: top_pos15, borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
-        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
-      { label: 'Top @ −15°', data: top_neg15, borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
-        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Top @ +15°', data: expandToFull(top_pos15), borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
+        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, spanGaps: true, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Top @ −15°', data: expandToFull(top_neg15), borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
+        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, spanGaps: true, borderWidth: 2, tension: 0.3, fill: false },
     ]
   },
   options: { responsive: true, plugins: { legend: sharedLegend, tooltip: tip() }, scales: sharedScales('Top reading (mm)') }
@@ -956,12 +982,12 @@ new Chart(document.getElementById('topChart'), {
 new Chart(document.getElementById('botChart'), {
   type: 'line',
   data: {
-    labels: washerLabels,
+    labels: allWasherLabels,
     datasets: [
-      { label: 'Bot @ +15°', data: bot_pos15, borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
-        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
-      { label: 'Bot @ −15°', data: bot_neg15, borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
-        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Bot @ +15°', data: expandToFull(bot_pos15), borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
+        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, spanGaps: true, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Bot @ −15°', data: expandToFull(bot_neg15), borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
+        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, spanGaps: true, borderWidth: 2, tension: 0.3, fill: false },
     ]
   },
   options: { responsive: true, plugins: { legend: sharedLegend, tooltip: tip() }, scales: sharedScales('Bot reading (mm)') }

@@ -475,43 +475,30 @@ const targetPlugin = {
   }
 };
 
-// Diamond + dotted drop line at the best achievable front bolt position (+6 = index 12 in 13-label axis)
+// Drop lines at the two best positions, with circle markers on both series at those x-positions
 const recommendPlugin = {
   id: 'recommend',
   afterDatasetsDraw(chart) {
     const { ctx, chartArea, scales } = chart;
     if (!scales.x || !scales.y) return;
     const bottom = chartArea.bottom;
+    const DROP_COLOR = '#e53935'; // red dotted, consistent across all reports
 
-    // Helper: draw diamond + dotted drop line + triangle at x-axis for a given indicator
-    function drawIndicator(xIdx, yVal, color, fillColor) {
+    // Draw a red dotted vertical drop line from data y-val down to the x-axis, plus a triangle at bottom
+    function drawDropLine(xIdx, yVal) {
       const ix = scales.x.getPixelForValue(xIdx);
       const iy = scales.y.getPixelForValue(yVal);
       ctx.save();
-      // Dotted drop line
-      ctx.setLineDash([4, 5]);
-      ctx.strokeStyle = color + 'bb';
-      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = DROP_COLOR + 'cc';
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.moveTo(ix, iy);
       ctx.lineTo(ix, bottom);
       ctx.stroke();
       ctx.setLineDash([]);
-      // Diamond
-      const r = 6;
-      ctx.strokeStyle = color;
-      ctx.fillStyle = fillColor;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(ix,     iy - r);
-      ctx.lineTo(ix + r, iy);
-      ctx.lineTo(ix,     iy + r);
-      ctx.lineTo(ix - r, iy);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
       // Triangle at x-axis
-      ctx.fillStyle = color;
+      ctx.fillStyle = DROP_COLOR;
       ctx.beginPath();
       ctx.moveTo(ix - 6, bottom + 2);
       ctx.lineTo(ix + 6, bottom + 2);
@@ -521,10 +508,28 @@ const recommendPlugin = {
       ctx.restore();
     }
 
-    // Front bolt: best at +6 = axis index 12, value -7mm (blue)
-    drawIndicator(12, frontBest[2], '#1a6ec7', '#e8f0ff');
-    // Rear bolt: best at -6 = axis index 0, value -7mm (blue, thin)
-    drawIndicator(0, rearMeasured[0], '#1a6ec7', '#e8f0ff');
+    // Draw a filled circle marker at a data point (coloured to match the series)
+    function drawCircle(xIdx, yVal, seriesColor, r) {
+      const ix = scales.x.getPixelForValue(xIdx);
+      const iy = scales.y.getPixelForValue(yVal);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ix, iy, r, 0, Math.PI * 2);
+      ctx.fillStyle = seriesColor;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Front bolt: best at +6 = axis index 12, value -7mm (blue, bold line → r=7)
+    drawDropLine(12, frontBest[2]);
+    drawCircle(12, frontBest[2], '#1a6ec7', 7);
+
+    // Rear bolt: best at -6 = axis index 0, value -7mm (blue, thin line → r=5)
+    drawDropLine(0, rearMeasured[0]);
+    drawCircle(0, rearMeasured[0], '#1a6ec7', 5);
   }
 };
 
@@ -952,18 +957,25 @@ const tlPlugin = {
 };
 
 // ═══════════════════ CHART 1: rear bolt on X ═══════════════════
+// Expand rear bolt 3-point data to full 13-label (−6 to +6) axis
+const expandRearToFull = arr => {
+  const full = new Array(13).fill(null);
+  [-6, 0, 6].forEach((p, idx) => { full[p + 6] = arr[idx]; });
+  return full;
+};
 const c1colors = ['#7ab3f5','#f5a86a','#7dd4a0','#f5b8c0'];
 new Chart(document.getElementById('chart1'), {
   type: 'line',
   data: {
-    labels: rearPos,
+    labels: allCamberLabels,
     datasets: matrix.map((row, i) => ({
       label: `Front ${frontPos[i]}`,
-      data: row,
+      data: expandRearToFull(row),
       borderColor: c1colors[i],
       backgroundColor: c1colors[i]+'15',
       pointBackgroundColor: c1colors[i],
       pointRadius: 0,
+      spanGaps: true,
       borderWidth: 2, tension: 0.3, fill: false,
     }))
   },
@@ -972,19 +984,28 @@ new Chart(document.getElementById('chart1'), {
 });
 
 // ═══════════════════ CHART 2: front bolt on X ═══════════════════
-const transposed = rearPos.map((_,ci) => matrix.map(row => row[ci]));
+// Only measured at front=-6,0,+6 (drop +12 reversal zone — outside −6→+6 range)
+// Expand front bolt 3-point data (indices 0,1,2 of matrix = front=-6,0,+6) to full 13-label axis
+const expandFrontToFull = arr => {
+  const full = new Array(13).fill(null);
+  [-6, 0, 6].forEach((p, idx) => { full[p + 6] = arr[idx]; });
+  return full;
+};
+// Transpose: for each rear position, collect front=-6, front=0, front=+6 values (skip +12 reversal)
+const transposed = rearPos.map((_,ci) => [matrix[0][ci], matrix[1][ci], matrix[2][ci]]);
 const c2colors = ['#7dd4a0','#f5a86a','#c4a0e8'];
 new Chart(document.getElementById('chart2'), {
   type: 'line',
   data: {
-    labels: frontPos,
+    labels: allCamberLabels,
     datasets: transposed.map((col,i) => ({
       label: `Rear ${rearPos[i]}`,
-      data: col,
+      data: expandFrontToFull(col),
       borderColor: c2colors[i],
       backgroundColor: c2colors[i]+'15',
       pointBackgroundColor: c2colors[i],
       pointRadius: 0,
+      spanGaps: true,
       borderWidth: 2, tension: 0.3, fill: false,
     }))
   },
@@ -993,15 +1014,19 @@ new Chart(document.getElementById('chart2'), {
 });
 
 // ═══════════════════ CHART 3: average eccentric curve ═══════════════════
-const avgPerFront = matrix.map(row => Math.round(row.reduce((a,b)=>a+b,0)/row.length * 10)/10);
+// Average only over the −6→+6 range (first 3 front positions: −6, 0, +6; drop +12 reversal)
+const avgPerFront3 = [matrix[0], matrix[1], matrix[2]].map(
+  row => Math.round(row.reduce((a,b)=>a+b,0)/row.length * 10)/10
+);
 
 const rangePlugin = {
   id: 'markedRange',
   beforeDraw(chart) {
     const { ctx, chartArea, scales } = chart;
     if (!chartArea) return;
+    // On 13-label axis: index 0 = −6, index 12 = +6 → shade entire marked range
     const x0 = scales.x.getPixelForValue(0);
-    const x2 = scales.x.getPixelForValue(2);
+    const x2 = scales.x.getPixelForValue(12);
     ctx.save();
     ctx.fillStyle = '#e8f5ee77';
     ctx.fillRect(x0, chartArea.top, x2-x0, chartArea.height);
@@ -1014,14 +1039,15 @@ const rangePlugin = {
 new Chart(document.getElementById('chart3'), {
   type: 'line',
   data: {
-    labels: frontPos,
+    labels: allCamberLabels,
     datasets: [{
       label: 'Average camber (all rear positions)',
-      data: avgPerFront,
+      data: expandFrontToFull(avgPerFront3),
       borderColor: '#a0d4f5',
       backgroundColor: '#a0d4f518',
       pointBackgroundColor: '#a0d4f5',
       pointRadius: 0,
+      spanGaps: true,
       borderWidth: 2.5, tension: 0.4, fill: true,
     }]
   },
