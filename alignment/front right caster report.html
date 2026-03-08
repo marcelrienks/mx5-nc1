@@ -552,7 +552,8 @@ new Chart(document.getElementById('mainChart'), {
         borderWidth: 3,
         pointBackgroundColor: '#1e8449',
         pointBorderColor: '#1e8449',
-        pointRadius: 6,
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, order: 1, yAxisID: 'y',
       },
       {
@@ -566,7 +567,7 @@ new Chart(document.getElementById('mainChart'), {
         data: expandToFull(offset_pos15),
         borderColor: '#7ab3f5', backgroundColor: 'transparent',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#7ab3f5', pointRadius: 4,
+        pointBackgroundColor: '#7ab3f5', pointRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, order: 2, yAxisID: 'y',
       },
       {
@@ -574,7 +575,7 @@ new Chart(document.getElementById('mainChart'), {
         data: expandToFull(offset_neg15),
         borderColor: '#c4a0e8', backgroundColor: 'transparent',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#c4a0e8', pointRadius: 4,
+        pointBackgroundColor: '#c4a0e8', pointRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, order: 3, yAxisID: 'y',
       }
     ]
@@ -944,9 +945,9 @@ new Chart(document.getElementById('topChart'), {
     labels: washerLabels,
     datasets: [
       { label: 'Top @ +15°', data: top_pos15, borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
-        pointBackgroundColor: sweepColors.pos15, pointRadius: 5, borderWidth: 2, tension: 0.3, fill: false },
+        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
       { label: 'Top @ −15°', data: top_neg15, borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
-        pointBackgroundColor: sweepColors.neg15, pointRadius: 5, borderWidth: 2, tension: 0.3, fill: false },
+        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
     ]
   },
   options: { responsive: true, plugins: { legend: sharedLegend, tooltip: tip() }, scales: sharedScales('Top reading (mm)') }
@@ -958,9 +959,9 @@ new Chart(document.getElementById('botChart'), {
     labels: washerLabels,
     datasets: [
       { label: 'Bot @ +15°', data: bot_pos15, borderColor: sweepColors.pos15, backgroundColor: sweepColors.pos15+'15',
-        pointBackgroundColor: sweepColors.pos15, pointRadius: 5, borderWidth: 2, tension: 0.3, fill: false },
+        pointBackgroundColor: sweepColors.pos15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
       { label: 'Bot @ −15°', data: bot_neg15, borderColor: sweepColors.neg15, backgroundColor: sweepColors.neg15+'15',
-        pointBackgroundColor: sweepColors.neg15, pointRadius: 5, borderWidth: 2, tension: 0.3, fill: false },
+        pointBackgroundColor: sweepColors.neg15, pointRadius: 0, borderWidth: 2, tension: 0.3, fill: false },
     ]
   },
   options: { responsive: true, plugins: { legend: sharedLegend, tooltip: tip() }, scales: sharedScales('Bot reading (mm)') }

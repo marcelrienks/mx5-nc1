@@ -254,8 +254,8 @@
       <span>Front bolt — camber primary (all measured)</span>
     </div>
     <div class="leg-item">
-      <div class="leg-swatch" style="background:#f5a86a"></div>
-      <div class="leg-dot" style="background:#f5a86a"></div>
+      <div class="leg-swatch" style="background:#1a6ec7"></div>
+      <div class="leg-dot" style="background:#1a6ec7"></div>
       <span>Rear bolt — caster primary</span>
     </div>
     <div class="leg-item">
@@ -264,7 +264,7 @@
     </div>
     <div class="leg-item">
       <div class="leg-dot" style="background:#c05010; width:11px; height:11px;"></div>
-      <span style="color:#f5a86a; font-family:'Share Tech Mono',monospace; font-size:0.72rem;">◇ Rear best (−6, −7 mm)</span>
+      <span style="color:#1a6ec7; font-family:'Share Tech Mono',monospace; font-size:0.72rem;">◇ Rear best (−6, −7 mm)</span>
     </div>
   </div>
 
@@ -280,7 +280,7 @@
 <div class="section-label">02b — Recommended Washer Settings</div>
 <div class="full-card">
   <h2>Recommended Settings to Maximise Negative Camber</h2>
-  <div class="sub">Best achievable within factory range: −7 mm (−0.85°) · Set <strong style="color:#1a6ec7">front bolt → +6</strong> and <strong style="color:#f5a86a">rear bolt → −6</strong> simultaneously · 2 mm / 0.25° short of −9 mm target</div>
+  <div class="sub">Best achievable within factory range: −7 mm (−0.85°) · Set <strong style="color:#1a6ec7">front bolt → +6</strong> and <strong style="color:#1a6ec7">rear bolt → −6</strong> simultaneously · 2 mm / 0.25° short of −9 mm target</div>
   <div class="dial-wrap" style="justify-content:center; gap:60px" id="recommendDials"></div>
   <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8090b0; margin-top:14px; text-align:center" id="recommend-note"></p>
 </div>
@@ -523,8 +523,8 @@ const recommendPlugin = {
 
     // Front bolt: best at +6 = axis index 12, value -7mm (blue)
     drawIndicator(12, frontBest[2], '#1a6ec7', '#e8f0ff');
-    // Rear bolt: best at -6 = axis index 0, value -7mm (pastel orange)
-    drawIndicator(0, rearMeasured[0], '#f5a86a', '#fff3e8');
+    // Rear bolt: best at -6 = axis index 0, value -7mm (blue, thin)
+    drawIndicator(0, rearMeasured[0], '#1a6ec7', '#e8f0ff');
   }
 };
 
@@ -543,25 +543,25 @@ new Chart(overlayCanvas, {
         borderDash: [],
         pointBackgroundColor: '#1a6ec7',
         pointBorderColor: '#1a6ec7',
-        pointRadius: 6,
-        pointHoverRadius: 10,
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true,
         tension: 0.3,
         fill: false,
         order: 1,
       },
-      // Rear bolt — solid orange, 3 measured positions at -6, 0, +6
+      // Rear bolt — solid blue thin, 3 measured positions at -6, 0, +6
       {
         label: "Rear bolt (caster primary)",
         data: expandCamberToFull(rearMeasured),
-        borderColor: '#f5a86a',
-        backgroundColor: '#f5a86a15',
+        borderColor: '#1a6ec7',
+        backgroundColor: '#1a6ec715',
         borderWidth: 2,
         borderDash: [],
-        pointBackgroundColor: '#f5a86a',
-        pointBorderColor: '#f5a86a',
-        pointRadius: 6,
-        pointHoverRadius: 10,
+        pointBackgroundColor: '#1a6ec7',
+        pointBorderColor: '#1a6ec7',
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true,
         tension: 0.3,
         fill: false,
@@ -716,7 +716,7 @@ new Chart(overlayCanvas, {
 
   const rc = document.getElementById('recommendDials');
   buildRecommendDial(rc, +6, '#1a6ec7', '#edf3ff', '#d8e8ff', 'FRONT BOLT: WASHER +6');
-  buildRecommendDial(rc, -6, '#f5a86a', '#fff9f3', '#fde8d0', 'REAR BOLT: WASHER −6');
+  buildRecommendDial(rc, -6, '#1a6ec7', '#edf3ff', '#d8e8ff', 'REAR BOLT: WASHER −6');
 }
 
 // ═══════════════════ HEATMAP ═══════════════════
@@ -963,7 +963,7 @@ new Chart(document.getElementById('chart1'), {
       borderColor: c1colors[i],
       backgroundColor: c1colors[i]+'15',
       pointBackgroundColor: c1colors[i],
-      pointRadius: 5,
+      pointRadius: 0,
       borderWidth: 2, tension: 0.3, fill: false,
     }))
   },
@@ -984,7 +984,7 @@ new Chart(document.getElementById('chart2'), {
       borderColor: c2colors[i],
       backgroundColor: c2colors[i]+'15',
       pointBackgroundColor: c2colors[i],
-      pointRadius: 5,
+      pointRadius: 0,
       borderWidth: 2, tension: 0.3, fill: false,
     }))
   },
@@ -1021,7 +1021,7 @@ new Chart(document.getElementById('chart3'), {
       borderColor: '#a0d4f5',
       backgroundColor: '#a0d4f518',
       pointBackgroundColor: '#a0d4f5',
-      pointRadius: 5,
+      pointRadius: 0,
       borderWidth: 2.5, tension: 0.4, fill: true,
     }]
   },

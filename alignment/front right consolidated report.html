@@ -251,8 +251,8 @@
       <span>Front bolt — camber sweep (best per position)</span>
     </div>
     <div class="leg-item">
-      <div class="leg-swatch" style="background:#f5a86a"></div>
-      <div class="leg-dot" style="background:#f5a86a"></div>
+      <div class="leg-swatch" style="background:#1a6ec7"></div>
+      <div class="leg-dot" style="background:#1a6ec7"></div>
       <span>Rear bolt — camber at front=+2 (interpolated)</span>
     </div>
     <div class="leg-item">
@@ -274,7 +274,7 @@
 
 <div class="tradeoff-note">
   <div class="tn"><strong style="color:#1a6ec7">Front bolt (blue) — camber axis</strong>Peaks at −7mm at position +6, then reverses at +12. The eccentric apex is at +6 — this is the maximum negative camber achievable with factory bolts regardless of rear bolt position.</div>
-  <div class="tn"><strong style="color:#f5a86a">Rear bolt camber (orange) — camber axis</strong>Interpolated from the full matrix at front=+2. Moving rear bolt from −6 to +6 costs ≈1.3mm of negative camber (−3mm → −1.7mm). The rear bolt is camber-secondary only.</div>
+  <div class="tn"><strong style="color:#1a6ec7">Rear bolt camber (thin blue) — camber axis</strong>Interpolated from the full matrix at front=+2. Moving rear bolt from −6 to +6 costs ≈1.3mm of negative camber (−3mm → −1.7mm). The rear bolt is camber-secondary only.</div>
   <div class="tn"><strong style="color:#1e8449">Rear bolt caster (green) — caster axis</strong>Directly measured with front=+2. Moving rear from −6 to +6 adds ≈3.3° of caster (4.48° → 7.78°). This is the rear bolt's dominant effect. Target 5.0° sits at rear≈−4.</div>
 </div>
 
@@ -509,6 +509,30 @@ function drawDropLine(ctx, chartArea, scales, xIdx, color, label1, label2, label
   ctx.restore();
 }
 
+// Helper: linearly interpolate through nulls to get a value at xIdx in a dataset's data array
+function getInterpolatedValue(data, idx) {
+  if (data[idx] != null) return data[idx];
+  let lo = idx - 1, hi = idx + 1;
+  while (lo >= 0 && data[lo] == null) lo--;
+  while (hi < data.length && data[hi] == null) hi++;
+  if (lo < 0 || hi >= data.length) return null;
+  const t = (idx - lo) / (hi - lo);
+  return data[lo] + t * (data[hi] - data[lo]);
+}
+
+// Helper: draw a filled circle marker on a data series at a specific position
+function drawSeriesMarker(ctx, ix, iy, color, r) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(ix, iy, r, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.restore();
+}
+
 const compromisePlugin = {
   id: 'compromise',
   afterDatasetsDraw(chart) {
@@ -516,14 +540,32 @@ const compromisePlugin = {
     if (!scales.x || !scales.y || !chartArea) return;
 
     // Camber-primary recommendation: rear bolt = -6 (index 0 on 13-label axis), front bolt = +6
-    // Green — maximises negative camber (-7mm, -0.85°) at the cost of lower caster (4.48°)
     drawDropLine(ctx, chartArea, scales, 0, '#e53935',
       'CAMBER PRIMARY', 'REAR −6 · −0.85°', -6);
 
     // Caster-compromise recommendation: rear bolt = -4 (index 2 on 13-label axis)
-    // Red dotted — hits 5.0° caster target, camber ≈-2.5mm
     drawDropLine(ctx, chartArea, scales, 2, '#e53935',
       'CASTER TARGET', 'REAR −4 · ≈5.0°', 6);
+
+    // Draw markers on each dataset at the drop line x-positions
+    const dropIndices = [0, 2]; // washer -6 and washer -4
+    const markerColors = ['#1a6ec7', '#1a6ec7', '#1e8449'];
+    const markerRadii  = [6, 5, 6]; // bold/thin/bold matching lineWidth
+    chart.data.datasets.forEach((dataset, di) => {
+      const yAxisId = dataset.yAxisID || 'y';
+      const yScale  = scales[yAxisId];
+      if (!yScale) return;
+      const color  = markerColors[di];
+      const radius = markerRadii[di];
+      dropIndices.forEach(xIdx => {
+        const val = getInterpolatedValue(dataset.data, xIdx);
+        if (val == null) return;
+        const ix = scales.x.getPixelForValue(xIdx);
+        const iy = yScale.getPixelForValue(val);
+        if (iy < chartArea.top || iy > chartArea.bottom) return;
+        drawSeriesMarker(ctx, ix, iy, color, radius);
+      });
+    });
   }
 };
 
@@ -542,21 +584,23 @@ new Chart(document.getElementById('tradeoffChart'), {
         pointBackgroundColor: '#1a6ec7',
         pointBorderColor: '#fff',
         pointBorderWidth: 1.5,
-        pointRadius: 7,
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, yAxisID: 'y', order: 1,
       },
-      // Series 2: Rear bolt — camber at front=+2 (secondary, left y)
+      // Series 2: Rear bolt — camber at front=+2 (thin blue, left y)
       {
         label: 'Rear bolt — camber at front=+2 (interp.)',
         data: expandTo13(rearNums, camberAtFront2),
-        borderColor: '#f5a86a',
-        backgroundColor: '#f5a86a15',
+        borderColor: '#1a6ec7',
+        backgroundColor: '#1a6ec715',
         borderWidth: 1.5,
-        borderDash: [6, 3],
-        pointBackgroundColor: '#f5a86a',
+        borderDash: [],
+        pointBackgroundColor: '#1a6ec7',
         pointBorderColor: '#fff',
         pointBorderWidth: 1.5,
-        pointRadius: 7,
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, yAxisID: 'y', order: 2,
       },
       // Series 3: Rear bolt — caster degrees (green, right y)
@@ -569,7 +613,8 @@ new Chart(document.getElementById('tradeoffChart'), {
         pointBackgroundColor: '#1e8449',
         pointBorderColor: '#fff',
         pointBorderWidth: 1.5,
-        pointRadius: 7,
+        pointRadius: 0,
+        pointHoverRadius: 0,
         spanGaps: true, tension: 0.3, fill: false, yAxisID: 'y2', order: 3,
       },
     ]
@@ -692,7 +737,7 @@ new Chart(document.getElementById('sweepChart'), {
       borderColor: sweepColors[i],
       backgroundColor: sweepColors[i] + '15',
       pointBackgroundColor: sweepColors[i],
-      pointRadius: 5,
+      pointRadius: 0,
       borderWidth: 2, tension: 0.3, fill: false,
     }))
   },
@@ -855,7 +900,7 @@ new Chart(document.getElementById('casterSweepChart'), {
         data: casterDelta,
         borderColor: '#1e8449', backgroundColor: '#1e844915',
         borderWidth: 3,
-        pointBackgroundColor: '#1e8449', pointRadius: 6,
+        pointBackgroundColor: '#1e8449', pointRadius: 0,
         tension: 0.3, fill: false, yAxisID: 'y', order: 1,
       },
       {
@@ -863,7 +908,7 @@ new Chart(document.getElementById('casterSweepChart'), {
         data: casterDeg,
         borderColor: '#7dd4a0', backgroundColor: '#7dd4a015',
         borderWidth: 1.5, borderDash: [5, 3],
-        pointBackgroundColor: '#7dd4a0', pointRadius: 5,
+        pointBackgroundColor: '#7dd4a0', pointRadius: 0,
         tension: 0.3, fill: false, yAxisID: 'y2', order: 2,
       }
     ]
@@ -919,7 +964,7 @@ new Chart(document.getElementById('rawOffsetChart'), {
         data: offset_pos15,
         borderColor: '#7ab3f5', backgroundColor: '#7ab3f515',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#7ab3f5', pointRadius: 5,
+        pointBackgroundColor: '#7ab3f5', pointRadius: 0,
         tension: 0.3, fill: false
       },
       {
@@ -927,7 +972,7 @@ new Chart(document.getElementById('rawOffsetChart'), {
         data: offset_neg15,
         borderColor: '#c4a0e8', backgroundColor: '#c4a0e815',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#c4a0e8', pointRadius: 5,
+        pointBackgroundColor: '#c4a0e8', pointRadius: 0,
         tension: 0.3, fill: false
       },
       {
@@ -935,7 +980,7 @@ new Chart(document.getElementById('rawOffsetChart'), {
         data: casterDelta,
         borderColor: '#1e8449', backgroundColor: '#1e844915',
         borderWidth: 3,
-        pointBackgroundColor: '#1e8449', pointRadius: 6,
+        pointBackgroundColor: '#1e8449', pointRadius: 0,
         tension: 0.3, fill: false
       }
     ]
