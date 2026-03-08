@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Front Alignment — Left Camber Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;600;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0f2f7;
+    color: #1a1e2e;
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  /* ── HEADER ── */
+  .header { text-align: center; margin-bottom: 28px; }
+  .header h1 {
+    font-size: 2.5rem; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #1a1e2e;
+  }
+  .header p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; color: #7080a0; letter-spacing: 0.12em; margin-top: 6px;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    max-width: 1100px; margin: 0 auto 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; color: #a0b0c8; letter-spacing: 0.2em;
+    text-transform: uppercase; border-left: 3px solid #d0d6e8; padding-left: 10px;
+  }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    max-width: 1100px; margin: 0 auto 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  @media (max-width: 700px) { .info-strip { grid-template-columns: 1fr 1fr; } }
+
+  .info-tile {
+    background: #fff; border: 1px solid #d0d6e8; border-radius: 6px;
+    padding: 14px 16px; font-family: 'Share Tech Mono', monospace;
+    box-shadow: 0 1px 4px #0001;
+  }
+  .info-tile .label { font-size: 0.62rem; color: #8090b0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+  .info-tile .value { font-size: 1.25rem; font-weight: 700; color: #1a1e2e; }
+  .info-tile .sub   { font-size: 0.66rem; color: #8090b0; margin-top: 3px; }
+  .info-tile.target  { border-color: #2563c0; border-left: 4px solid #2563c0; }
+  .info-tile.target .value { color: #1a4a9e; }
+  .info-tile.best  { border-color: #27ae60; border-left: 4px solid #27ae60; }
+  .info-tile.best .value { color: #1e8449; }
+  .info-tile.warning { border-color: #e67e22; border-left: 4px solid #e67e22; }
+  .info-tile.warning .value { color: #c0620a; }
+  .info-tile.recommend { border-color: #8b22e6; border-left: 4px solid #8b22e6; }
+  .info-tile.recommend .value { color: #6a14b8; }
+
+  /* ── CONCLUSION BANNER ── */
+  .conclusion {
+    max-width: 1100px; margin: 0 auto 28px;
+    background: #fff8f0; border: 1px solid #e67e22;
+    border-left: 4px solid #e67e22; border-radius: 4px;
+    padding: 13px 18px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.76rem;
+    color: #7a4010; line-height: 1.9;
+  }
+  .conclusion strong { color: #c0580a; }
+
+  /* ── CARDS / CHART WRAPPERS ── */
+  .full-card {
+    max-width: 1100px; margin: 0 auto 24px;
+    background: #fff; border: 1px solid #d0d6e8;
+    border-radius: 8px; padding: 24px;
+    box-shadow: 0 1px 4px #0001;
+  }
+  .full-card h2 {
+    font-size: 0.95rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: #4060a0; margin-bottom: 6px;
+  }
+  .full-card .sub {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
+    color: #8090b0; margin-bottom: 18px; line-height: 1.6;
+  }
+
+  .grid2 {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; max-width: 1100px; margin: 0 auto 24px;
+  }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: #fff; border: 1px solid #d0d6e8;
+    border-radius: 8px; padding: 22px;
+    box-shadow: 0 1px 4px #0001;
+  }
+  .card h2 {
+    font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: #4060a0; margin-bottom: 14px;
+  }
+
+  /* ── CHART LEGEND ROW ── */
+  .legend-row {
+    display: flex; gap: 24px; margin-bottom: 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
+    flex-wrap: wrap; align-items: center;
+  }
+  .leg-item { display: flex; align-items: center; gap: 7px; color: #2a3050; }
+  .leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .leg-note { color: #8090b0; font-size: 0.62rem; font-style: italic; }
+
+  canvas { width: 100% !important; }
+
+  .chart-note {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
+    color: #8090b0; margin-top: 12px; line-height: 1.75; text-align: center;
+  }
+
+  /* ── DATA TABLE ── */
+  table.data-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.78rem;
+  }
+  table.data-table th {
+    background: #f0f2f7; color: #7080a0;
+    padding: 8px 10px; text-align: center;
+    letter-spacing: 0.07em; font-size: 0.66rem;
+    border-bottom: 2px solid #d0d6e8;
+  }
+  table.data-table th.sec { color: #4060a0; }
+  table.data-table td {
+    padding: 8px 10px; text-align: center;
+    border-bottom: 1px solid #e8ecf4; color: #2a3050;
+  }
+  table.data-table tr:last-child td { border-bottom: none; }
+  table.data-table tr.best-row td { background: #edfaf3; }
+  table.data-table tr.rev-row  td { background: #fff4e8; }
+  td.config-cell { font-weight: 700; color: #4060a0; text-align: left; white-space: nowrap; }
+  td.washer-cell  { color: #8090b0; font-size: 0.7rem; }
+  td.meas-cell   { color: #2a3050; }
+
+  .tag {
+    display: inline-block; padding: 2px 7px;
+    border-radius: 3px; font-size: 0.7rem; font-weight: 700;
+  }
+  .tag-pos  { background: #fdecea; color: #c0392b; }
+  .tag-neg  { background: #e8f8f0; color: #1e8449; }
+  .tag-zero { background: #f0f2f7; color: #6070a0; }
+  .tag-best { background: #d4f5e2; color: #1a6e3c; border: 1px solid #27ae60; }
+  .tag-rev  { background: #fdecd8; color: #a04010; border: 1px solid #e67e22; }
+
+  /* ── HEATMAP ── */
+  .heatmap {
+    display: grid; grid-template-columns: 88px repeat(3, 1fr);
+    gap: 5px; font-family: 'Share Tech Mono', monospace;
+  }
+  .hm-col-header {
+    text-align: center; color: #8090b0;
+    font-size: 0.66rem; letter-spacing: 0.08em; padding-bottom: 4px;
+  }
+  .hm-row-label {
+    display: flex; flex-direction: column; justify-content: center;
+    color: #4060a0; font-weight: 700; font-size: 0.68rem; line-height: 1.5;
+  }
+  .hm-row-label span { color: #8090b0; font-size: 0.58rem; font-weight: 400; }
+  .cell {
+    padding: 10px 4px; border-radius: 5px; text-align: center;
+    font-weight: 700; font-size: 0.82rem; cursor: default;
+    border: 1px solid transparent; transition: transform 0.12s;
+  }
+  .cell:hover { transform: scale(1.06); }
+  .cell.is-best { border: 2px solid #1e8449 !important; box-shadow: 0 0 7px #27ae6055; }
+  .cell.is-rev  { border: 2px solid #e67e22 !important; }
+  .cell .deg { display: block; font-size: 0.56rem; font-weight: 400; opacity: 0.72; margin-top: 2px; }
+  .hm-legend {
+    margin-top: 10px; display: flex; align-items: center; gap: 8px;
+    font-size: 0.63rem; font-family: 'Share Tech Mono', monospace; color: #8090b0;
+  }
+  .hm-legend-bar {
+    flex: 1; height: 6px; border-radius: 3px;
+    background: linear-gradient(to right, #60b0ff, #c8d4f0, #ffb0a0, #ff6060);
+  }
+  .hm-note { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #8090b0; margin-top: 8px; }
+
+  /* ── CLOCK / DIAL DIAGRAMS ── */
+  .clock-wrap, .dial-wrap { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
+  .clock-item, .dial-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .clock-svg, .dial-svg  { width: 120px; height: 120px; }
+  .clock-label, .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #4060a0; font-weight: 700; }
+  .clock-val, .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #6070a0; }
+  .clock-note, .dial-note  { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: #8090b0; margin-top: 10px; line-height: 1.65; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Front Alignment — Camber Report</h1>
+  <p>LEFT FRONT WHEEL · PLUMB LINE / STRING BOX · ECCENTRIC WASHER MATRIX · ALL POSITIONS MEASURED</p>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 1: SUMMARY ═══════════════════════════════ -->
+<div class="section-label">01 — Summary</div>
+<div class="info-strip">
+  <div class="info-tile target">
+    <div class="label">Target Camber</div>
+    <div class="value">−9 mm</div>
+    <div class="sub">−1.1° · 1mm = 0.122°</div>
+  </div>
+  <div class="info-tile best">
+    <div class="label">Best Achieved</div>
+    <div class="value">−10 mm</div>
+    <div class="sub">Front +6 · Rear −6 · −1.223°</div>
+  </div>
+  <div class="info-tile warning">
+    <div class="label">Performance vs Target</div>
+    <div class="value" style="color: #1e8449;">+0.123°</div>
+    <div class="sub" style="color: #1e8449;">Better by 0.123° ✓</div>
+  </div>
+  <div class="info-tile recommend">
+    <div class="label">Recommended Setting</div>
+    <div class="value">Front: +6</div>
+    <div class="sub">Rear: −6 · achieves −1.223° (−10 mm)</div>
+  </div>
+</div>
+
+<div class="conclusion">
+  <strong>FINDING:</strong> The front left wheel achieves <strong>−10mm (−1.223°)</strong> at washer position <strong>Front +6 / Rear −6</strong>, 
+  which <strong>exceeds the −9mm target by 0.123°</strong>. This is an excellent result — the front left wheel already has more negative camber than required. 
+  <strong>Recommendation:</strong> Set both front and rear bolts to the recommended positions (Front +6, Rear −6) to achieve optimal handling geometry that matches the target specification.
+</div>
+
+<!-- ═══════════════════════════════ SECTION 2: BOLT TRAVEL OVERLAY ═══════════════════════════════ -->
+<div class="section-label">02 — Bolt Travel Overlay</div>
+<div class="full-card">
+  <h2>Resultant Camber (mm) vs Washer Position</h2>
+  <div class="sub">
+    Best camber per bolt position across all opposing bolt positions · Zero = neutral · Below = negative camber (desired) · Above = positive camber<br>
+    ◇ blue diamond = best front bolt position (+6, −10 mm) · ◇ blue diamond = best rear bolt position (−6, −10 mm)
+  </div>
+
+  <div class="legend-row">
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#1a6ec7"></div>
+      <div class="leg-dot" style="background:#1a6ec7"></div>
+      <span>Front bolt — camber primary (all measured)</span>
+    </div>
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#1a6ec7"></div>
+      <div class="leg-dot" style="background:#1a6ec7"></div>
+      <span>Rear bolt — caster primary</span>
+    </div>
+    <div class="leg-item">
+      <div class="leg-dot" style="background:#2563c0; width:11px; height:11px;"></div>
+      <span style="color:#1a6ec7; font-family:'Share Tech Mono',monospace; font-size:0.72rem;">◇ Front best (+6, −10 mm)</span>
+    </div>
+    <div class="leg-item">
+      <div class="leg-dot" style="background:#2563c0; width:11px; height:11px;"></div>
+      <span style="color:#1a6ec7; font-family:'Share Tech Mono',monospace; font-size:0.72rem;">◇ Rear best (−6, −10 mm)</span>
+    </div>
+  </div>
+
+  <canvas id="overlayChart" height="380"></canvas>
+
+  <p class="chart-note">
+    Front bolt: −6 · 0 · +6 (3 measured positions) | Rear bolt: −6 · 0 · +6 (3 measured positions)<br>
+    ◇ blue diamond = best front position (+6, −10 mm) · ◇ blue diamond = best rear position (−6, −10 mm) · exceeds target −9 mm ✓
+  </p>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 02b: RECOMMENDED WASHER SETTINGS ═══════════════════════════════ -->
+<div class="section-label">02b — Recommended Washer Settings</div>
+<div class="full-card">
+  <h2>Recommended Settings to Maximise Negative Camber</h2>
+  <div class="sub">Best achievable: −10 mm (−1.223°) · Set <strong style="color:#1a6ec7">front bolt → +6</strong> and <strong style="color:#1a6ec7">rear bolt → −6</strong> simultaneously · Exceeds −9 mm target ✓</div>
+  <div class="dial-wrap" style="justify-content:center; gap:60px" id="recommendDials"></div>
+  <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8090b0; margin-top:14px; text-align:center" id="recommend-note"></p>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 3: HEATMAP + CLOCKS ═══════════════════════════════ -->
+<div class="section-label">03 — Position Matrix</div>
+<div class="grid2">
+  <div class="card">
+    <h2>Camber Heatmap — All Positions (mm)</h2>
+    <div class="heatmap" id="heatmap"></div>
+    <div class="hm-legend">
+      <span>−10mm neg</span>
+      <div class="hm-legend-bar"></div>
+      <span>+9mm pos</span>
+    </div>
+    <p class="hm-note">■ green border = best achieved &nbsp;|&nbsp; Front left wheel exceeds target by 1 mm ✓</p>
+  </div>
+
+  <div class="card">
+    <h2>Front Bolt Washer Positions</h2>
+    <div class="dial-wrap" id="clockWrap"></div>
+    <p class="dial-note">
+      <strong style="color:#4060a0">Washer convention:</strong> bolt hole at 12 o'clock · major 0 mark at 6 o'clock<br>
+      <span style="color:#c0392b">▼ red tick = fixed subframe reference</span> at 6 o'clock<br>
+      −6 = 6 segment lines <strong>right</strong> of 0 mark (lobe toward 9 o'clock side)<br>
+      +6 = 6 segment lines <strong>left</strong> of 0 mark (lobe toward 3 o'clock side)<br>
+      0 = lobe centred at bottom (6 o'clock = maximum downward throw)
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 4: FULL DATA TABLE ═══════════════════════════════ -->
+<div class="section-label">04 — Full Measurement Table</div>
+<div class="full-card">
+  <h2>All Measured Positions — Raw Data &amp; Calculated Camber</h2>
+  <table class="data-table" id="dataTable"></table>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 5: SWEEP CHARTS ═══════════════════════════════ -->
+<div class="section-label">05 — Sweep Analysis</div>
+<div class="grid2">
+  <div class="card">
+    <h2>Rear Bolt Sweep — per Front Bolt Position</h2>
+    <canvas id="chart1" height="280"></canvas>
+  </div>
+  <div class="card">
+    <h2>Front Bolt Sweep — per Rear Bolt Position</h2>
+    <canvas id="chart2" height="280"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 6: ECCENTRIC CURVE ═══════════════════════════════ -->
+<div class="section-label">06 — Eccentric Curve</div>
+<div class="full-card">
+  <h2>Front Bolt Average Camber per Clock Position — Eccentric Throw Curve</h2>
+  <div class="sub">Average across all rear bolt positions · Illustrates sinusoidal eccentric behaviour · Green shaded region = manufacturer marked adjustment range (−6 → +6)</div>
+  <canvas id="chart3" height="260"></canvas>
+  <p class="chart-note">Curve peaks (most negative) at +6 — confirming eccentric apex · Target −9mm is reachable and exceeded within factory washer travel ✓</p>
+</div>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+// Matrix [front position 0-2][rear position 0-2]
+// Front: 0=-6, 1=0, 2=+6
+// Rear:  0=-6, 1=0, 2=+6
+const matrix = [
+  [ -7,   0,    9  ],   // Front -6
+  [ -8,   -3,   6  ],   // Front 0
+  [ -10,  -2,   2  ],   // Front +6 (best)
+];
+
+const rawBottom = [
+  [87,   91,    95 ],
+  [90,   92,    93 ],
+  [88,   89,    92 ],
+];
+const rawTop = [
+  [94,   91,    86 ],
+  [98,   95,    87 ],
+  [98,   91,    90 ],
+];
+
+// Numeric washer positions
+const frontPos = ['-6', '0', '+6'];
+const rearPos  = ['-6', '0', '+6'];
+
+const TARGET   = -9;
+const MM_PER_DEG = 8.18;
+const MIN_VAL  = -10, MAX_VAL = 9;
+
+function toDeg(mm) {
+  const d = (mm / MM_PER_DEG).toFixed(2);
+  return (d > 0 ? '+' : '') + d + '°';
+}
+function isBest(v)      { return v === -10; }
+function isReversal(fi) { return fi === 3; }
+
+// ═══════════════════ OVERLAY CHART ═══════════════════
+const frontBest = matrix.map(row => Math.min(...row));
+// [-7, -8, -10]
+
+const rearMeasured = [0,1,2].map(ri => Math.min(...matrix.map(row => row[ri])));
+// [-10, -3, 9] -> min is -10
+
+const allCamberLabels = Array.from({length: 13}, (_, i) => { const v = i - 6; return (v > 0 ? '+' : '') + v; });
+
+const expandCamberToFull = arr => {
+  const full = new Array(13).fill(null);
+  [-6, 0, 6].forEach((p, idx) => { full[p + 6] = arr[idx]; });
+  return full;
+};
+
+const overlayCanvas = document.getElementById('overlayChart');
+
+const zonePlugin = {
+  id: 'zones',
+  beforeDatasetsDraw(chart) {
+    const { ctx, scales, chartArea } = chart;
+    const y0 = scales.y.getPixelForValue(0);
+    ctx.save();
+    ctx.fillStyle = '#e8f5ee44';
+    ctx.fillRect(chartArea.left, y0, chartArea.width, chartArea.bottom - y0);
+    ctx.font = '9px Share Tech Mono';
+    ctx.fillStyle = '#1e844966';
+    ctx.textAlign = 'right';
+    ctx.fillText('NEGATIVE CAMBER  ▼', chartArea.right - 6, y0 + 14);
+    ctx.fillStyle = '#fdecea33';
+    ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, y0 - chartArea.top);
+    ctx.fillStyle = '#c0392b55';
+    ctx.fillText('POSITIVE CAMBER  ▲', chartArea.right - 6, y0 - 6);
+    ctx.restore();
+  }
+};
+
+const zeroPlugin = {
+  id: 'zeroLine',
+  beforeDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    const y = scales.y.getPixelForValue(0);
+    ctx.save();
+    ctx.strokeStyle = '#9090a8';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(chartArea.left, y);
+    ctx.lineTo(chartArea.right, y);
+    ctx.stroke();
+    ctx.fillStyle = '#9090a8';
+    ctx.font = '9px Share Tech Mono';
+    ctx.textAlign = 'left';
+    ctx.fillText('ZERO  (neutral)', chartArea.left + 6, y - 5);
+    ctx.restore();
+  }
+};
+
+const targetPlugin = {
+  id: 'targetLine',
+  beforeDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea) return;
+    const y = scales.y.getPixelForValue(TARGET);
+    ctx.save();
+    ctx.setLineDash([8, 5]);
+    ctx.strokeStyle = '#1e8449';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.moveTo(chartArea.left, y);
+    ctx.lineTo(chartArea.right, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1e8449';
+    ctx.font = 'bold 10px Share Tech Mono';
+    ctx.textAlign = 'left';
+    ctx.fillText('TARGET  −9mm  (−1.1°)', chartArea.left + 6, y - 6);
+    ctx.restore();
+  }
+};
+
+const recommendPlugin = {
+  id: 'recommend',
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!scales.x || !scales.y) return;
+    const bottom = chartArea.bottom;
+    const DROP_COLOR = '#e53935';
+
+    function drawDropLine(xIdx, yVal) {
+      const ix = scales.x.getPixelForValue(xIdx);
+      const iy = scales.y.getPixelForValue(yVal);
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = DROP_COLOR + 'cc';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(ix, iy);
+      ctx.lineTo(ix, bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = DROP_COLOR;
+      ctx.beginPath();
+      ctx.moveTo(ix - 6, bottom + 2);
+      ctx.lineTo(ix + 6, bottom + 2);
+      ctx.lineTo(ix,     bottom + 9);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawCircle(xIdx, yVal, seriesColor, r) {
+      const ix = scales.x.getPixelForValue(xIdx);
+      const iy = scales.y.getPixelForValue(yVal);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ix, iy, r, 0, Math.PI * 2);
+      ctx.fillStyle = seriesColor;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Front bolt: best at +6 = axis index 12, value -10mm
+    drawDropLine(12, frontBest[2]);
+    drawCircle(12, frontBest[2], '#1a6ec7', 7);
+
+    // Rear bolt: best at -6 = axis index 0, value -10mm
+    drawDropLine(0, rearMeasured[0]);
+    drawCircle(0, rearMeasured[0], '#1a6ec7', 5);
+  }
+};
+
+new Chart(overlayCanvas, {
+  type: 'line',
+  data: {
+    labels: allCamberLabels,
+    datasets: [
+      {
+        label: "Front bolt (camber primary)",
+        data: expandCamberToFull([frontBest[0], frontBest[1], frontBest[2]]),
+        borderColor: '#1a6ec7',
+        backgroundColor: '#1a6ec715',
+        borderWidth: 3,
+        borderDash: [],
+        pointBackgroundColor: '#1a6ec7',
+        pointBorderColor: '#1a6ec7',
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        spanGaps: true,
+        tension: 0.3,
+        fill: false,
+        order: 1,
+      },
+      {
+        label: "Rear bolt (caster primary)",
+        data: expandCamberToFull(rearMeasured),
+        borderColor: '#1a6ec7',
+        backgroundColor: '#1a6ec715',
+        borderWidth: 2,
+        borderDash: [],
+        pointBackgroundColor: '#1a6ec7',
+        pointBorderColor: '#1a6ec7',
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        spanGaps: true,
+        tension: 0.3,
+        fill: false,
+        order: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    layout: { padding: { top: 10, right: 16, bottom: 6, left: 6 } },
+    plugins: {
+      legend: {
+        labels: {
+          color: '#2a3050',
+          font: { family: 'Share Tech Mono', size: 11 },
+          boxWidth: 16,
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            if (ctx.parsed.y === null) return null;
+            const v = ctx.parsed.y;
+            const name = ctx.datasetIndex === 0 ? 'Front bolt' : 'Rear bolt';
+            return ` ${name}: ${v > 0 ? '+' : ''}${v}mm  (${toDeg(v)})`;
+          },
+          title: ctx => `Position: ${allCamberLabels[ctx[0].dataIndex]}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true, text: 'Washer position',
+          color: '#6070a0', font: { family: 'Share Tech Mono', size: 11 }
+        },
+        ticks: { color: '#2a3050', font: { family: 'Share Tech Mono', size: 12, weight: '600' } },
+        grid: { color: '#e8ecf4' }
+      },
+      y: {
+        title: {
+          display: true, text: 'Camber offset  (mm · bottom − top)',
+          color: '#6070a0', font: { family: 'Share Tech Mono', size: 11 }
+        },
+        ticks: {
+          color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 },
+          callback: v => (v > 0 ? '+' : '') + v + ' mm', stepSize: 2,
+        },
+        grid: { color: '#e8ecf4' },
+        suggestedMin: -12, suggestedMax: 12,
+      }
+    }
+  },
+  plugins: [zonePlugin, zeroPlugin, targetPlugin, recommendPlugin]
+});
+
+// ═══════════════════ RECOMMENDED SETTING DIALS ═══════════════════
+{
+  document.getElementById('recommend-note').textContent =
+    'Front bolt: set 0 mark at 6 o\'clock (bottom), count 6 segment lines to the LEFT (CCW)  ·  ' +
+    'Rear bolt: set 0 mark at 6 o\'clock (bottom), count 6 segment lines to the RIGHT (CW)  ·  ' +
+    're-measure after setting to confirm −10 mm (−1.223°)';
+
+  function buildRecommendDial(container, pos, accentColor, bezelFill, washerFill, labelText) {
+    const VB = 130, cx = 65, cy = 65;
+    const bezelR = 56, washerR = 38, lobeR = 12, holeOffset = 15, holeR = 7;
+
+    const lobeAngDeg = camberWasherAngle(pos);
+    const lobeRad    = lobeAngDeg * Math.PI / 180;
+    const lx = cx + washerR * Math.cos(lobeRad);
+    const ly = cy + washerR * Math.sin(lobeRad);
+    const holeRad = lobeRad + Math.PI;
+    const hx = cx + holeOffset * Math.cos(holeRad);
+    const hy = cy + holeOffset * Math.sin(holeRad);
+
+    const hourTicks = [270, 0, 90, 180].map(deg => {
+      const r = deg * Math.PI / 180;
+      return {
+        x1: (cx + (bezelR-7)*Math.cos(r)).toFixed(1), y1: (cy + (bezelR-7)*Math.sin(r)).toFixed(1),
+        x2: (cx + bezelR*Math.cos(r)).toFixed(1),      y2: (cy + bezelR*Math.sin(r)).toFixed(1),
+      };
+    });
+
+    const zeroRefRad = Math.PI / 2;
+    const markLines = [];
+    for (let m = -6; m <= 6; m++) {
+      if (m === 0) continue;
+      const markBase = zeroRefRad - (m * 15) * Math.PI / 180;
+      const mLen = (Math.abs(m) === 6) ? 9 : 5;
+      const isActive = (pos > 0 && m > 0 && m <= pos) || (pos < 0 && m < 0 && m >= pos);
+      const isTarget = m === pos;
+      markLines.push({
+        x1: (cx + (washerR-mLen)*Math.cos(markBase)).toFixed(2),
+        y1: (cy + (washerR-mLen)*Math.sin(markBase)).toFixed(2),
+        x2: (cx + washerR*Math.cos(markBase)).toFixed(2),
+        y2: (cy + washerR*Math.sin(markBase)).toFixed(2),
+        active: isActive, target: isTarget,
+      });
+    }
+
+    const zml = Math.PI / 2;
+    const zmx1 = (cx+(washerR-10)*Math.cos(zml)).toFixed(1), zmy1 = (cy+(washerR-10)*Math.sin(zml)).toFixed(1);
+    const zmx2 = (cx+(washerR+1) *Math.cos(zml)).toFixed(1), zmy2 = (cy+(washerR+1) *Math.sin(zml)).toFixed(1);
+
+    const arcEndRad = zml - (pos * 15) * Math.PI / 180;
+    const arcR2     = washerR + 10;
+    const arcSx = (cx+arcR2*Math.cos(zml)).toFixed(1),        arcSy = (cy+arcR2*Math.sin(zml)).toFixed(1);
+    const arcEx = (cx+arcR2*Math.cos(arcEndRad)).toFixed(1),  arcEy = (cy+arcR2*Math.sin(arcEndRad)).toFixed(1);
+    const arcSweep  = pos <= 0 ? 1 : 0;
+    const arcLarge  = Math.abs(pos) > 6 ? 1 : 0;
+    const arrowAngle = arcEndRad + (pos >= 0 ? -0.25 : 0.25);
+    const arrowHx = (cx+(arcR2+5)*Math.cos(arrowAngle)).toFixed(1), arrowHy = (cy+(arcR2+5)*Math.sin(arrowAngle)).toFixed(1);
+    const arrowTx = (cx+(arcR2-5)*Math.cos(arrowAngle)).toFixed(1), arrowTy = (cy+(arcR2-5)*Math.sin(arrowAngle)).toFixed(1);
+    const dirLabel = pos < 0 ? Math.abs(pos)+' right (CW)' : pos > 0 ? pos+' left (CCW)' : 'centred';
+
+    container.innerHTML += `
+      <div class="dial-item">
+        <svg class="dial-svg" viewBox="0 0 ${VB} ${VB}" style="width:160px;height:160px">
+          <circle cx="${cx}" cy="${cy}" r="${bezelR}" fill="${bezelFill}" stroke="${accentColor}" stroke-width="2"/>
+          ${hourTicks.map(t => `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8090b0" stroke-width="2"/>`).join('')}
+          ${[{d:270,t:'12'},{d:0,t:'3'},{d:90,t:'6'},{d:180,t:'9'}].map(h => {
+            const rr = bezelR-16, rx = cx+rr*Math.cos(h.d*Math.PI/180), ry = cy+rr*Math.sin(h.d*Math.PI/180)+4;
+            return `<text x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="9" fill="#6070a0">${h.t}</text>`;
+          }).join('')}
+          <line x1="${cx}" y1="${(cy+bezelR-3).toFixed(1)}" x2="${cx}" y2="${(cy+bezelR+9).toFixed(1)}" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>
+          <text x="${cx}" y="${(cy+bezelR+18).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#c0392b">ref</text>
+          <circle cx="${cx}" cy="${cy}" r="${washerR}" fill="${washerFill}" stroke="${accentColor}" stroke-width="2"/>
+          ${markLines.map(m => `<line x1="${m.x1}" y1="${m.y1}" x2="${m.x2}" y2="${m.y2}"
+            stroke="${m.target ? accentColor : m.active ? accentColor+'99' : '#6070a0'}"
+            stroke-width="${m.target ? 3 : m.active ? 2 : 1}"
+            opacity="${m.target ? 1 : m.active ? 0.8 : 0.35}"/>`).join('')}
+          <line x1="${zmx1}" y1="${zmy1}" x2="${zmx2}" y2="${zmy2}" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M ${arcSx} ${arcSy} A ${arcR2} ${arcR2} 0 ${arcLarge} ${arcSweep} ${arcEx} ${arcEy}"
+                fill="none" stroke="${accentColor}" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/>
+          <line x1="${arcEx}" y1="${arcEy}" x2="${arrowHx}" y2="${arrowHy}" stroke="${accentColor}" stroke-width="2"/>
+          <line x1="${arcEx}" y1="${arcEy}" x2="${arrowTx}" y2="${arrowTy}" stroke="${accentColor}" stroke-width="2"/>
+          <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${lobeR}" fill="${accentColor}55" stroke="${accentColor}" stroke-width="2.5"/>
+          <line x1="${cx}" y1="${cy}"
+                x2="${(cx+(washerR-lobeR-1)*Math.cos(lobeRad)).toFixed(1)}"
+                y2="${(cy+(washerR-lobeR-1)*Math.sin(lobeRad)).toFixed(1)}"
+                stroke="${accentColor}" stroke-width="1.8" opacity="0.7"/>
+          <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="${holeR}" fill="#f0f2f7" stroke="#6070a0" stroke-width="1.5"/>
+          <line x1="${(hx-3.5).toFixed(1)}" y1="${hy.toFixed(1)}" x2="${(hx+3.5).toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#8090b0" stroke-width="1"/>
+          <line x1="${hx.toFixed(1)}" y1="${(hy-3.5).toFixed(1)}" x2="${hx.toFixed(1)}" y2="${(hy+3.5).toFixed(1)}" stroke="#8090b0" stroke-width="1"/>
+          <circle cx="${cx}" cy="${cy}" r="3.5" fill="#6070a0"/>
+          <text x="${cx}" y="${(cy+5).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="10" font-weight="700" fill="${accentColor}">${pos>=0?'+':''}${pos}</text>
+        </svg>
+        <div class="dial-label" style="color:${accentColor}">${labelText}</div>
+        <div class="dial-val" style="color:${accentColor}">${dirLabel} &nbsp;·&nbsp; −10 mm &nbsp;·&nbsp; −1.223°</div>
+      </div>`;
+  }
+
+  const rc = document.getElementById('recommendDials');
+  buildRecommendDial(rc, +6, '#1a6ec7', '#edf3ff', '#d8e8ff', 'FRONT BOLT: WASHER +6');
+  buildRecommendDial(rc, -6, '#1a6ec7', '#edf3ff', '#d8e8ff', 'REAR BOLT: WASHER −6');
+}
+
+// ═══════════════════ HEATMAP ═══════════════════
+function camberColor(v) {
+  const t = (v - MIN_VAL) / (MAX_VAL - MIN_VAL);
+  if (t < 0.5) {
+    const s = t / 0.5;
+    return `rgb(${Math.round(220-160*s)},${Math.round(235-100*s)},${Math.round(255-30*s)})`;
+  } else {
+    const s = (t - 0.5) / 0.5;
+    return `rgb(255,${Math.round(235-160*s)},${Math.round(225-190*s)})`;
+  }
+}
+
+const hm = document.getElementById('heatmap');
+hm.innerHTML = `<div></div>`;
+rearPos.forEach(c => hm.innerHTML += `<div class="hm-col-header">REAR<br>${c}</div>`);
+
+matrix.forEach((row, fi) => {
+  hm.innerHTML += `
+    <div class="hm-row-label">
+      FRONT<br>${frontPos[fi]}
+      <span></span>
+    </div>`;
+  row.forEach(v => {
+    const bg = camberColor(v);
+    const tc = '#1a1e2e';
+    const cls = isBest(v) ? 'is-best' : '';
+    hm.innerHTML += `
+      <div class="cell ${cls}" style="background:${bg};color:${tc}">
+        ${v > 0 ? '+' : ''}${v}
+        <span class="deg">${toDeg(v)}</span>
+      </div>`;
+  });
+});
+
+// ═══════════════════ WASHER DIAL SVGs ═══════════════════
+function camberWasherAngle(pos) {
+  return 90 - pos * 15;
+}
+
+const cw = document.getElementById('clockWrap');
+const clockColors = ['#7ab3f5', '#f5a86a', '#7dd4a0'];
+const bestCamber  = matrix.map(row => Math.min(...row));
+const frontPosNums = [-6, 0, 6];
+
+frontPosNums.forEach((pos, i) => {
+  const VB = 110;
+  const cx = 55, cy = 55;
+  const bezelR = 48, washerR = 32, lobeR = 10, holeOffset = 13, holeR = 6;
+
+  const lobeAngDeg = camberWasherAngle(pos);
+  const lobeRad = lobeAngDeg * Math.PI / 180;
+  const lx = cx + washerR * Math.cos(lobeRad);
+  const ly = cy + washerR * Math.sin(lobeRad);
+
+  const holeRad = lobeRad + Math.PI;
+  const hx = cx + holeOffset * Math.cos(holeRad);
+  const hy = cy + holeOffset * Math.sin(holeRad);
+
+  const hourTicks = [270, 0, 90, 180].map(deg => {
+    const r = deg * Math.PI / 180;
+    return {
+      x1: (cx + (bezelR - 6) * Math.cos(r)).toFixed(1),
+      y1: (cy + (bezelR - 6) * Math.sin(r)).toFixed(1),
+      x2: (cx + bezelR * Math.cos(r)).toFixed(1),
+      y2: (cy + bezelR * Math.sin(r)).toFixed(1),
+    };
+  });
+
+  const zeroRefRad = Math.PI / 2;
+  const markLines = [];
+  for (let m = -6; m <= 6; m++) {
+    if (m === 0) continue;
+    const markBase = zeroRefRad - (m * 15) * Math.PI / 180;
+    const mLen = (m === -6 || m === 6) ? 7 : 4;
+    const isActive = (pos > 0 && m > 0 && m <= pos) || (pos < 0 && m < 0 && m >= pos);
+    markLines.push({
+      x1: (cx + (washerR - mLen) * Math.cos(markBase)).toFixed(2),
+      y1: (cy + (washerR - mLen) * Math.sin(markBase)).toFixed(2),
+      x2: (cx + washerR * Math.cos(markBase)).toFixed(2),
+      y2: (cy + washerR * Math.sin(markBase)).toFixed(2),
+      active: isActive,
+    });
+  }
+
+  const zml = Math.PI / 2;
+  const zm1x = (cx + (washerR - 8) * Math.cos(zml)).toFixed(1);
+  const zm1y = (cy + (washerR - 8) * Math.sin(zml)).toFixed(1);
+  const zm2x = (cx + (washerR + 1) * Math.cos(zml)).toFixed(1);
+  const zm2y = (cy + (washerR + 1) * Math.sin(zml)).toFixed(1);
+
+  cw.innerHTML += `
+    <div class="dial-item">
+      <svg class="dial-svg" viewBox="0 0 ${VB} ${VB}">
+        <circle cx="${cx}" cy="${cy}" r="${bezelR}" fill="#e8ecf4" stroke="#b0bcd8" stroke-width="1.5"/>
+        ${hourTicks.map(t => `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8090b0" stroke-width="2"/>`).join('')}
+        ${[{d:270,t:'12'},{d:0,t:'3'},{d:90,t:'6'},{d:180,t:'9'}].map(h => {
+          const rr = bezelR - 14;
+          const rx = cx + rr * Math.cos(h.d * Math.PI/180);
+          const ry = cy + rr * Math.sin(h.d * Math.PI/180) + 3.5;
+          return `<text x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" text-anchor="middle"
+                    font-family="Share Tech Mono" font-size="8" fill="#6070a0">${h.t}</text>`;
+        }).join('')}
+        <line x1="${cx}" y1="${(cy + bezelR - 3).toFixed(1)}" x2="${cx}" y2="${(cy + bezelR + 7).toFixed(1)}"
+              stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>
+        <text x="${cx}" y="${(cy + bezelR + 16).toFixed(1)}" text-anchor="middle"
+              font-family="Share Tech Mono" font-size="6" fill="#c0392b">ref</text>
+        <circle cx="${cx}" cy="${cy}" r="${washerR}" fill="#d0d8f0" stroke="#8090c0" stroke-width="1.5"/>
+        ${markLines.map(m => `<line x1="${m.x1}" y1="${m.y1}" x2="${m.x2}" y2="${m.y2}"
+          stroke="${m.active ? clockColors[i] : '#6070a0'}" stroke-width="${m.active ? 2 : 1}" opacity="${m.active ? 0.9 : 0.4}"/>`).join('')}
+        <line x1="${zm1x}" y1="${zm1y}" x2="${zm2x}" y2="${zm2y}"
+              stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${lobeR}"
+                fill="${clockColors[i]}55" stroke="${clockColors[i]}" stroke-width="2"/>
+        <line x1="${cx}" y1="${cy}"
+              x2="${(cx + (washerR - lobeR - 1) * Math.cos(lobeRad)).toFixed(1)}"
+              y2="${(cy + (washerR - lobeR - 1) * Math.sin(lobeRad)).toFixed(1)}"
+              stroke="${clockColors[i]}" stroke-width="1.5" opacity="0.6"/>
+        <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="${holeR}"
+                fill="#f0f2f7" stroke="#6070a0" stroke-width="1.5"/>
+        <line x1="${(hx-3).toFixed(1)}" y1="${hy.toFixed(1)}" x2="${(hx+3).toFixed(1)}" y2="${hy.toFixed(1)}"
+              stroke="#8090b0" stroke-width="1"/>
+        <line x1="${hx.toFixed(1)}" y1="${(hy-3).toFixed(1)}" x2="${hx.toFixed(1)}" y2="${(hy+3).toFixed(1)}"
+              stroke="#8090b0" stroke-width="1"/>
+        <circle cx="${cx}" cy="${cy}" r="3" fill="#6070a0"/>
+      </svg>
+      <div class="dial-label">FRONT ${frontPos[i]}</div>
+      <div class="dial-val">best: ${bestCamber[i] > 0 ? '+' : ''}${bestCamber[i]} mm</div>
+    </div>`;
+});
+
+// ═══════════════════ DATA TABLE ═══════════════════
+const tbl = document.getElementById('dataTable');
+tbl.innerHTML = `
+  <thead>
+    <tr>
+      <th class="sec" rowspan="2">Front Bolt</th>
+      <th class="sec" rowspan="2">Rear Bolt</th>
+      <th colspan="2" class="sec">Raw (mm)</th>
+      <th class="sec" rowspan="2">Offset<br>B−T</th>
+      <th class="sec" rowspan="2">Degrees</th>
+      <th class="sec" rowspan="2">Δ Target</th>
+      <th class="sec" rowspan="2">Status</th>
+    </tr>
+    <tr><th>Bottom</th><th>Top</th></tr>
+  </thead>
+  <tbody>
+  ${matrix.map((row, fi) => row.map((v, ri) => {
+    const delta = v - TARGET;
+    const dStr  = (delta > 0 ? '+' : '') + delta.toFixed(1) + 'mm';
+    const dCol  = delta < -0.1 ? '#1e8449' : delta < 1 ? '#c07010' : '#c0392b';
+    let tag = '';
+    if (isBest(v))          tag = `<span class="tag tag-best">★ BEST</span>`;
+    else if (v < 0)          tag = `<span class="tag tag-neg">neg camber</span>`;
+    else if (v === 0)        tag = `<span class="tag tag-zero">neutral</span>`;
+    else                     tag = `<span class="tag tag-pos">pos camber</span>`;
+    const rowClass = isBest(v) ? 'best-row' : '';
+    return `<tr class="${rowClass}">
+      <td class="config-cell">${frontPos[fi]}</td>
+      <td class="washer-cell">${rearPos[ri]}</td>
+      <td class="meas-cell">${rawBottom[fi][ri]}</td>
+      <td class="meas-cell">${rawTop[fi][ri]}</td>
+      <td class="meas-cell">${v > 0 ? '+' : ''}${v}</td>
+      <td class="meas-cell">${toDeg(v)}</td>
+      <td class="meas-cell" style="color:${dCol}">${dStr}</td>
+      <td>${tag}</td>
+    </tr>`;
+  }).join('')).join('')}
+  </tbody>`;
+
+// ═══════════════════ SHARED CHART HELPERS ═══════════════════
+const sharedScales = (yTitle, xTitle = 'Washer position') => ({
+  x: {
+    ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } },
+    grid: { color: '#e8ecf4' },
+    title: { display: true, text: xTitle, color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } }
+  },
+  y: {
+    ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v>0?'+':'')+v+'mm' },
+    grid: { color: '#e8ecf4' },
+    title: { display: true, text: yTitle, color: '#8090b0', font: { family: 'Share Tech Mono', size: 9 } }
+  }
+});
+const sharedLegend = { labels: { color: '#2a3050', font: { family: 'Share Tech Mono', size: 10 }, boxWidth: 12 } };
+const tip = { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y>0?'+':''}${ctx.parsed.y}mm (${toDeg(ctx.parsed.y)})` } };
+
+const tlPlugin = {
+  id: 'tl',
+  beforeDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea) return;
+    const y = scales.y.getPixelForValue(TARGET);
+    ctx.save();
+    ctx.setLineDash([6,4]); ctx.strokeStyle='#27ae60'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(chartArea.left,y); ctx.lineTo(chartArea.right,y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#1e8449'; ctx.font='9px Share Tech Mono'; ctx.textAlign='left';
+    ctx.fillText('TARGET −9mm', chartArea.left+4, y-4);
+    ctx.restore();
+  }
+};
+
+// ═══════════════════ CHART 1: rear bolt on X ═══════════════════
+const expandRearToFull = arr => {
+  const full = new Array(13).fill(null);
+  [-6, 0, 6].forEach((p, idx) => { full[p + 6] = arr[idx]; });
+  return full;
+};
+const c1colors = ['#7ab3f5','#f5a86a','#7dd4a0'];
+new Chart(document.getElementById('chart1'), {
+  type: 'line',
+  data: {
+    labels: allCamberLabels,
+    datasets: matrix.map((row, i) => ({
+      label: `Front ${frontPos[i]}`,
+      data: expandRearToFull(row),
+      borderColor: c1colors[i],
+      backgroundColor: c1colors[i]+'15',
+      pointBackgroundColor: c1colors[i],
+      pointRadius: 0,
+      spanGaps: true,
+      borderWidth: 2, tension: 0.3, fill: false,
+    }))
+  },
+  options: { responsive:true, plugins:{ legend:sharedLegend, tooltip:tip }, scales:sharedScales('Camber (mm)', 'Rear bolt position') },
+  plugins: [tlPlugin]
+});
+
+// ═══════════════════ CHART 2: front bolt on X ═══════════════════
+const expandFrontToFull = arr => {
+  const full = new Array(13).fill(null);
+  [-6, 0, 6].forEach((p, idx) => { full[p + 6] = arr[idx]; });
+  return full;
+};
+const transposed = rearPos.map((_,ci) => [matrix[0][ci], matrix[1][ci], matrix[2][ci]]);
+const c2colors = ['#7dd4a0','#f5a86a','#c4a0e8'];
+new Chart(document.getElementById('chart2'), {
+  type: 'line',
+  data: {
+    labels: allCamberLabels,
+    datasets: transposed.map((col,i) => ({
+      label: `Rear ${rearPos[i]}`,
+      data: expandFrontToFull(col),
+      borderColor: c2colors[i],
+      backgroundColor: c2colors[i]+'15',
+      pointBackgroundColor: c2colors[i],
+      pointRadius: 0,
+      spanGaps: true,
+      borderWidth: 2, tension: 0.3, fill: false,
+    }))
+  },
+  options: { responsive:true, plugins:{ legend:sharedLegend, tooltip:tip }, scales:sharedScales('Camber (mm)', 'Front bolt position') },
+  plugins: [tlPlugin]
+});
+
+// ═══════════════════ CHART 3: average eccentric curve ═══════════════════
+const avgPerFront3 = [matrix[0], matrix[1], matrix[2]].map(
+  row => Math.round(row.reduce((a,b)=>a+b,0)/row.length * 10)/10
+);
+
+const rangePlugin = {
+  id: 'markedRange',
+  beforeDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea) return;
+    const x0 = scales.x.getPixelForValue(0);
+    const x2 = scales.x.getPixelForValue(12);
+    ctx.save();
+    ctx.fillStyle = '#e8f5ee77';
+    ctx.fillRect(x0, chartArea.top, x2-x0, chartArea.height);
+    ctx.font='9px Share Tech Mono'; ctx.fillStyle='#27ae6077'; ctx.textAlign='left';
+    ctx.fillText('MARKED RANGE', x0+4, chartArea.top+13);
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById('chart3'), {
+  type: 'line',
+  data: {
+    labels: allCamberLabels,
+    datasets: [{
+      label: 'Average camber (all rear positions)',
+      data: expandFrontToFull(avgPerFront3),
+      borderColor: '#a0d4f5',
+      backgroundColor: '#a0d4f518',
+      pointBackgroundColor: '#a0d4f5',
+      pointRadius: 0,
+      spanGaps: true,
+      borderWidth: 2.5, tension: 0.4, fill: true,
+    }]
+  },
+  options: { responsive:true, plugins:{ legend:sharedLegend, tooltip:tip }, scales:sharedScales('Average Camber (mm)', 'Front bolt position') },
+  plugins: [tlPlugin, rangePlugin]
+});
+</script>
+
+</body>
+</html>

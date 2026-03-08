@@ -7,7 +7,7 @@
         "measured": { "mm": -7, "deg": -0.85 },
         "shortfall": { "mm": -2, "deg": -0.25 },
         "matrix": [
-          [-1, 1, 0],
+          [6, 12.5, 8],
           [-1, 1, 0],
           [-7, -5, -5],
           [0, 0, 2]
@@ -40,6 +40,103 @@
         "rear": { "mm": 0.58, "arcmin": 4.25 },
         "wheelDiameter": 469,
         "symmetryTarget": { "leftRightDiff": 0.2, "mm": "mm" }
+      },
+      "systemInfo": {
+        "wheelbase": 2330,
+        "trackWidth": { "front": 1490, "rear": 1495 },
+        "wheelSpec": "17×7 ET55",
+        "boltPattern": "5×114.3",
+        "wheelDiameter": 469
+      }
+    },
+    "frontLeft": {
+      "wheel": "Front Left",
+      "camber": {
+        "target": { "mm": -9, "deg": -1.1 },
+        "measured": { "mm": -10, "deg": -1.223 },
+        "shortfall": { "mm": 1, "deg": 0.123 },
+        "matrix": [
+          [-7, 0, 9],
+          [-8, -3, 6],
+          [-10, -2, 2]
+        ],
+        "frontPositions": [-6, 0, 6],
+        "rearPositions": [-6, 0, 6],
+        "recommendedFront": 6,
+        "recommendedRear": -6,
+        "note": "Front left achieves better than target camber at Front +6 / Rear -6 position (-1.223°)"
+      },
+      "caster": {
+        "target": 5.0,
+        "unit": "degrees",
+        "wheelDiameter": 469,
+        "sweepAngle": 15,
+        "sweepMultiplier": 1.93,
+        "measurements": [
+          {
+            "steerAngle": 15,
+            "washer": -6,
+            "camberPos": [-6, 0, 6],
+            "top": [117, 115, 117],
+            "bottom": [100, 102, 105]
+          },
+          {
+            "steerAngle": 15,
+            "washer": 0,
+            "camberPos": [-6, 0, 6],
+            "top": [116, 112, 113],
+            "bottom": [101, 101, 106]
+          },
+          {
+            "steerAngle": 15,
+            "washer": 6,
+            "camberPos": [-6, 0, 6],
+            "top": [106, 105, 106],
+            "bottom": [94, 101, 104]
+          },
+          {
+            "steerAngle": 0,
+            "washer": -6,
+            "camberPos": [-6, 0, 6],
+            "top": [94, 91, 86],
+            "bottom": [87, 91, 95]
+          },
+          {
+            "steerAngle": 0,
+            "washer": 0,
+            "camberPos": [-6, 0, 6],
+            "top": [98, 95, 87],
+            "bottom": [90, 92, 93]
+          },
+          {
+            "steerAngle": 0,
+            "washer": 6,
+            "camberPos": [-6, 0, 6],
+            "top": [98, 91, 90],
+            "bottom": [88, 89, 92]
+          },
+          {
+            "steerAngle": -15,
+            "washer": -6,
+            "camberPos": [-6, 0, 6],
+            "top": [92, 81, 79],
+            "bottom": [105, 105, 111]
+          },
+          {
+            "steerAngle": -15,
+            "washer": 0,
+            "camberPos": [-6, 0, 6],
+            "top": [97, 93, 93],
+            "bottom": [108, 108, 108]
+          },
+          {
+            "steerAngle": -15,
+            "washer": 6,
+            "camberPos": [-6, 0, 6],
+            "top": [103, 101, 94],
+            "bottom": [107, 105, 109]
+          }
+        ]
       },
       "systemInfo": {
         "wheelbase": 2330,
