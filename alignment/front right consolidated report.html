@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <title>Front Alignment — Consolidated Report</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;600;800&display=swap');
+  
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #f0f2f7;
-    color: #1a1e2e;
-    font-family: 'Barlow Condensed', sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Share Tech Mono', monospace;
     min-height: 100vh;
     padding: 32px 24px;
   }
@@ -21,19 +23,19 @@
   .header { text-align: center; margin-bottom: 28px; }
   .header h1 {
     font-size: 2.5rem; font-weight: 800;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #1a1e2e;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #e6edf3;
   }
   .header p {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem; color: #7080a0; letter-spacing: 0.12em; margin-top: 6px;
+    font-size: 0.72rem; color: #8b949e; letter-spacing: 0.12em; margin-top: 6px;
   }
 
   /* ── SECTION LABELS ── */
   .section-label {
     max-width: 1100px; margin: 0 auto 10px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem; color: #a0b0c8; letter-spacing: 0.2em;
-    text-transform: uppercase; border-left: 3px solid #d0d6e8; padding-left: 10px;
+    font-size: 0.65rem; color: #484f58; letter-spacing: 0.2em;
+    text-transform: uppercase; border-left: 3px solid #30363d; padding-left: 10px;
   }
 
   /* ── INFO STRIP ── */
@@ -45,52 +47,52 @@
   @media (max-width: 600px) { .info-strip { grid-template-columns: 1fr 1fr; } }
 
   .info-tile {
-    background: #fff; border: 1px solid #d0d6e8; border-radius: 6px;
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
     padding: 14px 16px; font-family: 'Share Tech Mono', monospace;
-    box-shadow: 0 1px 4px #0001;
+    box-shadow: 0 1px 4px #0004;
   }
-  .info-tile .label { font-size: 0.62rem; color: #8090b0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
-  .info-tile .value { font-size: 1.2rem; font-weight: 700; color: #1a1e2e; }
-  .info-tile .sub   { font-size: 0.62rem; color: #8090b0; margin-top: 3px; line-height: 1.4; }
-  .info-tile.target-camber  { border-left: 4px solid #1e8449; }
-  .info-tile.target-camber .value { color: #1e5c34; }
-  .info-tile.target-caster  { border-left: 4px solid #2563c0; }
-  .info-tile.target-caster .value { color: #1a4a9e; }
-  .info-tile.best    { border-left: 4px solid #27ae60; }
-  .info-tile.best .value { color: #1e8449; }
-  .info-tile.range   { border-left: 4px solid #9c27b0; }
-  .info-tile.range .value { color: #6a14b8; }
-  .info-tile.warn    { border-left: 4px solid #e67e22; }
-  .info-tile.warn .value { color: #c0620a; }
-  .info-tile.recommend { border-left: 4px solid #c05010; }
-  .info-tile.recommend .value { color: #a03800; }
+  .info-tile .label { font-size: 0.62rem; color: #8b949e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+  .info-tile .value { font-size: 1.2rem; font-weight: 700; color: #e6edf3; }
+  .info-tile .sub   { font-size: 0.62rem; color: #8b949e; margin-top: 3px; line-height: 1.4; }
+  .info-tile.target-camber  { border-left: 4px solid #3fb950; }
+  .info-tile.target-camber .value { color: #2ea043; }
+  .info-tile.target-caster  { border-left: 4px solid #58a6ff; }
+  .info-tile.target-caster .value { color: #58a6ff; }
+  .info-tile.best    { border-left: 4px solid #3fb950; }
+  .info-tile.best .value { color: #3fb950; }
+  .info-tile.range   { border-left: 4px solid #bc8cff; }
+  .info-tile.range .value { color: #bc8cff; }
+  .info-tile.warn    { border-left: 4px solid #d29922; }
+  .info-tile.warn .value { color: #d29922; }
+  .info-tile.recommend { border-left: 4px solid #d29922; }
+  .info-tile.recommend .value { color: #d29922; }
 
   /* ── CONCLUSION BANNER ── */
   .conclusion {
     max-width: 1100px; margin: 0 auto 28px;
-    background: #fff8f0; border: 1px solid #e67e22;
-    border-left: 4px solid #e67e22; border-radius: 4px;
+    background: #1c1208; border: 1px solid #d29922;
+    border-left: 4px solid #d29922; border-radius: 4px;
     padding: 13px 18px;
     font-family: 'Share Tech Mono', monospace; font-size: 0.76rem;
-    color: #7a4010; line-height: 2;
+    color: #d29922; line-height: 2;
   }
-  .conclusion strong { color: #c0580a; }
+  .conclusion strong { color: #d29922; }
 
   /* ── FULL CARD ── */
   .full-card {
     max-width: 1100px; margin: 0 auto 24px;
-    background: #fff; border: 1px solid #d0d6e8;
+    background: #161b22; border: 1px solid #30363d;
     border-radius: 8px; padding: 24px;
-    box-shadow: 0 1px 4px #0001;
+    box-shadow: 0 1px 4px #0004;
   }
   .full-card h2 {
     font-size: 0.95rem; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: #4060a0; margin-bottom: 6px;
+    color: #58a6ff; margin-bottom: 6px;
   }
   .full-card .sub {
     font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8090b0; margin-bottom: 18px; line-height: 1.6;
+    color: #8b949e; margin-bottom: 18px; line-height: 1.6;
   }
 
   /* ── 2-COL GRID ── */
@@ -101,18 +103,18 @@
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
 
   .card {
-    background: #fff; border: 1px solid #d0d6e8;
+    background: #161b22; border: 1px solid #30363d;
     border-radius: 8px; padding: 22px;
-    box-shadow: 0 1px 4px #0001;
+    box-shadow: 0 1px 4px #0004;
   }
   .card h2 {
     font-size: 0.9rem; font-weight: 600;
     letter-spacing: 0.13em; text-transform: uppercase;
-    color: #4060a0; margin-bottom: 14px;
+    color: #58a6ff; margin-bottom: 14px;
   }
   .card .sub {
     font-family: 'Share Tech Mono', monospace; font-size: 0.64rem;
-    color: #8090b0; margin-bottom: 14px; line-height: 1.5;
+    color: #8b949e; margin-bottom: 14px; line-height: 1.5;
   }
 
   /* ── LEGEND ROW ── */
@@ -121,7 +123,7 @@
     font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
     flex-wrap: wrap; align-items: center;
   }
-  .leg-item { display: flex; align-items: center; gap: 7px; color: #2a3050; }
+  .leg-item { display: flex; align-items: center; gap: 7px; color: #c9d1d9; }
   .leg-swatch { width: 28px; height: 3px; border-radius: 2px; }
   .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
@@ -129,7 +131,7 @@
 
   .chart-note {
     font-family: 'Share Tech Mono', monospace; font-size: 0.63rem;
-    color: #8090b0; margin-top: 12px; line-height: 1.75; text-align: center;
+    color: #8b949e; margin-top: 12px; line-height: 1.75; text-align: center;
   }
 
   /* ── HEATMAP ── */
@@ -138,48 +140,48 @@
     gap: 5px; font-family: 'Share Tech Mono', monospace;
   }
   .hm-col-header {
-    text-align: center; color: #8090b0;
+    text-align: center; color: #8b949e;
     font-size: 0.66rem; letter-spacing: 0.08em; padding-bottom: 4px;
   }
   .hm-row-label {
     display: flex; flex-direction: column; justify-content: center;
-    color: #4060a0; font-weight: 700; font-size: 0.68rem; line-height: 1.5;
+    color: #58a6ff; font-weight: 700; font-size: 0.68rem; line-height: 1.5;
   }
-  .hm-row-label span { color: #8090b0; font-size: 0.58rem; font-weight: 400; }
+  .hm-row-label span { color: #8b949e; font-size: 0.58rem; font-weight: 400; }
   .cell {
     padding: 10px 4px; border-radius: 5px; text-align: center;
     font-weight: 700; font-size: 0.82rem; cursor: default;
     border: 1px solid transparent;
   }
-  .cell.is-best { border: 2px solid #1e8449 !important; box-shadow: 0 0 7px #27ae6055; }
-  .cell.is-rev  { border: 2px solid #e67e22 !important; }
+  .cell.is-best { border: 2px solid #3fb950 !important; box-shadow: 0 0 7px #3fb95044; }
+  .cell.is-rev  { border: 2px solid #d29922 !important; }
   .cell .deg { display: block; font-size: 0.56rem; font-weight: 400; opacity: 0.72; margin-top: 2px; }
   .hm-legend {
     margin-top: 10px; display: flex; align-items: center; gap: 8px;
-    font-size: 0.63rem; font-family: 'Share Tech Mono', monospace; color: #8090b0;
+    font-size: 0.63rem; font-family: 'Share Tech Mono', monospace; color: #8b949e;
   }
   .hm-legend-bar {
     flex: 1; height: 6px; border-radius: 3px;
-    background: linear-gradient(to right, #60b0ff, #c8d4f0, #ffb0a0, #ff6060);
+    background: linear-gradient(to right, #60b0ff, #2d333d, #ffb0a0, #ff6060);
   }
-  .hm-note { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #8090b0; margin-top: 8px; }
+  .hm-note { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #8b949e; margin-top: 8px; }
 
   /* ── DIALS ── */
   .dial-wrap { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
   .dial-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .dial-svg  { width: 140px; height: 140px; }
-  .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #4060a0; font-weight: 700; text-align: center; }
-  .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: #6070a0; text-align: center; }
+  .dial-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #58a6ff; font-weight: 700; text-align: center; }
+  .dial-val   { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: #6e7681; text-align: center; }
 
   /* ── TRADE-OFF ANNOTATION ── */
   .tradeoff-note {
     max-width: 1100px; margin: -12px auto 24px;
     font-family: 'Share Tech Mono', monospace; font-size: 0.66rem;
-    color: #8090b0; line-height: 1.8; padding: 0 4px;
+    color: #8b949e; line-height: 1.8; padding: 0 4px;
     display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
   }
   .tradeoff-note .tn {
-    background: #fff; border: 1px solid #d0d6e8; border-radius: 5px; padding: 10px 12px;
+    background: #161b22; border: 1px solid #30363d; border-radius: 5px; padding: 10px 12px;
   }
   .tradeoff-note .tn strong { display: block; margin-bottom: 3px; }
 </style>
@@ -246,18 +248,18 @@
 
   <div class="legend-row">
     <div class="leg-item">
-      <div class="leg-swatch" style="background:#1a6ec7"></div>
-      <div class="leg-dot" style="background:#1a6ec7"></div>
+      <div class="leg-swatch" style="background:#58a6ff"></div>
+      <div class="leg-dot" style="background:#58a6ff"></div>
       <span>Front bolt — camber sweep (best per position)</span>
     </div>
     <div class="leg-item">
-      <div class="leg-swatch" style="background:#1a6ec7"></div>
-      <div class="leg-dot" style="background:#1a6ec7"></div>
+      <div class="leg-swatch" style="background:#58a6ff"></div>
+      <div class="leg-dot" style="background:#58a6ff"></div>
       <span>Rear bolt — camber at front=+2 (interpolated)</span>
     </div>
     <div class="leg-item">
-      <div class="leg-swatch" style="background:#1e8449"></div>
-      <div class="leg-dot" style="background:#1e8449"></div>
+      <div class="leg-swatch" style="background:#3fb950"></div>
+      <div class="leg-dot" style="background:#3fb950"></div>
       <span>Rear bolt — caster ° (right axis, front=+2)</span>
     </div>
   </div>
@@ -267,15 +269,15 @@
   <p class="chart-note">
     Front bolt x-positions: −6, 0, +6, +12 · Rear bolt x-positions: −6, 0, +6 · Both share the same washer segment scale<br>
     Reconciliation point: front=+2 is the locked camber bolt condition during all caster measurements · interpolated from front=0→+6 matrix rows (linear, t=⅓)<br>
-    <span style="color:#e53935">▎ Red drop line (x=−6)</span> = camber-primary recommendation: rear=−6 maximises negative camber (−0.85°) but gives only 4.48° caster &nbsp;|&nbsp;
-    <span style="color:#e53935">▎ Red drop line (x=−4)</span> = caster-compromise recommendation: rear=−4 hits 5.0° caster target at ≈−2.5mm camber
+    <span style="color:#f85149">▎ Red drop line (x=−6)</span> = camber-primary recommendation: rear=−6 maximises negative camber (−0.85°) but gives only 4.48° caster &nbsp;|&nbsp;
+    <span style="color:#f85149">▎ Red drop line (x=−4)</span> = caster-compromise recommendation: rear=−4 hits 5.0° caster target at ≈−2.5mm camber
   </p>
 </div>
 
 <div class="tradeoff-note">
-  <div class="tn"><strong style="color:#1a6ec7">Front bolt (blue) — camber axis</strong>Peaks at −7mm at position +6, then reverses at +12. The eccentric apex is at +6 — this is the maximum negative camber achievable with factory bolts regardless of rear bolt position.</div>
-  <div class="tn"><strong style="color:#1a6ec7">Rear bolt camber (thin blue) — camber axis</strong>Interpolated from the full matrix at front=+2. Moving rear bolt from −6 to +6 costs ≈1.3mm of negative camber (−3mm → −1.7mm). The rear bolt is camber-secondary only.</div>
-  <div class="tn"><strong style="color:#1e8449">Rear bolt caster (green) — caster axis</strong>Directly measured with front=+2. Moving rear from −6 to +6 adds ≈3.3° of caster (4.48° → 7.78°). This is the rear bolt's dominant effect. Target 5.0° sits at rear≈−4.</div>
+  <div class="tn"><strong style="color:#58a6ff">Front bolt (blue) — camber axis</strong>Peaks at −7mm at position +6, then reverses at +12. The eccentric apex is at +6 — this is the maximum negative camber achievable with factory bolts regardless of rear bolt position.</div>
+  <div class="tn"><strong style="color:#58a6ff">Rear bolt camber (thin blue) — camber axis</strong>Interpolated from the full matrix at front=+2. Moving rear bolt from −6 to +6 costs ≈1.3mm of negative camber (−3mm → −1.7mm). The rear bolt is camber-secondary only.</div>
+  <div class="tn"><strong style="color:#3fb950">Rear bolt caster (green) — caster axis</strong>Directly measured with front=+2. Moving rear from −6 to +6 adds ≈3.3° of caster (4.48° → 7.78°). This is the rear bolt's dominant effect. Target 5.0° sits at rear≈−4.</div>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 04: POSITION MATRIX ═══════════════════════════════ -->
@@ -290,7 +292,7 @@
       <div class="hm-legend-bar"></div>
       <span>+12.5mm pos</span>
     </div>
-    <p class="hm-note">■ green border = best achieved (−7mm) &nbsp;|&nbsp; <span style="color:#c0620a">■ orange border = reversal zone (front +12)</span><br>Row front=+2 is interpolated between front=0 and front=+6 rows (not directly measured)</p>
+    <p class="hm-note">■ green border = best achieved (−7mm) &nbsp;|&nbsp; <span style="color:#d29922">■ orange border = reversal zone (front +12)</span><br>Row front=+2 is interpolated between front=0 and front=+6 rows (not directly measured)</p>
   </div>
 
   <div class="card">
@@ -306,7 +308,7 @@
   <h2>Recommended Bolt Positions — Compromise for Caster Priority</h2>
   <div class="sub">Front bolt: +6 (maximum achievable negative camber = −0.85°) · Rear bolt: −4 (caster ≈ 5.0°, interpolated) · Re-measure after setting to confirm</div>
   <div class="dial-wrap" id="recommendDials"></div>
-  <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8090b0; margin-top:18px; text-align:center">
+  <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8b949e; margin-top:18px; text-align:center">
     Front bolt: set 0 mark at 6 o'clock (bottom), count 6 segment lines to the LEFT (CCW) &nbsp;·&nbsp;
     Rear bolt: set 0 mark at 6 o'clock (bottom), count 4 segment lines to the RIGHT (CW) &nbsp;·&nbsp;
     Re-measure after setting · fine-tune rear bolt one segment at a time to verify ≈5.0° caster
@@ -408,11 +410,11 @@ const zeroPlugin = {
     const y = scales.y.getPixelForValue(0);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.strokeStyle = '#9090a8'; ctx.lineWidth = 1.2;
+    ctx.strokeStyle = '#484f58'; ctx.lineWidth = 1.2;
     ctx.setLineDash([3, 3]);
     ctx.beginPath(); ctx.moveTo(chartArea.left, y); ctx.lineTo(chartArea.right, y); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#9090a8'; ctx.font = '9px Share Tech Mono';
+    ctx.fillStyle = '#484f58'; ctx.font = '9px Share Tech Mono';
     ctx.textAlign = 'left'; ctx.fillText('ZERO', chartArea.left + 6, y - 4);
     ctx.restore();
   }
@@ -426,16 +428,16 @@ const camberTargetPlugin = {
     const y = scales.y.getPixelForValue(TARGET_CAMBER);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.setLineDash([8, 5]); ctx.strokeStyle = '#1e8449'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([8, 5]); ctx.strokeStyle = '#3fb950'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(chartArea.left, y); ctx.lineTo(chartArea.right, y); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#1e8449'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#3fb950'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'left';
     ctx.fillText('TARGET CAMBER −9mm (−1.1°)', chartArea.left + 6, y - 5);
     ctx.restore();
   }
 };
 
-const sharedLegend = { labels: { color: '#2a3050', font: { family: 'Share Tech Mono', size: 10 }, boxWidth: 14 } };
+const sharedLegend = { labels: { color: '#c9d1d9', font: { family: 'Share Tech Mono', size: 10 }, boxWidth: 14 } };
 
 // ═══════════════════════════════════════
 // SECTION 03: TRADE-OFF CHART
@@ -456,9 +458,9 @@ const zoneTradeoffPlugin = {
     if (!scales.y || !chartArea) return;
     const y0 = scales.y.getPixelForValue(0);
     ctx.save();
-    ctx.fillStyle = '#e8f5ee33';
+    ctx.fillStyle = '#3fb95022';
     ctx.fillRect(chartArea.left, Math.max(y0, chartArea.top), chartArea.width, chartArea.bottom - Math.max(y0, chartArea.top));
-    ctx.fillStyle = '#fdecea22';
+    ctx.fillStyle = '#f8514918';
     ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, Math.max(y0 - chartArea.top, 0));
     ctx.restore();
   }
@@ -472,10 +474,10 @@ const casterTargetLinePlugin = {
     const y = scales.y2.getPixelForValue(TARGET_CASTER);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#1e8449'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#3fb950'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(chartArea.left, y); ctx.lineTo(chartArea.right, y); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#1e8449'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#3fb950'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'right';
     ctx.fillText('TARGET CASTER 5.0°', chartArea.right - 6, y - 5);
     ctx.restore();
   }
@@ -527,7 +529,7 @@ function drawSeriesMarker(ctx, ix, iy, color, r) {
   ctx.arc(ix, iy, r, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
-  ctx.strokeStyle = '#fff';
+  ctx.strokeStyle = '#161b22';
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.restore();
@@ -540,20 +542,20 @@ const compromisePlugin = {
     if (!scales.x || !scales.y || !chartArea) return;
 
     // Camber-primary recommendation: rear bolt = -6 (index 0 on 13-label axis), front bolt = +6
-    drawDropLine(ctx, chartArea, scales, 0, '#e53935',
+    drawDropLine(ctx, chartArea, scales, 0, '#f85149',
       'CAMBER PRIMARY', 'REAR −6 · −0.85°', -6);
 
     // Caster-compromise recommendation: rear bolt = -4 (index 2 on 13-label axis)
-    drawDropLine(ctx, chartArea, scales, 2, '#e53935',
+    drawDropLine(ctx, chartArea, scales, 2, '#f85149',
       'CASTER TARGET', 'REAR −4 · ≈5.0°', 6);
 
     // Draw markers per dataset, each only at its own drop line:
     // camber series (blue) → camber drop line at index 0 only
     // caster series (green) → caster drop line at index 2 only
     const dsMarkers = [
-      { color: '#1a6ec7', r: 6, indices: [0] },  // front bolt camber
-      { color: '#1a6ec7', r: 5, indices: [0] },  // rear bolt camber
-      { color: '#1e8449', r: 6, indices: [2] },  // caster °
+      { color: '#58a6ff', r: 6, indices: [0] },  // front bolt camber
+      { color: '#58a6ff', r: 5, indices: [0] },  // rear bolt camber
+      { color: '#3fb950', r: 6, indices: [2] },  // caster °
     ];
     chart.data.datasets.forEach((dataset, di) => {
       if (di >= dsMarkers.length) return;
@@ -582,11 +584,11 @@ new Chart(document.getElementById('tradeoffChart'), {
       {
         label: 'Front bolt — camber (best per pos)',
         data: expandTo13(frontNums, frontBest),
-        borderColor: '#1a6ec7',
-        backgroundColor: '#1a6ec715',
+        borderColor: '#58a6ff',
+        backgroundColor: '#58a6ff15',
         borderWidth: 3,
-        pointBackgroundColor: '#1a6ec7',
-        pointBorderColor: '#fff',
+        pointBackgroundColor: '#58a6ff',
+        pointBorderColor: '#161b22',
         pointBorderWidth: 1.5,
         pointRadius: 0,
         pointHoverRadius: 0,
@@ -596,12 +598,12 @@ new Chart(document.getElementById('tradeoffChart'), {
       {
         label: 'Rear bolt — camber at front=+2 (interp.)',
         data: expandTo13(rearNums, camberAtFront2),
-        borderColor: '#1a6ec7',
-        backgroundColor: '#1a6ec715',
+        borderColor: '#58a6ff',
+        backgroundColor: '#58a6ff15',
         borderWidth: 1.5,
         borderDash: [],
-        pointBackgroundColor: '#1a6ec7',
-        pointBorderColor: '#fff',
+        pointBackgroundColor: '#58a6ff',
+        pointBorderColor: '#161b22',
         pointBorderWidth: 1.5,
         pointRadius: 0,
         pointHoverRadius: 0,
@@ -611,11 +613,11 @@ new Chart(document.getElementById('tradeoffChart'), {
       {
         label: 'Rear bolt — caster ° (right axis, front=+2)',
         data: expandTo13(rearNums, casterDeg),
-        borderColor: '#1e8449',
-        backgroundColor: '#1e844915',
+        borderColor: '#3fb950',
+        backgroundColor: '#3fb95015',
         borderWidth: 3,
-        pointBackgroundColor: '#1e8449',
-        pointBorderColor: '#fff',
+        pointBackgroundColor: '#3fb950',
+        pointBorderColor: '#161b22',
         pointBorderWidth: 1.5,
         pointRadius: 0,
         pointHoverRadius: 0,
@@ -627,7 +629,7 @@ new Chart(document.getElementById('tradeoffChart'), {
     responsive: true,
     layout: { padding: { top: 48, right: 20, bottom: 6, left: 6 } },
     plugins: {
-      legend: { labels: { color: '#2a3050', font: { family: 'Share Tech Mono', size: 11 }, boxWidth: 16 } },
+      legend: { labels: { color: '#c9d1d9', font: { family: 'Share Tech Mono', size: 11 }, boxWidth: 16 } },
       tooltip: {
         callbacks: {
           label: ctx => {
@@ -644,21 +646,21 @@ new Chart(document.getElementById('tradeoffChart'), {
     },
     scales: {
       x: {
-        title: { display: true, text: 'Washer position (segments)', color: '#6070a0', font: { family: 'Share Tech Mono', size: 11 } },
-        ticks: { color: '#2a3050', font: { family: 'Share Tech Mono', size: 12, weight: '600' } },
-        grid: { color: '#e8ecf4' }
+        title: { display: true, text: 'Washer position (segments)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 11 } },
+        ticks: { color: '#c9d1d9', font: { family: 'Share Tech Mono', size: 12, weight: '600' } },
+        grid: { color: '#21262d' }
       },
       y: {
         position: 'left',
-        title: { display: true, text: 'Camber (mm, negative = top-in)', color: '#1a6ec7', font: { family: 'Share Tech Mono', size: 11 } },
-        ticks: { color: '#1a6ec7', font: { family: 'Share Tech Mono', size: 10 }, callback: v => (v > 0 ? '+' : '') + v + ' mm', stepSize: 2 },
-        grid: { color: '#e8ecf4' },
+        title: { display: true, text: 'Camber (mm, negative = top-in)', color: '#58a6ff', font: { family: 'Share Tech Mono', size: 11 } },
+        ticks: { color: '#58a6ff', font: { family: 'Share Tech Mono', size: 10 }, callback: v => (v > 0 ? '+' : '') + v + ' mm', stepSize: 2 },
+        grid: { color: '#21262d' },
         suggestedMin: -12, suggestedMax: 15,
       },
       y2: {
         position: 'right',
-        title: { display: true, text: 'Caster (°)', color: '#1e8449', font: { family: 'Share Tech Mono', size: 11 } },
-        ticks: { color: '#1e8449', font: { family: 'Share Tech Mono', size: 10 }, callback: v => v.toFixed(1) + '°' },
+        title: { display: true, text: 'Caster (°)', color: '#3fb950', font: { family: 'Share Tech Mono', size: 11 } },
+        ticks: { color: '#3fb950', font: { family: 'Share Tech Mono', size: 10 }, callback: v => v.toFixed(1) + '°' },
         grid: { drawOnChartArea: false },
         suggestedMin: 0, suggestedMax: 10,
       }
@@ -699,7 +701,7 @@ matrix.forEach((row, fi) => {
     const isBest = v === -7;
     const cls = isBest ? 'is-best' : isReversal ? 'is-rev' : '';
     hm.innerHTML += `
-      <div class="cell ${cls}" style="background:${camberColor(v)};color:#1a1e2e">
+      <div class="cell ${cls}" style="background:${camberColor(v)};color:#e6edf3">
         ${v > 0 ? '+' : ''}${v}
         <span class="deg">${toDeg(v)}</span>
       </div>`;
@@ -712,7 +714,7 @@ matrix.forEach((row, fi) => {
 // SECTION 04b: REAR BOLT SWEEP CHART
 // ═══════════════════════════════════════
 
-const sweepColors = ['#7ab3f5', '#f5a86a', '#7dd4a0', '#f5b8c0'];
+const sweepColors = ['#58a6ff', '#d29922', '#3fb950', '#f5b8c0'];
 
 const sweepTargetPlugin = {
   id: 'sweepTarget',
@@ -722,10 +724,10 @@ const sweepTargetPlugin = {
     const y = scales.y.getPixelForValue(TARGET_CAMBER);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#3fb950'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(chartArea.left, y); ctx.lineTo(chartArea.right, y); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#1e8449'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#3fb950'; ctx.font = '9px Share Tech Mono'; ctx.textAlign = 'left';
     ctx.fillText('TARGET −9mm', chartArea.left + 4, y - 4);
     ctx.restore();
   }
@@ -761,14 +763,14 @@ new Chart(document.getElementById('sweepChart'), {
     },
     scales: {
       x: {
-        ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Rear bolt position (washer segments)', color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } }
+        ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Rear bolt position (washer segments)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
       },
       y: {
-        ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v>0?'+':'')+v+'mm' },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Camber (mm)', color: '#8090b0', font: { family: 'Share Tech Mono', size: 9 } }
+        ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v>0?'+':'')+v+'mm' },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Camber (mm)', color: '#8b949e', font: { family: 'Share Tech Mono', size: 9 } }
       }
     }
   },
@@ -839,19 +841,19 @@ function buildDial(container, pos, accentColor, bezelFill, washerFill, labelText
     <div class="dial-item">
       <svg class="dial-svg" viewBox="0 0 ${VB} ${VB}" style="width:160px;height:160px">
         <circle cx="${cx}" cy="${cy}" r="${bezelR}" fill="${bezelFill}" stroke="${accentColor}" stroke-width="2"/>
-        ${hourTicks.map(t => `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8090b0" stroke-width="2"/>`).join('')}
+        ${hourTicks.map(t => `<line x1="${t.x1}" y1="${t.y1}" x2="${t.x2}" y2="${t.y2}" stroke="#8b949e" stroke-width="2"/>`).join('')}
         ${[{d:270,t:'12'},{d:0,t:'3'},{d:90,t:'6'},{d:180,t:'9'}].map(h => {
           const rr = bezelR-16, rx = cx+rr*Math.cos(h.d*Math.PI/180), ry = cy+rr*Math.sin(h.d*Math.PI/180)+4;
-          return `<text x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="9" fill="#6070a0">${h.t}</text>`;
+          return `<text x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="9" fill="#6e7681">${h.t}</text>`;
         }).join('')}
-        <line x1="${cx}" y1="${(cy+bezelR-3).toFixed(1)}" x2="${cx}" y2="${(cy+bezelR+9).toFixed(1)}" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>
-        <text x="${cx}" y="${(cy+bezelR+18).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#c0392b">ref</text>
+        <line x1="${cx}" y1="${(cy+bezelR-3).toFixed(1)}" x2="${cx}" y2="${(cy+bezelR+9).toFixed(1)}" stroke="#f85149" stroke-width="3" stroke-linecap="round"/>
+        <text x="${cx}" y="${(cy+bezelR+18).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#f85149">ref</text>
         <circle cx="${cx}" cy="${cy}" r="${washerR}" fill="${washerFill}" stroke="${accentColor}" stroke-width="2"/>
         ${markLines.map(m => `<line x1="${m.x1}" y1="${m.y1}" x2="${m.x2}" y2="${m.y2}"
-          stroke="${m.target ? accentColor : m.active ? accentColor+'99' : '#6070a0'}"
+          stroke="${m.target ? accentColor : m.active ? accentColor+'99' : '#6e7681'}"
           stroke-width="${m.target ? 3 : m.active ? 2 : 1}"
           opacity="${m.target ? 1 : m.active ? 0.8 : 0.35}"/>`).join('')}
-        <line x1="${zmx1}" y1="${zmy1}" x2="${zmx2}" y2="${zmy2}" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="${zmx1}" y1="${zmy1}" x2="${zmx2}" y2="${zmy2}" stroke="#f85149" stroke-width="2.5" stroke-linecap="round"/>
         ${pos !== 0 ? `
         <path d="M ${arcSx} ${arcSy} A ${arcR2} ${arcR2} 0 ${arcLarge} ${arcSweep} ${arcEx} ${arcEy}"
               fill="none" stroke="${accentColor}" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/>
@@ -859,10 +861,10 @@ function buildDial(container, pos, accentColor, bezelFill, washerFill, labelText
         <line x1="${arcEx}" y1="${arcEy}" x2="${arrowTx}" y2="${arrowTy}" stroke="${accentColor}" stroke-width="2"/>` : ''}
         <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${lobeR}" fill="${accentColor}55" stroke="${accentColor}" stroke-width="2.5"/>
         <line x1="${cx}" y1="${cy}" x2="${(cx+(washerR-lobeR-1)*Math.cos(lobeRad)).toFixed(1)}" y2="${(cy+(washerR-lobeR-1)*Math.sin(lobeRad)).toFixed(1)}" stroke="${accentColor}" stroke-width="1.8" opacity="0.7"/>
-        <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="${holeR}" fill="#f0f2f7" stroke="#6070a0" stroke-width="1.5"/>
-        <line x1="${(hx-3.5).toFixed(1)}" y1="${hy.toFixed(1)}" x2="${(hx+3.5).toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#8090b0" stroke-width="1"/>
-        <line x1="${hx.toFixed(1)}" y1="${(hy-3.5).toFixed(1)}" x2="${hx.toFixed(1)}" y2="${(hy+3.5).toFixed(1)}" stroke="#8090b0" stroke-width="1"/>
-        <circle cx="${cx}" cy="${cy}" r="3.5" fill="#6070a0"/>
+        <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="${holeR}" fill="#0d1117" stroke="#6e7681" stroke-width="1.5"/>
+        <line x1="${(hx-3.5).toFixed(1)}" y1="${hy.toFixed(1)}" x2="${(hx+3.5).toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#8b949e" stroke-width="1"/>
+        <line x1="${hx.toFixed(1)}" y1="${(hy-3.5).toFixed(1)}" x2="${hx.toFixed(1)}" y2="${(hy+3.5).toFixed(1)}" stroke="#8b949e" stroke-width="1"/>
+        <circle cx="${cx}" cy="${cy}" r="3.5" fill="#6e7681"/>
         <text x="${cx}" y="${(cy+5).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="10" font-weight="700" fill="${accentColor}">${pos>=0?'+':''}${pos}</text>
       </svg>
       <div class="dial-label" style="color:${accentColor}">${labelText}</div>
@@ -871,10 +873,10 @@ function buildDial(container, pos, accentColor, bezelFill, washerFill, labelText
 }
 
 const rc = document.getElementById('recommendDials');
-buildDial(rc, +6, '#1a6ec7', '#edf3ff', '#d8e8ff',
+buildDial(rc, +6, '#58a6ff', '#0d1520', '#162440',
   'FRONT BOLT (CAMBER PRIMARY): +6',
   '−7mm max camber · −0.85°');
-buildDial(rc, -4, '#1e8449', '#edf7f1', '#d0ead8',
+buildDial(rc, -4, '#3fb950', '#0d2818', '#1d3328',
   'REAR BOLT (CASTER PRIMARY): −4',
   '≈5.0° caster · compromise position');
 
@@ -893,10 +895,10 @@ const casterTargetOnDeltaPlugin = {
     const y = scales.y.getPixelForValue(casterTargetDeltaMM);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#1e8449'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = '#3fb950'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(chartArea.left, y); ctx.lineTo(chartArea.right, y); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#1e8449'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#3fb950'; ctx.font = 'bold 9px Share Tech Mono'; ctx.textAlign = 'left';
     ctx.fillText('TARGET 5.0°', chartArea.left + 4, y - 5);
     ctx.restore();
   },
@@ -911,7 +913,7 @@ const casterTargetOnDeltaPlugin = {
     const ix = pxLo + t * (pxHi - pxLo);
     const iy = scales.y.getPixelForValue(casterTargetDeltaMM);
     const bottom = chartArea.bottom;
-    const DROP_COLOR = '#e53935';
+    const DROP_COLOR = '#f85149';
     // Red dotted vertical drop line from intersection down to x-axis
     ctx.save();
     ctx.setLineDash([5, 4]);
@@ -931,25 +933,25 @@ const casterTargetOnDeltaPlugin = {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
-    // Circle on dataset 0: Caster Δ (green #1e8449, y-axis) at crossing
+    // Circle on dataset 0: Caster Δ (green #3fb950, y-axis) at crossing
     ctx.save();
     ctx.beginPath();
     ctx.arc(ix, iy, 7, 0, Math.PI * 2);
-    ctx.fillStyle = '#1e8449';
+    ctx.fillStyle = '#3fb950';
     ctx.fill();
-    ctx.strokeStyle = '#fff';
+    ctx.strokeStyle = '#161b22';
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.restore();
-    // Circle on dataset 1: Caster ° (mint #7dd4a0, y2-axis) at crossing
+    // Circle on dataset 1: Caster ° (mint #3fb950, y2-axis) at crossing
     const py2 = scales.y2.getPixelForValue(TARGET_CASTER);
     if (py2 >= chartArea.top && py2 <= chartArea.bottom) {
       ctx.save();
       ctx.beginPath();
       ctx.arc(ix, py2, 5, 0, Math.PI * 2);
-      ctx.fillStyle = '#7dd4a0';
+      ctx.fillStyle = '#3fb950';
       ctx.fill();
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = '#161b22';
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.restore();
@@ -965,18 +967,18 @@ new Chart(document.getElementById('casterSweepChart'), {
       {
         label: 'Caster Δ (mm)',
         data: expandTo13(rearNums, casterDelta),
-        borderColor: '#1e8449', backgroundColor: '#1e844915',
+        borderColor: '#3fb950', backgroundColor: '#3fb95015',
         borderWidth: 3,
-        pointBackgroundColor: '#1e8449', pointRadius: 0,
+        pointBackgroundColor: '#3fb950', pointRadius: 0,
         spanGaps: true,
         tension: 0.3, fill: false, yAxisID: 'y', order: 1,
       },
       {
         label: 'Caster (°) — right axis',
         data: expandTo13(rearNums, casterDeg),
-        borderColor: '#7dd4a0', backgroundColor: '#7dd4a015',
+        borderColor: '#3fb950', backgroundColor: '#3fb95015',
         borderWidth: 1.5, borderDash: [5, 3],
-        pointBackgroundColor: '#7dd4a0', pointRadius: 0,
+        pointBackgroundColor: '#3fb950', pointRadius: 0,
         spanGaps: true,
         tension: 0.3, fill: false, yAxisID: 'y2', order: 2,
       }
@@ -998,21 +1000,21 @@ new Chart(document.getElementById('casterSweepChart'), {
     },
     scales: {
       x: {
-        ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } }
+        ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
       },
       y: {
         position: 'left',
-        ticks: { color: '#1e8449', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v > 0 ? '+' : '') + v + ' mm' },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Caster Δ (mm)', color: '#1e8449', font: { family: 'Share Tech Mono', size: 9 } }
+        ticks: { color: '#3fb950', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v > 0 ? '+' : '') + v + ' mm' },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Caster Δ (mm)', color: '#3fb950', font: { family: 'Share Tech Mono', size: 9 } }
       },
       y2: {
         position: 'right',
-        ticks: { color: '#7dd4a0', font: { family: 'Share Tech Mono', size: 9 }, callback: v => v.toFixed(1) + '°' },
+        ticks: { color: '#3fb950', font: { family: 'Share Tech Mono', size: 9 }, callback: v => v.toFixed(1) + '°' },
         grid: { drawOnChartArea: false },
-        title: { display: true, text: 'Caster (°)', color: '#7dd4a0', font: { family: 'Share Tech Mono', size: 9 } }
+        title: { display: true, text: 'Caster (°)', color: '#3fb950', font: { family: 'Share Tech Mono', size: 9 } }
       }
     }
   },
@@ -1031,27 +1033,27 @@ new Chart(document.getElementById('rawOffsetChart'), {
       {
         label: 'Offset @ +15° (Top−Bot)',
         data: expandTo13(rearNums, offset_pos15),
-        borderColor: '#7ab3f5', backgroundColor: '#7ab3f515',
+        borderColor: '#58a6ff', backgroundColor: '#58a6ff15',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#7ab3f5', pointRadius: 0,
+        pointBackgroundColor: '#58a6ff', pointRadius: 0,
         spanGaps: true,
         tension: 0.3, fill: false
       },
       {
         label: 'Offset @ −15° (Top−Bot)',
         data: expandTo13(rearNums, offset_neg15),
-        borderColor: '#c4a0e8', backgroundColor: '#c4a0e815',
+        borderColor: '#bc8cff', backgroundColor: '#bc8cff15',
         borderWidth: 1.5, borderDash: [],
-        pointBackgroundColor: '#c4a0e8', pointRadius: 0,
+        pointBackgroundColor: '#bc8cff', pointRadius: 0,
         spanGaps: true,
         tension: 0.3, fill: false
       },
       {
         label: 'Caster Δ (difference)',
         data: expandTo13(rearNums, casterDelta),
-        borderColor: '#1e8449', backgroundColor: '#1e844915',
+        borderColor: '#3fb950', backgroundColor: '#3fb95015',
         borderWidth: 3,
-        pointBackgroundColor: '#1e8449', pointRadius: 0,
+        pointBackgroundColor: '#3fb950', pointRadius: 0,
         spanGaps: true,
         tension: 0.3, fill: false
       }
@@ -1065,14 +1067,14 @@ new Chart(document.getElementById('rawOffsetChart'), {
     },
     scales: {
       x: {
-        ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6070a0', font: { family: 'Share Tech Mono', size: 10 } }
+        ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
       },
       y: {
-        ticks: { color: '#6070a0', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v > 0 ? '+' : '') + v + ' mm' },
-        grid: { color: '#e8ecf4' },
-        title: { display: true, text: 'Rim offset (mm)', color: '#8090b0', font: { family: 'Share Tech Mono', size: 9 } }
+        ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v > 0 ? '+' : '') + v + ' mm' },
+        grid: { color: '#21262d' },
+        title: { display: true, text: 'Rim offset (mm)', color: '#8b949e', font: { family: 'Share Tech Mono', size: 9 } }
       }
     }
   },
