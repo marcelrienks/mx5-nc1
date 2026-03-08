@@ -1,0 +1,58 @@
+{
+  "measurements": {
+    "frontRight": {
+      "wheel": "Front Right",
+      "camber": {
+        "target": { "mm": -9, "deg": -1.1 },
+        "measured": { "mm": -7, "deg": -0.85 },
+        "shortfall": { "mm": -2, "deg": -0.25 },
+        "matrix": [
+          [-1, 1, 0],
+          [-1, 1, 0],
+          [-7, -5, -5],
+          [0, 0, 2]
+        ],
+        "frontPositions": [-6, 0, 6, 12],
+        "rearPositions": [-6, 0, 6],
+        "recommendedFront": 6,
+        "recommendedRear": -6,
+        "note": "Factory eccentric bolt range exhausted. Aftermarket eccentric bolts needed for -1.1°"
+      },
+      "caster": {
+        "target": 5.0,
+        "unit": "degrees",
+        "range": { "min": 4.48, "max": 7.78 },
+        "washerPositions": [-6, 0, 6],
+        "measurements": [
+          { "washer": -6, "top_pos15": 78, "bot_pos15": 82, "top_neg15": 101, "bot_neg15": 86 },
+          { "washer": 0, "top_pos15": 75, "bot_pos15": 83, "top_neg15": 103, "bot_neg15": 85 },
+          { "washer": 6, "top_pos15": 72, "bot_pos15": 84, "top_neg15": 105, "bot_neg15": 84 }
+        ],
+        "wheelDiameter": 469,
+        "sweepAngle": 15,
+        "sweepMultiplier": 1.93,
+        "recommended": { "washer": -4, "degrees": 5.0 },
+        "note": "Rear bolt dominates caster; front bolt locked at +2"
+      },
+      "toe": {
+        "target": { "mm": 0.58, "arcmin": 4.25 },
+        "front": { "mm": 0.58, "arcmin": 4.25 },
+        "rear": { "mm": 0.58, "arcmin": 4.25 },
+        "wheelDiameter": 469,
+        "symmetryTarget": { "leftRightDiff": 0.2, "mm": "mm" }
+      },
+      "systemInfo": {
+        "wheelbase": 2330,
+        "trackWidth": { "front": 1490, "rear": 1495 },
+        "wheelSpec": "17×7 ET55",
+        "boltPattern": "5×114.3",
+        "wheelDiameter": 469
+      }
+    }
+  },
+  "constants": {
+    "mmPerDegree": 8.18,
+    "sinApproximation": "For angles < 2°, sin(θ) ≈ tan(θ) ≈ θ_rad",
+    "casterSweepFormula": "caster_deg = |Δ_camber| / (2 × sin(sweep_angle°)) = |Δ_camber| × 1.93 for 15° sweep"
+  }
+}

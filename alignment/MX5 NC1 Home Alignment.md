@@ -10,12 +10,12 @@ All values below are **targets** (not measured results). Toe values are noted **
 
 ### Front
 - Caster: 5.0°
-- Camber: -1.0°
-- Toe-in (per side): 1/32" (0.075° / 4.5′)
+- Camber: −1.0°
+- Toe-in (per side): 4.5′
 
 ### Rear
-- Camber: -1.5°
-- Toe-in (per side): 1/32" (0.075° / 4.5′)
+- Camber: −1.5°
+- Toe-in (per side): 4.5′
 
 ---
 
@@ -23,12 +23,12 @@ All values below are **targets** (not measured results). Toe values are noted **
 
 ### Front
 - Caster: 5.0°
-- Camber: -1.2°
-- Toe-in (per side): 4′ (≈ 0.067°)
+- Camber: −1.2°
+- Toe-in (per side): 4.0′
 
 ### Rear
-- Camber: -1.5°
-- Toe-in (per side): 4′ (≈ 0.067°)
+- Camber: −1.5°
+- Toe-in (per side): 4.0′
 
 ---
 
@@ -38,12 +38,12 @@ Average of the two presets above.
 
 ### Front
 - Caster: 5.0°
-- Camber: -1.1°
-- Toe-in (per side): 4.25′ (≈ 0.0708°)
+- Camber: −1.1°
+- Toe-in (per side): 4.25′
 
 ### Rear
-- Camber: -1.5°
-- Toe-in (per side): 4.25′ (≈ 0.0708°)
+- Camber: −1.5°
+- Toe-in (per side): 4.25′
 
 ---
 
@@ -57,29 +57,22 @@ This quickstart is intentionally **mm-first** and assumes:
 - Tools: ruler / vernier calipers / micrometer. A digital angle finder is **optional** for cross-checking only.
 
 Conventions used here:
-- **Toe-in target (per wheel, string outside wheels):** front rim-to-string distance should be **larger** than the rear rim-to-string distance by the mm amount listed.
-- If you ever run the string **inside** the wheels instead, the direction flips (the same toe-in magnitude will show with opposite sign depending on which subtraction you use).
-- **Camber target (per wheel, plumb line outside wheel):** top rim-to-plumb distance should be **larger** than the bottom rim-to-plumb distance by the mm amount listed.
-	- This yields a **positive mm difference** even though the camber angle is **negative** (wheel is “top-in”).
+- **Toe-in:** Distance from string to front rim minus distance to rear rim. Positive = toe-in (desired), negative = toe-out.
+- **Camber (\"top-in\"):** Negative camber angles are shown as positive mm differences (top rim closer to plumb than bottom). This is consistent with the convention: negative camber angle = positive mm offset.
 
 ### Front (targets)
 - Toe-in (per wheel): **+0.58 mm**
 	- Target readout (recommended): `(front rim→string) - (rear rim→string) = +0.58 mm`
-- Camber (per wheel): **~9.0 mm top-in**
-	- Target readout: `(top rim→plumb) - (bottom rim→plumb) = +9.0 mm`  
-	(positive mm = negative camber)
-	- Optional cross-check only: digital angle finder should read roughly **-1.1°**
-- Caster (front only): **~5.0° target**
-	- Target readout: `C(+15° steer) - C(-15° steer) => |difference| × 1.93 = caster ~5.0°`  
-	by performing a ±15° steering sweep (turn front wheels **+15°**, and **-15°**, measuring the camber at each steering angle, then subtracting the two camber values (use absolute value) and multiplying that by **1.93** to get caster in degrees.
+- Camber (per wheel): **9.0 mm top-in** (equivalent to −1.1°)
+	- Target readout: `(top rim→plumb) - (bottom rim→plumb) = +9.0 mm`
+- Caster (front only): **5.0° target**
+	- Measure: ±15° steering sweep; multiply camber delta by 1.93 (see DIY caster section for details)
 
 ### Rear (targets)
 - Toe-in (per wheel): **+0.58 mm**
 	- Target readout (recommended): `(front rim→string) - (rear rim→string) = +0.58 mm`
-- Camber (per wheel): **~12.3 mm top-in**
-	- Target readout: `(top rim→plumb) - (bottom rim→plumb) = +12.3 mm`  
-	(positive mm = negative camber)
-	- Optional cross-check only: digital angle finder should read roughly **-1.5°**
+- Camber (per wheel): **12.3 mm top-in** (equivalent to −1.5°)
+	- Target readout: `(top rim→plumb) - (bottom rim→plumb) = +12.3 mm`
 
 ### Quick symmetry checks (targets)
 - Left/right camber: match the **mm top-in** as closely as practical (aim for **≤ 1–2 mm** difference side-to-side)
@@ -99,8 +92,7 @@ These are useful reference dimensions for setting up a string box and sanity-che
 - Overall height: 1,255 mm (PRHT) / 1,240 mm (soft-top)
 
 ### Track (track/tread)
-- Track width is typically defined **centerline-to-centerline** (center of left tire/wheel to center of right tire/wheel across the axle). It is **not** measured from the outer edges of the rims.
-- People often say “hub center to hub center” as shorthand; that’s usually close enough for intuition, but published track specs are fundamentally about the wheel/tire centerlines and can vary slightly by convention and wheel/tire package.
+- **Track width definition:** centerline-to-centerline (wheel centers), not rim edges. Varies with wheel package.
 - Front track: 1,490 mm
 - Rear track: 1,495 mm
 
@@ -140,11 +132,10 @@ This section describes how I do a basic toe (and sanity-check camber) alignment 
 - Chalk / masking tape + marker (to label reference points)
 
 ### Important notes (repeatability)
-- Do this on the **flattest surface** you can.
-- Set tire pressures, then **roll the car forward/back** and bounce each corner to settle the suspension before measuring.
-- Center the steering wheel and lock it (seat belt trick works) so toe changes don’t “move the goal posts”.
-- Measure toe in **mm at the rim** if possible; it’s easier to hit consistently than converting to degrees.
-- Using the rim edge in the string method is just a convenient reference surface; the alignment angles still describe the wheel’s centerline direction.
+- Use the **flattest surface** available; settle suspension before each measurement (roll forward/back, bounce corners).
+- Zero steering wheel and lock it to avoid toe changes during measurement.
+- Measure toe in **mm** (easier to hit consistently than angle conversions).
+- **Safety:** Use wheel cribs under the car, not just jacks (risk of collapse under sustained load).
 
 ### 1) Build the string box
 1. Place the front PVC pipe ahead of the front bumper area and the rear PVC pipe behind the rear bumper area.
@@ -244,21 +235,17 @@ So a handy approximation is:
 $$\text{toe\_mm} \approx L \cdot \theta_{rad}$$
 
 #### Worked example: 4.25′ toe-in per wheel → mm
-1. Convert minutes to degrees:
-	- $4.25' = 4.25/60 = 0.070833\ldots^\circ$
-2. Convert degrees to radians:
-	- $\theta_{rad} = 0.070833\ldots \times \pi/180 \approx 0.0012366$
-3. Convert to mm at the rim using $L = 469$ mm:
-	- $\text{toe\_mm} = 469 \cdot \tan(0.0012366) \approx 469 \cdot 0.0012366 \approx 0.58$ mm
+1. Convert arcminutes to degrees: $4.25' = 4.25 / 60 = 0.071°$
+2. Convert to radians: $0.071° \times \pi/180 \approx 0.00124$ rad
+3. Calculate mm: $469 \text{ mm} \times \tan(0.00124) \approx 0.58$ mm
 
-That’s where the Quickstart target **+0.58 mm** comes from.
+That's where the Quickstart target **+0.58 mm** comes from.
 
 #### Convert mm back to toe angle (useful for sanity checks)
 
 $$\theta = \arctan(\text{toe\_mm}/L)$$
 
-Example: if you measure `toe_mm = +0.58` at `L = 469`:
-- $\theta = \arctan(0.58/469) \approx 0.0012366$ rad $\approx 0.0708^\circ \approx 4.25'$.
+Example: if you measure `toe_mm = +0.58` at `L = 469`: $\theta \approx 4.25'$
 
 #### “Per wheel” vs “total toe”
 This document’s targets are **per side / per wheel**. If you want total toe for an axle:
@@ -286,17 +273,13 @@ Where:
 - $\phi$ is camber angle in radians/degrees
 - $\Delta$ is the “top-in” magnitude in mm (i.e., `top - bottom`)
 
-#### Worked example: -1.1° camber → mm top-in
-- $\Delta = 469 \cdot \sin(1.1^\circ)$
-- $\sin(1.1^\circ) \approx 0.019197$
-- $\Delta \approx 469 \cdot 0.019197 \approx 9.0$ mm
+#### Worked example: −1.1° camber → mm top-in
+- $\Delta = 469 \times \sin(1.1°) \approx 469 \times 0.0192 \approx 9.0$ mm
 
 So the Quickstart uses **~9.0 mm top-in** for the front.
 
-#### Worked example: -1.5° camber → mm top-in
-- $\Delta = 469 \cdot \sin(1.5^\circ)$
-- $\sin(1.5^\circ) \approx 0.026177$
-- $\Delta \approx 469 \cdot 0.026177 \approx 12.3$ mm
+#### Worked example: −1.5° camber → mm top-in
+- $\Delta = 469 \times \sin(1.5°) \approx 469 \times 0.0262 \approx 12.3$ mm
 
 So the Quickstart uses **~12.3 mm top-in** for the rear.
 
@@ -304,8 +287,7 @@ So the Quickstart uses **~12.3 mm top-in** for the rear.
 
 $$|\phi| = \arcsin(\Delta/L)$$
 
-Example: if you measure `top - bottom = 9.0 mm` at `L = 469 mm`:
-- $|\phi| = \arcsin(9.0/469) \approx 1.1^\circ$.
+Example: if you measure `top - bottom = 9.0 mm` at `L = 469 mm`: $|\phi| \approx 1.1°$
 
 ### 3) Practical notes about measurement geometry
 
@@ -322,10 +304,8 @@ Example: if you measure `top - bottom = 9.0 mm` at `L = 469 mm`:
 This is the practical DIY way to *measure* front caster at home without an alignment rack.
 
 ### Quick reference target (front caster)
-- Target: **~5.0°**
-- Priority: **match left/right** more than chasing an exact number
-	- Suggested cross-caster goal: **≤ 0.3°**
-	- If you can’t adjust caster easily: at least measure it so you know what you’re working with.
+- **Target: 5.0°** (matching left/right within ≤0.3° is more important than hitting exact value)
+- See **Quickstart** section above for the measurement formula
 
 ### Quick measurement (TL;DR)
 Per side:
@@ -395,3 +375,21 @@ So you should expect roughly **2.6°** camber difference between the +15° and -
 	1) caster,
 	2) camber,
 	3) toe.
+
+---
+
+## Maintenance & Safety
+
+### Re-check alignment after
+- Suspension component changes (springs, shocks, control arms, sway bars)
+- Significant curb/pothole impacts
+- Tire changes to a different size/profile
+- Every 12 months (or 10,000 miles) under normal driving
+
+### DIY Alignment Safety
+- **Always use wheel cribs** in addition to jacks — a jack can fail under sustained load
+- Work on the flattest, most level surface available
+- Do not work under a car supported only by jacks
+- Perform measurements in daylight or well-lit conditions to avoid reading errors
+- Double-check all measurements before making adjustments
+- Tighten all fasteners to OEM spec after adjustment; re-measure after tightening (fastener relaxation can shift alignment)
