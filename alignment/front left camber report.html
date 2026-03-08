@@ -216,23 +216,23 @@
   <div class="info-tile best">
     <div class="label">Best Achieved</div>
     <div class="value">−10 mm</div>
-    <div class="sub">Front +6 · Rear −6 · −1.223°</div>
+    <div class="sub">Front +6 · Rear −6 · −1.22°</div>
   </div>
   <div class="info-tile warning">
     <div class="label">Performance vs Target</div>
-    <div class="value" style="color: #1e8449;">+0.123°</div>
-    <div class="sub" style="color: #1e8449;">Better by 0.123° ✓</div>
+    <div class="value" style="color: #1e8449;">+0.12°</div>
+    <div class="sub" style="color: #1e8449;">Better by 0.12° ✓</div>
   </div>
   <div class="info-tile recommend">
     <div class="label">Recommended Setting</div>
     <div class="value">Front: +6</div>
-    <div class="sub">Rear: −6 · achieves −1.223° (−10 mm)</div>
+    <div class="sub">Rear: −6 · achieves −1.22° (−10 mm)</div>
   </div>
 </div>
 
 <div class="conclusion">
-  <strong>FINDING:</strong> The front left wheel achieves <strong>−10mm (−1.223°)</strong> at washer position <strong>Front +6 / Rear −6</strong>, 
-  which <strong>exceeds the −9mm target by 0.123°</strong>. This is an excellent result — the front left wheel already has more negative camber than required. 
+  <strong>FINDING:</strong> The front left wheel achieves <strong>−10mm (−1.22°)</strong> at washer position <strong>Front +6 / Rear −6</strong>, 
+  which <strong>exceeds the −9mm target by 0.12°</strong>. This is an excellent result — the front left wheel already has more negative camber than required. 
   <strong>Recommendation:</strong> Set both front and rear bolts to the recommended positions (Front +6, Rear −6) to achieve optimal handling geometry that matches the target specification.
 </div>
 
@@ -278,7 +278,7 @@
 <div class="section-label">02b — Recommended Washer Settings</div>
 <div class="full-card">
   <h2>Recommended Settings to Maximise Negative Camber</h2>
-  <div class="sub">Best achievable: −10 mm (−1.223°) · Set <strong style="color:#1a6ec7">front bolt → +6</strong> and <strong style="color:#1a6ec7">rear bolt → −6</strong> simultaneously · Exceeds −9 mm target ✓</div>
+  <div class="sub">Best achievable: −10 mm (−1.22°) · Set <strong style="color:#1a6ec7">front bolt → +6</strong> and <strong style="color:#1a6ec7">rear bolt → −6</strong> simultaneously · Exceeds −9 mm target ✓</div>
   <div class="dial-wrap" style="justify-content:center; gap:60px" id="recommendDials"></div>
   <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8090b0; margin-top:14px; text-align:center" id="recommend-note"></p>
 </div>
@@ -603,7 +603,7 @@ new Chart(overlayCanvas, {
   document.getElementById('recommend-note').textContent =
     'Front bolt: set 0 mark at 6 o\'clock (bottom), count 6 segment lines to the LEFT (CCW)  ·  ' +
     'Rear bolt: set 0 mark at 6 o\'clock (bottom), count 6 segment lines to the RIGHT (CW)  ·  ' +
-    're-measure after setting to confirm −10 mm (−1.223°)';
+    're-measure after setting to confirm −10 mm (−1.22°)';
 
   function buildRecommendDial(container, pos, accentColor, bezelFill, washerFill, labelText) {
     const VB = 130, cx = 65, cy = 65;
@@ -690,7 +690,7 @@ new Chart(overlayCanvas, {
           <text x="${cx}" y="${(cy+5).toFixed(1)}" text-anchor="middle" font-family="Share Tech Mono" font-size="10" font-weight="700" fill="${accentColor}">${pos>=0?'+':''}${pos}</text>
         </svg>
         <div class="dial-label" style="color:${accentColor}">${labelText}</div>
-        <div class="dial-val" style="color:${accentColor}">${dirLabel} &nbsp;·&nbsp; −10 mm &nbsp;·&nbsp; −1.223°</div>
+        <div class="dial-val" style="color:${accentColor}">${dirLabel} &nbsp;·&nbsp; −10 mm &nbsp;·&nbsp; −1.22°</div>
       </div>`;
   }
 
