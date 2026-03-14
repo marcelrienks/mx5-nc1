@@ -252,13 +252,13 @@
       const estimatedCamberAtRecommendation = estimateCamberAtSetting(
         side,
         camber.recommendedFront,
-        caster.recommendedWasherInt
+        camber.recommendedRear
       );
       return {
         side,
         displayName: REPORT_CONFIG[side].displayName,
         recommendedFront: camber.recommendedFront,
-        recommendedRear: caster.recommendedWasherInt,
+        recommendedRear: camber.recommendedRear,
         bestCamberMm: camber.bestMeasuredMm,
         bestCamberDeg: camber.bestMeasuredDeg,
         estimatedCamberAtRecommendation,
@@ -266,6 +266,28 @@
         casterAtRecommendation: caster.recommendedDegrees,
       };
     });
+  }
+
+  function getSymmetryAssessment() {
+    const summary = getSummaryData();
+    const left = summary.find((s) => s.side === 'frontLeft');
+    const right = summary.find((s) => s.side === 'frontRight');
+
+    const leftCamber = left.estimatedCamberAtRecommendation;
+    const rightCamber = right.estimatedCamberAtRecommendation;
+    const camberDiff = Math.abs(leftCamber - rightCamber);
+    const isSymmetric = camberDiff === 0;
+
+    return {
+      leftCamberMm: leftCamber,
+      rightCamberMm: rightCamber,
+      camberDiff,
+      isSymmetric,
+      symmetryStatus: isSymmetric ? 'SYMMETRIC' : 'ASYMMETRIC',
+      symmetryNote: isSymmetric 
+        ? `Both wheels will measure ${formatSigned(leftCamber, 1, ' mm')} when using recommended settings.`
+        : `Left will measure ${formatSigned(leftCamber, 1, ' mm')} · Right will measure ${formatSigned(rightCamber, 1, ' mm')} — asymmetric by ${camberDiff.toFixed(1)} mm`,
+    };
   }
 
   window.AlignmentShared = {
@@ -279,5 +301,6 @@
     getRearSeriesAtFront,
     estimateCamberAtSetting,
     getSummaryData,
+    getSymmetryAssessment,
   };
 })();

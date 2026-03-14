@@ -14,6 +14,7 @@
 <div class="header">
   <h1>Front Alignment — Camber Report</h1>
   <p>RIGHT FRONT WHEEL · PLUMB LINE / STRING BOX · ECCENTRIC WASHER MATRIX · ALL POSITIONS MEASURED</p>
+  <p style="color: #8b949e; font-size: 0.9em; margin-top: 8px;">⚠️ <strong>ISOLATED ANALYSIS:</strong> This report shows camber recommendations for this wheel in isolation, without considering the left wheel. See the front consolidated reports for per-corner detailed analysis, and the front consolidated compromise report for cross-wheel symmetry considerations.</p>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 1: SUMMARY ═══════════════════════════════ -->
@@ -24,38 +25,47 @@
     <div class="value">−9 mm</div>
     <div class="sub">−1.1° · 1mm = 0.122°</div>
   </div>
-  <div class="info-tile best">
-    <div class="label">Best Achieved</div>
+  <div class="info-tile warn">
+    <div class="label">Best Achievable (This Wheel)</div>
     <div class="value">−7 mm</div>
-    <div class="sub">Front +6 · Rear −6 · −0.85°</div>
+    <div class="sub">Front +6 / Rear −6 (ceiling—cannot exceed)</div>
   </div>
-  <div class="info-tile warning">
-    <div class="label">Shortfall</div>
-    <div class="value">−2 mm</div>
-    <div class="sub">0.24° · factory washer range exhausted</div>
+  <div class="info-tile">
+    <div class="label" style="color: #3fb950">Symmetric Setting</div>
+    <div class="value" style="color: #3fb950">−7 mm</div>
+    <div class="sub" style="color: #3fb950">Front +6 / Rear −6 (same as best—this wheel limits symmetry)</div>
   </div>
-  <div class="info-tile recommend">
-    <div class="label">Recommended Setting</div>
-    <div class="value">Front: +6</div>
-    <div class="sub">Rear: −6 · max achievable −7 mm (−0.85°)</div>
+  <div class="info-tile">
+    <div class="label">Shortfall vs Target</div>
+    <div class="value">2 mm</div>
+    <div class="sub">−9mm target vs −7mm ceiling</div>
   </div>
 </div>
 
 <div class="conclusion">
-  <strong>FINDING:</strong> The front bolt (camber primary) peaks at <strong>+6</strong> producing −7mm (−0.85°).
-  Advancing to <strong>+12</strong> reverses the trend, returning to 0mm–+2mm, confirming the eccentric apex is at +6.
-  The rear bolt (caster primary) contributes secondary camber influence, best at <strong>−6</strong> = −7mm.
-  Maximum achievable camber is <strong>−7mm (−0.85°)</strong> — 2mm / 0.25° short of the −9mm target.
-  <strong>Recommendation:</strong> investigate aftermarket eccentric bolts or offset washers with a larger lobe radius for this platform.
+  <strong>CEILING:</strong> This wheel's maximum camber is <strong>−7 mm at Front +6 / Rear −6</strong> — 2mm short of the −9mm target. The factory eccentric bolt range is exhausted; aftermarket parts would be required to reach the target.<br>
+  <strong>FOR SYMMETRIC MEASUREMENT:</strong> This same setting (Front +6 / Rear −6 = −7mm) is also the symmetric measurement point. The left wheel sacrifices to match this ceiling for balanced measurement across both wheels.
 </div>
 
-<!-- ═══════════════════════════════ SECTION 2: BOLT TRAVEL OVERLAY ═══════════════════════════════ -->
-<div class="section-label">02 — Bolt Travel Overlay</div>
+<!-- ═══════════════════════════════ SECTION 2: MEASUREMENT METHODOLOGY ═══════════════════════════════ -->
+<div class="section-label">02 — Measurement Methodology</div>
 <div class="full-card">
-  <h2>Resultant Camber (mm) vs Washer Position</h2>
+  <h2>How Camber Is Measured</h2>
+  <div class="sub">
+    <strong>Instrument:</strong> Plumb line (weighted string) + string box reference frame<br>
+    <strong>Measurement:</strong> Distance from plumb line to rim edge, taken at top and bottom of wheel<br>
+    <strong>Calculation:</strong> (Top rim distance − Bottom rim distance) = camber offset in mm · Negative values = desired negative camber<br>
+    <strong>Data gathered:</strong> 4 front positions (−6, 0, +6, +12 reversal) × 3 rear positions (−6, 0, +6) = 12 total measurements
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 3: RAW DATA ═══════════════════════════════ -->
+<div class="section-label">03 — Raw Data: Matrices &amp; Visual Analysis</div>
+<div class="full-card">
+  <h2>Resultant Camber (mm) — All Washer Positions</h2>
   <div class="sub">
     Best camber per bolt position across all opposing bolt positions · Zero = neutral · Below = negative camber (desired) · Above = positive camber<br>
-    ◇ blue diamond = best front bolt position (+6, −7 mm) · ◇ orange diamond = best rear bolt position (−6, −7 mm)
+    ◇ blue diamond = best achievable front bolt position (+6, −7 mm ceiling) · ◇ orange diamond = best achievable rear bolt position (−6, −7 mm)
   </div>
 
   <div class="legend-row">
@@ -90,14 +100,27 @@
 <!-- ═══════════════════════════════ SECTION 02b: RECOMMENDED WASHER SETTINGS ═══════════════════════════════ -->
 <div class="section-label">02b — Recommended Washer Settings</div>
 <div class="full-card">
-  <h2>Recommended Settings to Maximise Negative Camber</h2>
-  <div class="sub">Best achievable within factory range: −7 mm (−0.85°) · Set <strong style="color:#58a6ff">front bolt → +6</strong> and <strong style="color:#58a6ff">rear bolt → −6</strong> simultaneously · 2 mm / 0.25° short of −9 mm target</div>
+  <h2>Recommended Settings for Symmetric String Line Measurement</h2>
+  <div class="sub">Symmetric measurement: −7 mm on both wheels · Set <strong style="color:#3fb950">front bolt → +6</strong> and <strong style="color:#3fb950">rear bolt → −6</strong> simultaneously · Pairs with Front Left at Front −6 / Rear −6</div>
   <div class="dial-wrap" style="justify-content:center; gap:60px" id="recommendDials"></div>
   <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8b949e; margin-top:14px; text-align:center" id="recommend-note"></p>
 </div>
 
-<!-- ═══════════════════════════════ SECTION 3: HEATMAP + CLOCKS ═══════════════════════════════ -->
-<div class="section-label">03 — Position Matrix</div>
+<!-- ═══════════════════════════════ SECTION 02c: STRING LINE MEASUREMENT CLARITY ═══════════════════════════════ -->
+<div class="section-label">02c — String Line Measurement at Recommended Setting</div>
+<div class="full-card">
+  <h2>What Your String Box Will Read</h2>
+  <div style="padding: 20px; background: #0d1117; border: 2px solid #3fb950; border-radius: 6px; text-align: center;">
+    <div style="font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #8b949e; margin-bottom: 8px;">WHEN SET TO FRONT +6 / REAR −6</div>
+    <div style="font-size: 2rem; font-weight: bold; color: #3fb950; font-family: 'Share Tech Mono', monospace; margin: 16px 0;">
+      −7 <span style="font-size: 1.4rem;">mm</span>
+    </div>
+    <div style="color: #8b949e; font-size: 0.85rem;">
+      Front Left also measures −7 mm at Front −6 / Rear −6 (eccentric bolts at different positions, string line readings identical = SYMMETRIC).
+    </div>
+  </div>
+</div>
+
 <div class="grid2">
   <div class="card">
     <h2>Camber Heatmap — All Positions (mm)</h2>
@@ -124,15 +147,39 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════ SECTION 4: FULL DATA TABLE ═══════════════════════════════ -->
-<div class="section-label">04 — Full Measurement Table</div>
+<!-- ═══════════════════════════════ SECTION 3c: FULL DATA TABLE ═══════════════════════════════ -->
+<div class="section-label">03c — Complete Measurement Table</div>
 <div class="full-card">
   <h2>All Measured Positions — Raw Data &amp; Calculated Camber</h2>
   <table class="data-table" id="dataTable"></table>
 </div>
 
-<!-- ═══════════════════════════════ SECTION 5: SWEEP CHARTS ═══════════════════════════════ -->
-<div class="section-label">05 — Sweep Analysis</div>
+<!-- ═══════════════════════════════ SECTION 4: POSITION DIAGRAMS & RECOMMENDATIONS ═══════════════════════════════ -->
+<div class="section-label">04 — Position Diagrams &amp; Recommendations</div>
+<div class="full-card">
+  <h2>Recommended Settings for Symmetric String Line Measurement</h2>
+  <div class="sub">Symmetric measurement: −7 mm (this wheel's ceiling) · Set <strong style="color:#3fb950">front bolt → +6</strong> and <strong style="color:#3fb950">rear bolt → −6</strong> simultaneously · Pairs with Front Left at Front −6 / Rear −6</div>
+  <div class="dial-wrap" style="justify-content:center; gap:60px" id="recommendDials"></div>
+  <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8b949e; margin-top:14px; text-align:center" id="recommend-note"></p>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 4b: STRING LINE MEASUREMENT CLARITY ═══════════════════════════════ -->
+<div class="section-label">04b — String Box Reading at Recommended Setting</div>
+<div class="full-card">
+  <h2>What Your String Box Will Read</h2>
+  <div style="padding: 20px; background: #0d1117; border: 2px solid #3fb950; border-radius: 6px; text-align: center;">
+    <div style="font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #8b949e; margin-bottom: 8px;">WHEN SET TO FRONT +6 / REAR −6</div>
+    <div style="font-size: 2rem; font-weight: bold; color: #3fb950; font-family: 'Share Tech Mono', monospace; margin: 16px 0;">
+      −7 <span style="font-size: 1.4rem;">mm</span>
+    </div>
+    <div style="color: #8b949e; font-size: 0.85rem;">
+      Front Left also measures −7 mm at Front −6 / Rear −6 (eccentric bolts at different positions, string line readings identical = SYMMETRIC). This is the ceiling for this wheel.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 5: ANALYSIS & TRADE-OFFS ═══════════════════════════════ -->
+<div class="section-label">05 — Analysis &amp; Trade-offs</div>
 <div class="grid2">
   <div class="card">
     <h2>Rear Bolt Sweep — per Front Bolt Position</h2>

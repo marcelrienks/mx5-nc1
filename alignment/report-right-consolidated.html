@@ -7,13 +7,14 @@
 <script src="js/alignment-data.js"></script>
 <script src="js/alignment-shared.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<title>Front Alignment — Consolidated Report (Left)</title>
+<title>Front Alignment — Consolidated Report (Right)</title>
 </head>
 <body>
 
 <div class="header">
   <h1>Front Alignment — Consolidated Report</h1>
-  <p>LEFT FRONT WHEEL · CAMBER + CASTER MERGED · ECCENTRIC BOLT MATRIX · STRING BOX / PLUMB LINE · REAR BOLT TRADE-OFF</p>
+  <p>RIGHT FRONT WHEEL · CAMBER + CASTER MERGED · ECCENTRIC BOLT MATRIX · STRING BOX / PLUMB LINE · REAR BOLT TRADE-OFF</p>
+  <p style="color: #8b949e; font-size: 0.9em; margin-top: 8px;">⚠️ <strong>PER-WHEEL ANALYSIS:</strong> This report shows camber and caster trade-offs for the right wheel in isolation. Recommended values (e.g., front +6/rear −6) are optimized for this corner only, without cross-wheel symmetry considerations. See the front consolidated compromise report for symmetric measurement recommendations across both wheels.</p>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 01: SUMMARY ═══════════════════════════════ -->
@@ -29,35 +30,34 @@
     <div class="value">5.0°</div>
     <div class="sub">Consolidated spec · ±15° sweep method</div>
   </div>
-  <div class="info-tile best">
-    <div class="label">Best Camber Achievable</div>
-    <div class="value">−10 mm</div>
-    <div class="sub">−1.22° · front +6 / rear −6 · exceeds target</div>
+  <div class="info-tile warn">
+    <div class="label">Best Camber (This Wheel)</div>
+    <div class="value">−7 mm</div>
+    <div class="sub">Front +6 / Rear −6 · 2mm short of target (ceiling)</div>
   </div>
   <div class="info-tile range">
     <div class="label">Caster Range</div>
-    <div class="value">1.89°→8.73°</div>
-    <div class="sub">Rear +6 → −6 · front locked at 0 during caster sweep</div>
+    <div class="value">4.48°→7.78°</div>
+    <div class="sub">Rear −6 → +6 · front locked at +2</div>
   </div>
   <div class="info-tile best">
-    <div class="label">Rec. Front Bolt</div>
-    <div class="value">+6</div>
-    <div class="sub">Max achievable negative camber</div>
+    <div class="label">Best Caster (This Wheel)</div>
+    <div class="value">7.78°</div>
+    <div class="sub">Rear +6 · front locked at +2 · above target</div>
   </div>
-  <div class="info-tile recommend">
-    <div class="label">Rec. Rear Bolt</div>
-    <div class="value">+2</div>
-    <div class="sub">Caster ≈5.0° · interpolated to match target</div>
+  <div class="info-tile"><div class="label">Caster Near Target</div>
+    <div class="value">≈5.0°</div>
+    <div class="sub">Rear ≈−4 · interpolated · front locked at +2</div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 02: KEY FINDINGS ═══════════════════════════════ -->
 <div class="section-label">02 — Key Findings</div>
 <div class="conclusion">
-  <strong>CAMBER:</strong> Maximum achievable camber is <strong>−10mm (−1.22°)</strong> — 1mm / 0.12° beyond the −9mm target — the factory eccentric bolt range is sufficient at front=+6. No aftermarket parts are required for camber.<br>
-  <strong>CASTER:</strong> The rear bolt is the dominant caster variable. With the front bolt locked at 0 during the caster sweep, measured caster spans 1.89° (rear=+6) to 8.73° (rear=−6). The 5.0° target falls between rear=0 (6.13°) and rear=+6 (1.89°) — the measured crossing from above is near rear=+2 by linear interpolation.<br>
-  <strong>CONFLICT:</strong> The rear bolt simultaneously affects both camber and caster. Setting rear=−6 maximises camber contribution (−10mm with front=+6) but gives 8.73° caster — well above the 5.0° target. Setting rear=+2 gives ≈5.0° caster at the cost of camber (estimated front=+6 / rear=+2 camber ≈−0.7mm, interpolated from the measured front +6 row).<br>
-  <strong>RECOMMENDATION:</strong> Set <strong>front bolt → +6</strong> and <strong>rear bolt → +2</strong> as the caster-priority compromise, achieving ≈5.0° caster. Fine-tune rear bolt one segment at a time to confirm; note that each step away from rear=−6 slightly reduces negative camber.
+  <strong>CAMBER:</strong> This wheel's maximum achievable camber is <strong>−7mm (−0.85°)</strong> — 2mm / 0.25° short of the −9mm target — at front bolt +6 / rear bolt −6. The factory eccentric bolt range is exhausted; this is the ceiling for this wheel without aftermarket parts.<br>
+  <strong>CASTER:</strong> The rear bolt dominates caster. With front bolt locked at +2 during sweep, caster ranges 4.48° (rear −6) to 7.78° (rear +6). The 5.0° target falls between rear=−6 (4.48°) and rear=0 (≈6.13°) — approximately rear≈−4 by interpolation.<br>
+  <strong>TRADE-OFF:</strong> The rear bolt simultaneously affects both camber and caster on this wheel. Setting rear=−6 maximises camber (−7mm with front +6, the limit) but gives only 4.48° caster — below target. Setting rear≈−4 achieves ≈5.0° caster but slightly reduces camber (estimated −6.3mm with front +6, interpolated).<br>
+  <strong>IF OPTIMIZING THIS WHEEL ALONE:</strong> Front +6 / Rear −6 gives best camber (−7mm, the ceiling). For caster, rear≈−4 approximates 5.0°. See the trade-off chart to select the rear bolt position that balances these two competing goals for this wheel.
 </div>
 
 <!-- ═══════════════════════════════ SECTION 03: TRADE-OFF CHART ═══════════════════════════════ -->
@@ -66,7 +66,7 @@
   <h2>Camber &amp; Caster vs Washer Position — Merged Trade-off</h2>
   <div class="sub">
     Shared x-axis: washer position (segments) · Left y: Camber (mm, negative = desired) · Right y: Caster (°)<br>
-    Front bolt series uses best camber per position across all rear positions · Rear bolt camber series uses the measured front=+6 row (recommended front setting) · Caster series directly measured with front locked at 0 during the caster sweep
+    Front bolt series uses best camber per position across all rear positions · Rear bolt camber series uses the measured front=+6 row (recommended front setting) · Caster series directly measured with front locked at +2
   </div>
 
   <div class="legend-row">
@@ -83,24 +83,24 @@
     <div class="leg-item">
       <div class="leg-swatch" style="background:#3fb950"></div>
       <div class="leg-dot" style="background:#3fb950"></div>
-      <span>Rear bolt — caster ° (right axis, front=0 during sweep)</span>
+      <span>Rear bolt — caster ° (right axis, front=+2)</span>
     </div>
   </div>
 
   <canvas id="tradeoffChart" height="400"></canvas>
 
   <p class="chart-note">
-    Front bolt x-positions: −6, 0, +6 · Rear bolt x-positions: −6, 0, +6 · Both share the same washer segment scale<br>
-    Rear-bolt camber uses the measured front=+6 row · Caster is a separate measured sweep with the front bolt locked at 0<br>
-    <span style="color:#f85149">▎ Red drop line (x=−6)</span> = camber-primary recommendation: rear=−6 maximises negative camber (−1.22°) but gives 8.73° caster &nbsp;|&nbsp;
-    <span style="color:#f85149">▎ Red drop line (x=+2)</span> = caster-compromise recommendation: rear=+2 gives ≈5.0° caster — interpolated to match target
+    Front bolt x-positions: −6, 0, +6, +12 · Rear bolt x-positions: −6, 0, +6 · Both share the same washer segment scale<br>
+    Rear-bolt camber uses the measured front=+6 row · Caster remains the separately measured front=+2 sweep<br>
+    <span style="color:#f85149">▎ Red drop line (x=−6)</span> = camber-primary recommendation: rear=−6 maximises negative camber (−0.85°) but gives only 4.48° caster &nbsp;|&nbsp;
+    <span style="color:#f85149">▎ Red drop line (x=−4)</span> = caster-compromise recommendation: rear=−4 hits 5.0° caster target at ≈−6.3mm camber
   </p>
 </div>
 
 <div class="tradeoff-note">
-  <div class="tn"><strong style="color:#58a6ff">Front bolt (blue) — camber axis</strong>Peaks at −10mm at position +6. The eccentric apex is at +6 — this is the maximum negative camber achievable, and it already exceeds the −9mm target by 1mm.</div>
-  <div class="tn"><strong style="color:#58a6ff">Rear bolt camber (thin blue) — camber axis</strong>Uses the measured front=+6 row. Moving rear bolt from −6 to +6 costs 12mm of negative camber (−10mm → +2mm). The rear bolt is the main compromise lever once the front bolt is set to +6.</div>
-  <div class="tn"><strong style="color:#3fb950">Rear bolt caster (green) — caster axis</strong>Directly measured with front locked at 0. Moving rear from −6 to +6 reduces caster (8.73° → 1.89°). Target 5.0° sits between rear=0 (6.13°) and rear=+6 (1.89°); interpolated crossing at rear≈+2.</div>
+  <div class="tn"><strong style="color:#58a6ff">Front bolt (blue) — camber axis</strong>Peaks at −7mm at position +6, then reverses at +12. The eccentric apex is at +6 — this is the maximum negative camber achievable with factory bolts regardless of rear bolt position.</div>
+  <div class="tn"><strong style="color:#58a6ff">Rear bolt camber (thin blue) — camber axis</strong>Uses the measured front=+6 row. Moving rear bolt from −6 to +6 costs 2mm of negative camber (−7mm → −5mm). The rear bolt trims camber modestly once the front bolt is fixed at +6.</div>
+  <div class="tn"><strong style="color:#3fb950">Rear bolt caster (green) — caster axis</strong>Directly measured with front=+2. Moving rear from −6 to +6 adds ≈3.3° of caster (4.48° → 7.78°). This is the rear bolt's dominant effect. Target 5.0° sits at rear≈−4.</div>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 04: POSITION MATRIX ═══════════════════════════════ -->
@@ -108,14 +108,14 @@
 <div class="grid2">
   <div class="card">
     <h2>Camber Heatmap — All Positions (mm)</h2>
-    <div class="sub">Full 3×3 matrix: front bolt (rows) × rear bolt (cols) · All raw plumb-line measurements</div>
+    <div class="sub">Full 4×3 matrix: front bolt (rows) × rear bolt (cols) · All raw plumb-line measurements</div>
     <div class="heatmap" id="heatmap"></div>
     <div class="hm-legend">
-      <span>−10mm neg</span>
+      <span>−7mm neg</span>
       <div class="hm-legend-bar"></div>
-      <span>+9mm pos</span>
+      <span>+12.5mm pos</span>
     </div>
-    <p class="hm-note">■ green border = best achieved (−10mm)</p>
+    <p class="hm-note">■ green border = best achieved (−7mm) &nbsp;|&nbsp; <span style="color:#d29922">■ orange border = reversal zone (front +12)</span></p>
   </div>
 
   <div class="card">
@@ -126,16 +126,21 @@
 </div>
 
 <!-- ═══════════════════════════════ SECTION 05: RECOMMENDED SETTINGS ═══════════════════════════════ -->
-<div class="section-label">05 — Recommended Settings</div>
+<div class="section-label">05 — Recommended Settings for This Wheel</div>
 <div class="full-card">
-  <h2>Recommended Bolt Positions — Compromise for Caster Priority</h2>
-  <div class="sub">Front bolt: +6 (maximum achievable negative camber = −1.22°, exceeds target) · Rear bolt: +2 (caster ≈ 5.0°, interpolated) · Re-measure after setting to confirm</div>
+  <h2>Best Compromise: Camber Priority (Isolated Optimization)</h2>
+  <div class="sub">For this wheel in isolation: Front bolt: +6 (achieves −7mm ceiling camber, 2mm short of target) · Rear bolt: −6 (best camber, 4.48° caster — below target) · NOTE: This achieves the ceiling for this wheel; no further optimization possible without aftermarket parts</div>
   <div class="dial-wrap" id="recommendDials"></div>
   <p style="font-family:'Share Tech Mono',monospace; font-size:0.63rem; color:#8b949e; margin-top:18px; text-align:center">
     Front bolt: set 0 mark at 6 o'clock (bottom), count 6 segment lines to the LEFT (CCW) &nbsp;·&nbsp;
-    Rear bolt: set 0 mark at 6 o'clock (bottom), count 2 segment lines to the LEFT (CCW) &nbsp;·&nbsp;
-    Re-measure after setting · fine-tune rear bolt one segment at a time to confirm ≈5.0° caster
+    Rear bolt: set 0 mark at 6 o'clock (bottom), count 6 segment lines to the RIGHT (CW) &nbsp;·&nbsp;
+    This achieves −7mm camber (ceiling). Caster will be 4.48° (below 5.0° target). This is the best this wheel can do.
   </p>
+</div>
+
+<div class="full-card" style="margin-top: 20px; border-left: 3px solid #d29922; background: #3d2a1044;">
+  <h2 style="color: #d29922">Alternative: Caster Priority (If Prioritizing Caster Target)</h2>
+  <div class="sub" style="color: #c9a04d">Front bolt: +6 · Rear bolt: ≈−4 (≈5.0° caster) · Sacrifices camber to approx. −6.3mm (interpolated, further from ceiling)</div>
 </div>
 
 <!-- ═══════════════════════════════ SECTION 06: SWEEP ANALYSIS ═══════════════════════════════ -->
@@ -143,7 +148,7 @@
 <div class="grid2">
   <div class="card">
     <h2>Caster Indication (Δ mm) vs Rear Bolt</h2>
-    <div class="sub">Directly measured: front bolt locked at 0 throughout · Δ = (Top−Bot)@+15° − (Top−Bot)@−15° · right axis shows converted caster degrees</div>
+    <div class="sub">Directly measured: front bolt locked at +2 throughout · Δ = (Top−Bot)@+15° − (Top−Bot)@−15° · right axis shows converted caster degrees</div>
     <canvas id="casterSweepChart" height="280"></canvas>
   </div>
   <div class="card">
@@ -159,14 +164,14 @@
 // ═══════════════════════════════════════
 
 const { getCamberSource, getCasterSource, getRearSeriesAtFront, BASE_MM_PER_DEG, SWEEP_K } = AlignmentShared;
-const camberSource = getCamberSource('frontLeft');
-const casterSource = getCasterSource('frontLeft');
+const camberSource = getCamberSource('frontRight');
+const casterSource = getCasterSource('frontRight');
 const matrix = camberSource.matrix;
 const frontPos = camberSource.frontPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
 const rearPos = camberSource.rearPositions.map((position) => position > 0 ? `+${position}` : `${position}`);
 const frontNums = camberSource.frontPositions;
 const rearNums = camberSource.rearPositions;
-const camberAtRecommendedFront = getRearSeriesAtFront('frontLeft', camberSource.recommendedFront);
+const camberAtRecommendedFront = getRearSeriesAtFront('frontRight', camberSource.recommendedFront);
 const washerPos = casterSource.washerPositions;
 const top_pos15 = casterSource.top_pos15;
 const bot_pos15 = casterSource.bot_pos15;
@@ -190,7 +195,9 @@ function toDeg(mm) {
 
 // ── Best camber per front bolt position (min across all rear positions) ──
 const frontBest = matrix.map(row => Math.min(...row));
-// front=-6: min(-7,0,9)=-7  front=0: min(-8,-3,6)=-8  front=+6: min(-10,-2,2)=-10
+// [-7, -1 (rear=-6 best), -7, 0]  → actually: [6→best is 6, -1→best is -1, -7→best is -7, 0→best is 0]
+// correction: best = MIN (most negative)
+// front=-6: min(6, 12.5, 8)=6  front=0: min(-1,1,0)=-1  front=+6: min(-7,-5,-5)=-7  front=+12: min(0,0,2)=0
 
 // ── Expanded 13-label x-axis (−6 to +6) ──
 const allLabels = Array.from({length: 13}, (_, i) => { const v = i-6; return (v>0?'+':'')+v; });
@@ -246,7 +253,13 @@ const sharedLegend = { labels: { color: '#c9d1d9', font: { family: 'Share Tech M
 // SECTION 03: TRADE-OFF CHART
 // ═══════════════════════════════════════
 
-const casterTargetMM = TARGET_CASTER * MM_PER_DEG / SWEEP_K * -1;
+// Caster target line on the right (y2) axis
+// Convert TARGET_CASTER to the mm-equivalent for linear interpolation on y2
+// But Chart.js handles two y-axes separately, so we draw the caster target as a dataset
+const casterTargetMM = TARGET_CASTER * MM_PER_DEG / SWEEP_K * -1; // ≈ −21.2mm (negative = more caster in Δ convention)
+
+// For the caster line on y2 we need to express 5.0° in the same unit as casterDeg
+// We'll draw a horizontal dashed line at value 5.0 on y2
 
 const zoneTradeoffPlugin = {
   id: 'zoneTradeoff',
@@ -280,14 +293,18 @@ const casterTargetLinePlugin = {
   }
 };
 
+// Compromise vertical drop line at rear=-4 (index 2 on the 13-label axis for x=-4 → label index = -4+6 = 2)
+// Helper: draw a vertical recommendation drop line with triangle marker and two label lines
 function drawDropLine(ctx, chartArea, scales, xIdx, color, label1, label2, labelOffsetX) {
   const ix = scales.x.getPixelForValue(xIdx);
   ctx.save();
   ctx.setLineDash([5, 4]); ctx.strokeStyle = color + 'cc'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(ix, chartArea.top); ctx.lineTo(ix, chartArea.bottom); ctx.stroke();
   ctx.setLineDash([]);
+  // Drop line at bottom axis
   ctx.strokeStyle = color + '88'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(ix, chartArea.bottom); ctx.lineTo(ix, chartArea.bottom + 8); ctx.stroke();
+  // Triangle at top
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(ix - 6, chartArea.top - 1);
@@ -295,6 +312,7 @@ function drawDropLine(ctx, chartArea, scales, xIdx, color, label1, label2, label
   ctx.lineTo(ix,     chartArea.top + 8);
   ctx.closePath();
   ctx.fill();
+  // Labels — offset horizontally if specified to avoid overlap
   const tx = ix + (labelOffsetX || 0);
   ctx.font = 'bold 9px Share Tech Mono'; ctx.fillStyle = color;
   ctx.textAlign = labelOffsetX < 0 ? 'right' : 'center';
@@ -303,6 +321,7 @@ function drawDropLine(ctx, chartArea, scales, xIdx, color, label1, label2, label
   ctx.restore();
 }
 
+// Helper: linearly interpolate through nulls to get a value at xIdx in a dataset's data array
 function getInterpolatedValue(data, idx) {
   if (data[idx] != null) return data[idx];
   let lo = idx - 1, hi = idx + 1;
@@ -313,6 +332,7 @@ function getInterpolatedValue(data, idx) {
   return data[lo] + t * (data[hi] - data[lo]);
 }
 
+// Helper: draw a filled circle marker on a data series at a specific position
 function drawSeriesMarker(ctx, ix, iy, color, r) {
   ctx.save();
   ctx.beginPath();
@@ -325,27 +345,27 @@ function drawSeriesMarker(ctx, ix, iy, color, r) {
   ctx.restore();
 }
 
-// Camber-primary: rear=-6 → index 0 on 13-label axis
-// Caster-compromise: rear=0 → index 6 on 13-label axis
 const compromisePlugin = {
   id: 'compromise',
   afterDatasetsDraw(chart) {
     const { ctx, chartArea, scales } = chart;
     if (!scales.x || !scales.y || !chartArea) return;
 
-    // Camber-primary recommendation: rear bolt = -6 (index 0 on 13-label axis)
+    // Camber-primary recommendation: rear bolt = -6 (index 0 on 13-label axis), front bolt = +6
     drawDropLine(ctx, chartArea, scales, 0, '#f85149',
-      'CAMBER PRIMARY', 'REAR −6 · −1.22°', -6);
+      'CAMBER PRIMARY', 'REAR −6 · −0.85°', -6);
 
-    // Caster-compromise recommendation: rear bolt = +2 (index 8 on 13-label axis)
-    drawDropLine(ctx, chartArea, scales, 8, '#f85149',
-      'CASTER TARGET', 'REAR +2 · ≈5.0°', 8);
+    // Caster-compromise recommendation: rear bolt = -4 (index 2 on 13-label axis)
+    drawDropLine(ctx, chartArea, scales, 2, '#f85149',
+      'CASTER TARGET', 'REAR −4 · ≈5.0°', 6);
 
-    // Draw markers per dataset at their respective drop lines
+    // Draw markers per dataset, each only at its own drop line:
+    // camber series (blue) → camber drop line at index 0 only
+    // caster series (green) → caster drop line at index 2 only
     const dsMarkers = [
-      { color: '#58a6ff', r: 6, indices: [0] },  // front bolt camber at camber-primary x=0
-      { color: '#58a6ff', r: 5, indices: [0] },  // rear bolt camber at camber-primary x=0
-      { color: '#3fb950', r: 6, indices: [8] },  // caster ° at caster-compromise x=8 (rear=+2)
+      { color: '#58a6ff', r: 6, indices: [0] },  // front bolt camber
+      { color: '#58a6ff', r: 5, indices: [0] },  // rear bolt camber
+      { color: '#3fb950', r: 6, indices: [2] },  // caster °
     ];
     chart.data.datasets.forEach((dataset, di) => {
       if (di >= dsMarkers.length) return;
@@ -401,7 +421,7 @@ new Chart(document.getElementById('tradeoffChart'), {
       },
       // Series 3: Rear bolt — caster degrees (green, right y)
       {
-        label: 'Rear bolt — caster ° (right axis, front=0)',
+        label: 'Rear bolt — caster ° (right axis, front=+2)',
         data: expandTo13(rearNums, casterDeg),
         borderColor: '#3fb950',
         backgroundColor: '#3fb95015',
@@ -445,7 +465,7 @@ new Chart(document.getElementById('tradeoffChart'), {
         title: { display: true, text: 'Camber (mm, negative = top-in)', color: '#58a6ff', font: { family: 'Share Tech Mono', size: 11 } },
         ticks: { color: '#58a6ff', font: { family: 'Share Tech Mono', size: 10 }, callback: v => (v > 0 ? '+' : '') + v + ' mm', stepSize: 2 },
         grid: { color: '#21262d' },
-        suggestedMin: -12, suggestedMax: 12,
+        suggestedMin: -12, suggestedMax: 15,
       },
       y2: {
         position: 'right',
@@ -463,7 +483,7 @@ new Chart(document.getElementById('tradeoffChart'), {
 // SECTION 04a: HEATMAP
 // ═══════════════════════════════════════
 
-const MIN_VAL = -10, MAX_VAL = 9;
+const MIN_VAL = -7, MAX_VAL = 12.5;
 
 function camberColor(v) {
   const t = (v - MIN_VAL) / (MAX_VAL - MIN_VAL);
@@ -481,14 +501,15 @@ hm.innerHTML = '<div></div>';
 rearPos.forEach(c => hm.innerHTML += `<div class="hm-col-header">REAR<br>${c}</div>`);
 
 matrix.forEach((row, fi) => {
+  const isReversal = fi === 3;
   hm.innerHTML += `
     <div class="hm-row-label">
       FRONT<br>${frontPos[fi]}
-      <span></span>
+      <span>${isReversal ? '↺ reversal' : ''}</span>
     </div>`;
   row.forEach(v => {
-    const isBest = v === -10;
-    const cls = isBest ? 'is-best' : '';
+    const isBest = v === -7;
+    const cls = isBest ? 'is-best' : isReversal ? 'is-rev' : '';
     hm.innerHTML += `
       <div class="cell ${cls}" style="background:${camberColor(v)};color:#e6edf3">
         ${v > 0 ? '+' : ''}${v}
@@ -497,11 +518,13 @@ matrix.forEach((row, fi) => {
   });
 });
 
+// Rear-bolt camber series uses the measured front=+6 row encoded in the trade-off chart.
+
 // ═══════════════════════════════════════
 // SECTION 04b: REAR BOLT SWEEP CHART
 // ═══════════════════════════════════════
 
-const sweepColors = ['#58a6ff', '#d29922', '#3fb950'];
+const sweepColors = ['#58a6ff', '#d29922', '#3fb950', '#f5b8c0'];
 
 const sweepTargetPlugin = {
   id: 'sweepTarget',
@@ -520,6 +543,7 @@ const sweepTargetPlugin = {
   }
 };
 
+// Helper: expand rear bolt 3-point data (at positions -6, 0, +6) to full 13-label axis
 const expandRearTo13 = arr => {
   const full = new Array(13).fill(null);
   rearNums.forEach((p, i) => { full[p + 6] = arr[i]; });
@@ -568,7 +592,7 @@ new Chart(document.getElementById('sweepChart'), {
 // ═══════════════════════════════════════
 
 function washerAngle(pos) {
-  return 90 - pos * 15;
+  return 90 - pos * 15; // pos=0 → lobe at 6 o'clock (SVG 90°), pos=+6 → 3 o'clock, pos=-6 → 9 o'clock
 }
 
 function buildDial(container, pos, accentColor, bezelFill, washerFill, labelText, valText) {
@@ -661,25 +685,23 @@ function buildDial(container, pos, accentColor, bezelFill, washerFill, labelText
 const rc = document.getElementById('recommendDials');
 buildDial(rc, +6, '#58a6ff', '#0d1520', '#162440',
   'FRONT BOLT (CAMBER PRIMARY): +6',
-  '−10mm max camber · −1.22°');
-buildDial(rc, +2, '#3fb950', '#0d2818', '#1d3328',
-  'REAR BOLT (CASTER PRIMARY): +2',
-  '≈5.0° caster · interpolated to match target');
+  '−7mm max camber · −0.85°');
+buildDial(rc, -6, '#3fb950', '#0d2818', '#1d3328',
+  'REAR BOLT (CAMBER PRIMARY): −6',
+  '4.48° caster — below target');
 
 // ═══════════════════════════════════════
 // SECTION 06a: CASTER SWEEP CHART
 // ═══════════════════════════════════════
 
-const casterTargetDeltaMM = -(TARGET_CASTER * MM_PER_DEG / SWEEP_K);
+// Right-axis: caster in degrees mapped to the mm delta scale
+const casterTargetDeltaMM = -(TARGET_CASTER * MM_PER_DEG / SWEEP_K); // signed, ≈-21.2
 
 const casterTargetOnDeltaPlugin = {
   id: 'casterTargetDelta',
   beforeDraw(chart) {
     const { ctx, chartArea, scales } = chart;
     if (!scales.y || !chartArea) return;
-    // For the left wheel, casterDelta is positive, casterTargetDeltaMM is negative
-    // so the target line will not be within the visible data range on the y axis.
-    // Draw it only if it falls within the chart area.
     const y = scales.y.getPixelForValue(casterTargetDeltaMM);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
@@ -691,39 +713,18 @@ const casterTargetOnDeltaPlugin = {
     ctx.restore();
   },
   afterDatasetsDraw(chart) {
-    // For left wheel, all casterDelta values are positive (37, 26, 8)
-    // The target 5.0° corresponds to |delta|/MM_PER_DEG*SWEEP_K=5 → |delta|=21.19mm
-    // This crosses between rear=0 (delta=26) and rear=+6 (delta=8): t=(21.19-26)/(8-26)=0.267
-    // x-crossing: washerPos[1] + t*(washerPos[2]-washerPos[1]) = 0 + 0.267*6 = 1.6 → x-index= 1.6+6=7.6
-    const TARGET_ABS_DELTA = TARGET_CASTER * MM_PER_DEG / SWEEP_K; // ≈21.19
-    const d = casterDelta; // [37, 26, 8]
-    let crossIdx = null, crossVal = null;
-    for (let i = 0; i < d.length - 1; i++) {
-      const d0 = d[i], d1 = d[i+1];
-      if ((d0 >= TARGET_ABS_DELTA && d1 <= TARGET_ABS_DELTA) || (d0 <= TARGET_ABS_DELTA && d1 >= TARGET_ABS_DELTA)) {
-        const t = (TARGET_ABS_DELTA - d0) / (d1 - d0);
-        const wp0 = washerPos[i], wp1 = washerPos[i+1];
-        const crossWasher = wp0 + t * (wp1 - wp0); // ≈1.6 segments
-        crossIdx = crossWasher + 6; // map to 13-label index (≈7.6)
-        crossVal = TARGET_ABS_DELTA;
-        break;
-      }
-    }
-    if (crossIdx === null) return;
-
     const { ctx, chartArea, scales } = chart;
     if (!scales.x || !scales.y || !scales.y2 || !chartArea) return;
-
-    // Interpolate pixel position for the crossing (fractional index on x-axis)
-    const pxLo = scales.x.getPixelForValue(Math.floor(crossIdx));
-    const pxHi = scales.x.getPixelForValue(Math.ceil(crossIdx));
-    const frac = crossIdx - Math.floor(crossIdx);
-    const ix = pxLo + frac * (pxHi - pxLo);
-    const iy = scales.y.getPixelForValue(crossVal);
-    if (iy < chartArea.top || iy > chartArea.bottom) return;
-
+    // Caster Δ crosses casterTargetDeltaMM between expanded index 0 (washer=-6) and index 6 (washer=0)
+    const t = (casterTargetDeltaMM - casterDelta[0]) / (casterDelta[1] - casterDelta[0]);
+    if (t < 0 || t > 1) return; // crossing not in this segment
+    const pxLo = scales.x.getPixelForValue(0);
+    const pxHi = scales.x.getPixelForValue(6);
+    const ix = pxLo + t * (pxHi - pxLo);
+    const iy = scales.y.getPixelForValue(casterTargetDeltaMM);
     const bottom = chartArea.bottom;
     const DROP_COLOR = '#f85149';
+    // Red dotted vertical drop line from intersection down to x-axis
     ctx.save();
     ctx.setLineDash([5, 4]);
     ctx.strokeStyle = DROP_COLOR + 'cc';
@@ -733,6 +734,7 @@ const casterTargetOnDeltaPlugin = {
     ctx.lineTo(ix, bottom);
     ctx.stroke();
     ctx.setLineDash([]);
+    // Triangle at x-axis
     ctx.fillStyle = DROP_COLOR;
     ctx.beginPath();
     ctx.moveTo(ix - 6, bottom + 2);
@@ -741,8 +743,7 @@ const casterTargetOnDeltaPlugin = {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
-
-    // Circle on the Caster Δ series at crossing
+    // Circle on dataset 0: Caster Δ (green #3fb950, y-axis) at crossing
     ctx.save();
     ctx.beginPath();
     ctx.arc(ix, iy, 7, 0, Math.PI * 2);
@@ -752,8 +753,7 @@ const casterTargetOnDeltaPlugin = {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.restore();
-
-    // Circle on the Caster ° series at crossing
+    // Circle on dataset 1: Caster ° (mint #3fb950, y2-axis) at crossing
     const py2 = scales.y2.getPixelForValue(TARGET_CASTER);
     if (py2 >= chartArea.top && py2 <= chartArea.bottom) {
       ctx.save();
@@ -812,7 +812,7 @@ new Chart(document.getElementById('casterSweepChart'), {
       x: {
         ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } },
         grid: { color: '#21262d' },
-        title: { display: true, text: 'Rear bolt position (front=0 locked for caster sweep)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
+        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
       },
       y: {
         position: 'left',
@@ -879,7 +879,7 @@ new Chart(document.getElementById('rawOffsetChart'), {
       x: {
         ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } },
         grid: { color: '#21262d' },
-        title: { display: true, text: 'Rear bolt position (front=0 locked for caster sweep)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
+        title: { display: true, text: 'Rear bolt position (front=+2 locked)', color: '#6e7681', font: { family: 'Share Tech Mono', size: 10 } }
       },
       y: {
         ticks: { color: '#6e7681', font: { family: 'Share Tech Mono', size: 9 }, callback: v => (v > 0 ? '+' : '') + v + ' mm' },

@@ -96,7 +96,7 @@ window.ALIGNMENT_DATA = {
         ],
         "recommendedFront": 6,
         "recommendedRear": -6,
-        "note": "Factory eccentric bolt range exhausted. Aftermarket eccentric bolts needed for -1.1°"
+        "note": "Symmetric measurement target: Front +6 / Rear -6 achieves -7mm on string line. Paired with Front Left at Front -6 / Rear -6 (also -7mm). Both wheels measure identically despite different eccentric bolt positions due to suspension geometry."
       },
       "caster": {
         "target": 5,
@@ -248,9 +248,9 @@ window.ALIGNMENT_DATA = {
           0,
           6
         ],
-        "recommendedFront": 6,
+        "recommendedFront": -6,
         "recommendedRear": -6,
-        "note": "Front left achieves better than target camber at Front +6 / Rear -6 position (-1.22°)"
+        "note": "Symmetric measurement target: Front -6 / Rear -6 achieves -7mm on string line. Paired with Front Right at Front +6 / Rear -6 (also -7mm). Both wheels measure identically despite different eccentric bolt positions due to suspension geometry."
       },
       "caster": {
         "target": 5,

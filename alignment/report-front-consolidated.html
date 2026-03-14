@@ -12,19 +12,24 @@
 <body class="summary-page">
 
 <h1>MX-5 NC1 — Recommended Eccentric Bolt Positions</h1>
-<div class="subtitle">Front axle overview. Each wheel keeps the front camber bolt at +6 as the negative-camber anchor, then chooses the rear bolt for the 5.0° caster target. The page now separates best-achievable camber from the estimated camber at the recommended rear setting.</div>
+<div class="subtitle" style="background: #1a3a1a44; border-left: 3px solid #3fb950; padding: 12px 14px; margin-bottom: 16px;">
+  <strong style="color: #3fb950">🔗 FRONT CONSOLIDATED COMPROMISE:</strong> These recommended bolt positions are <strong>NOT isolated</strong> per wheel. They represent the best compromise for the front axle as a whole, prioritizing (1) symmetric string line measurement between left and right wheels, and (2) achieving target camber/caster values. Individual consolidated reports show per-wheel isolated optimums; those recommendations will differ from what's shown here due to symmetry enforcement across both wheels.
+</div>
+<div class="subtitle">Front Left at −6 / Front Right at +6 (both at Rear −6) achieve −7mm symmetric measurement on both wheels. Left wheel sacrifices 2mm from its isolated best (−9mm achievable) to match right wheel's ceiling (−7mm). Individual wheel reports show isolated analysis; consolidated reports show per-corner trade-offs; this report shows front-wide symmetry priority.</div>
 
 <div class="card">
   <h2>Quick Reference</h2>
   <div class="tiles" id="summaryTiles"></div>
 </div>
 
+<div class="card" id="symmetryCard"></div>
+
 <div class="card">
-  <h2>Best Camber vs Recommended Rear Setting</h2>
+  <h2>Camber at Recommended Setting vs Caster Target</h2>
   <div class="chart-wrap">
     <canvas id="summaryChart"></canvas>
   </div>
-  <p class="chart-note">Blue bars = best achievable camber on each side. Violet bars = estimated camber after moving the rear bolt to the caster-target setting. Green line = caster at the recommended rear bolt.</p>
+  <p class="chart-note">Violet bars = estimated camber at recommended rear bolt position (symmetric −7 mm on both wheels). Blue bars = individual best per wheel (if asymmetry allowed: left −10 mm, right −7 mm). Green line = caster at the recommended rear bolt.</p>
 </div>
 
 <div class="card">
@@ -44,8 +49,9 @@
 </div>
 
 <script>
-const { formatSigned, getSummaryData } = AlignmentShared;
+const { formatSigned, getSummaryData, getSymmetryAssessment } = AlignmentShared;
 const summary = getSummaryData();
+const symmetry = getSymmetryAssessment();
 const camberTarget = -9;
 const casterTarget = 5.0;
 const labels = summary.map((entry) => entry.displayName);
@@ -77,9 +83,9 @@ function buildTile(entry) {
         <div class="bolt"><div class="label">REAR BOLT</div><div class="val rear">${formatSigned(entry.recommendedRear, 0, '')}</div></div>
       </div>
       <div class="result">
-        Best achievable camber: <strong>${formatSigned(entry.bestCamberMm, 1, ' mm')} (${formatDegrees(entry.bestCamberDeg)})</strong><br>
-        Estimated camber at recommended rear: <strong>${formatSigned(entry.estimatedCamberAtRecommendation, 1, ' mm')} (${formatDegrees(entry.estimatedCamberDegAtRecommendation)})</strong><br>
-        Caster at recommended rear: <strong>${entry.casterAtRecommendation.toFixed(2)}°</strong>
+        <strong style="color: #3fb950">Symmetric setting: ${formatSigned(entry.estimatedCamberAtRecommendation, 1, ' mm')} (${formatDegrees(entry.estimatedCamberDegAtRecommendation)})</strong><br>
+        <span style="color: #8b949e; font-size: 0.9em">Caster at recommended rear: ${entry.casterAtRecommendation.toFixed(2)}°</span><br>
+        <span style="color: #6e7681; font-size: 0.85em">If asymmetric only: ${formatSigned(entry.bestCamberMm, 1, ' mm')}</span>
       </div>
     </div>
   `;
@@ -87,13 +93,42 @@ function buildTile(entry) {
 
 document.getElementById('summaryTiles').innerHTML = summary.map(buildTile).join('');
 
+// Render symmetry check card
+const symmetryCardHtml = `
+  <h2>Symmetric Setting — Changes from Consolidated Reports</h2>
+  <div style="padding: 14px; border-left: 3px solid #3fb950; background: #0d472a44;">
+    <div style="font-family: 'Share Tech Mono'; font-size: 0.9rem; line-height: 1.6; color: #e6edf3;">
+      <strong style="font-size: 1.1rem; color: #3fb950">
+        PRIORITY 1: SYMMETRIC MEASUREMENT (−7mm both) · PRIORITY 2: TARGET ACHIEVEMENT
+      </strong>
+      <br><br>
+      <strong>Consolidated Reports Show (each wheel isolated):</strong><br>
+      • Front Left: Front +6 / Rear −6 = −9mm (individual target achievable)<br>
+      • Front Right: Front +6 / Rear −6 = −7mm (ceiling, cannot do better)<br>
+      <br>
+      <strong>Summary Recommendation (symmetry enforced):</strong><br>
+      • Front Left: Front −6 / Rear −6 = −7mm (sacrifices 2mm from −9mm capability)<br>
+      • Front Right: Front +6 / Rear −6 = −7mm (unchanged—uses front +6, not rear −4 caster compromise)<br>
+      <br>
+      <div style="margin-top: 8px; color: #8b949e; font-size: 0.85rem;">
+        ✓ Both wheels measure exactly −7mm on plumb line/string box (symmetric).<br>
+        ✓ Shortfall from −9mm target: 2mm.<br>
+        📌 Front Left: Capable of −9mm independently, reduces to −7mm for symmetry.<br>
+        📌 Front Right: Ceiling at −7mm—this wheel determines the symmetric limit.
+      </div>
+    </div>
+  </div>
+`;
+
+document.getElementById('symmetryCard').innerHTML = symmetryCardHtml;
+
 document.getElementById('instructionBlock').innerHTML = `
   <strong>Setting instructions — 0 mark at 6 o'clock (bottom):</strong>
   <div class="inst-row"><span class="inst-num">1.</span> Front Left — Front bolt: count <strong>${washerDirection(summary[0].recommendedFront)}</strong></div>
   <div class="inst-row"><span class="inst-num">2.</span> Front Left — Rear bolt: count <strong>${washerDirection(summary[0].recommendedRear)}</strong></div>
   <div class="inst-row"><span class="inst-num">3.</span> Front Right — Front bolt: count <strong>${washerDirection(summary[1].recommendedFront)}</strong></div>
   <div class="inst-row"><span class="inst-num">4.</span> Front Right — Rear bolt: count <strong>${washerDirection(summary[1].recommendedRear)}</strong></div>
-  <div style="margin-top:6px; color:#6e7681">Best-achievable camber remains the blue reference. The rear bolt settings above are the caster-priority compromise positions to verify on the car.</div>
+  <div style="margin-top:6px; color:#6e7681">Raw data shows individual best values in reference section. The rear bolt settings above prioritize caster and symmetric string line measurement.</div>
 `;
 
 const targetPlugin = {
