@@ -187,15 +187,20 @@ function toDeg(mm) {
   const d = (mm / MM_PER_DEG).toFixed(2);
   return (d > 0 ? '+' : '') + d + '°';
 }
+function findClosestToTarget(values, targetValue) {
+  return values.reduce((closest, current) =>
+    Math.abs(current - targetValue) < Math.abs(closest - targetValue) ? current : closest
+  );
+}
 function isBest(v)      { return v === camberSource.bestMeasuredMm; }
 function isReversal(fi) { return camberSource.frontPositions[fi] > 6; }
 
 // ═══════════════════ OVERLAY CHART ═══════════════════
-const frontBest = matrix.map(row => Math.min(...row));
-// [-7, -8, -10]
+const frontBest = matrix.map(row => findClosestToTarget(row, TARGET));
+// [-7, -8, -10] -> picks -9 or closest to target
 
-const rearMeasured = [0,1,2].map(ri => Math.min(...matrix.map(row => row[ri])));
-// [-10, -3, 9] -> min is -10
+const rearMeasured = [0,1,2].map(ri => findClosestToTarget(matrix.map(row => row[ri]), TARGET));
+// [-10, -3, 9] -> picks closest to -9 target
 
 const allCamberLabels = Array.from({length: 13}, (_, i) => { const v = i - 6; return (v > 0 ? '+' : '') + v; });
 
@@ -554,7 +559,7 @@ function camberWasherAngle(pos) {
 
 const cw = document.getElementById('clockWrap');
 const clockColors = ['#58a6ff', '#d29922', '#3fb950'];
-const bestCamber  = matrix.map(row => Math.min(...row));
+const bestCamber  = matrix.map(row => findClosestToTarget(row, TARGET));
 const frontPosNums = [-6, 0, 6];
 
 frontPosNums.forEach((pos, i) => {

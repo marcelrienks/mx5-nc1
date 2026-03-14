@@ -34,12 +34,12 @@
   <h2>Camber at Recommended Setting vs Caster Target</h2>
   <div class="chart-wrap">
     <canvas id="summaryChart"></canvas>
- !-- ═══════════════════════════════ SECTION 4: POSITION DIAGRAMS & RECOMMENDATIONS ═══════════════════════════════ -->
-<div class="section-label">04 — Position Diagrams & Recommendations</div>
-< </div>
+  </div>
   <p class="chart-note">Violet bars = estimated camber at recommended rear bolt position (symmetric −7 mm on both wheels). Blue bars = individual best per wheel (if asymmetry allowed: left −10 mm, right −7 mm). Green line = caster at the recommended rear bolt.</p>
 </div>
 
+<!-- ═══════════════════════════════ SECTION 4: POSITION DIAGRAMS & RECOMMENDATIONS ═══════════════════════════════ -->
+<div class="section-label">04 — Position Diagrams & Recommendations</div>
 <div class="card">
   <h2>Eccentric Washer Bolt Positions</h2>
   <div class="dial-grid">
@@ -50,7 +50,13 @@
     <div class="dial-group">
       <div class="group-title">Front Right</div>
       <div class="dial-pair" id="dialsFR"></div>
- !-- ═══════════════════════════════ SECTION 5: DETAILED INSTRUMENT DIALS ═══════════════════════════════ -->
+    </div>
+  </div>
+
+  <div class="instructions" id="instructionBlock"></div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 5: DETAILED INSTRUMENT DIALS ═══════════════════════════════ -->
 <div class="section-label">05 — Detailed Instrument Dials</div>
 <div class="card" id="dialDetail">
   <h4>Large Interactive Dials (scroll down after page loads)</h4>
@@ -66,12 +72,6 @@
     <p style="margin-top: 8px;\"><strong>Performance Trade-off:</strong> Left wheel sacrifices 2mm from its isolated capability (−10mm achievable if set independently) to achieve symmetry. Right wheel is already at its ceiling (−7mm maximum), so it cannot contribute further to the compromise.</p>
     <p style=\"margin-top: 8px;\"><strong>Caster Impact:</strong> All settings at Rear bolt −6 achieve approximately 5.0° caster (close to target) and ensure smooth highway stability without excessive feedback.</p>
   </div>
-</div>
-
-<   </div>
-  </div>
-
-  <div class="instructions" id="instructionBlock"></div>
 </div>
 
 <script>

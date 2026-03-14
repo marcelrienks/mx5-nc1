@@ -168,7 +168,8 @@ const recDeg = casterSource.recommendedDegrees;
 const recWasherInt = casterSource.recommendedWasherInt;
 
 // ── Populate summary tiles ──
-const minDegIdx = casterDeg.indexOf(Math.min(...casterDeg));
+const minDegIdx = casterDeg.reduce((closestIdx, deg, idx) =>
+  Math.abs(casterDeg[closestIdx] - TARGET_DEG) > Math.abs(deg - TARGET_DEG) ? idx : closestIdx, 0);
 const maxDegIdx = casterDeg.indexOf(Math.max(...casterDeg));
 document.getElementById('tile-best-val').textContent  = casterDeg[minDegIdx] + '°';
 document.getElementById('tile-best-sub').textContent  = 'Washer ' + washerLabels[minDegIdx] + ' · Δ = ' + casterDelta[minDegIdx] + ' mm';

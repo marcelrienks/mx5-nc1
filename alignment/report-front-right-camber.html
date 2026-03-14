@@ -185,17 +185,22 @@ function toDeg(mm) {
   const d = (mm / MM_PER_DEG).toFixed(2);
   return (d > 0 ? '+' : '') + d + '°';
 }
+function findClosestToTarget(values, targetValue) {
+  return values.reduce((closest, current) =>
+    Math.abs(current - targetValue) < Math.abs(closest - targetValue) ? current : closest
+  );
+}
 function isBest(v)      { return v === camberSource.bestMeasuredMm; }
 function isReversal(fi) { return camberSource.frontPositions[fi] > 6; }
 
 // ═══════════════════ OVERLAY CHART ═══════════════════
-// Best camber per front position (most negative across all rear)
-const frontBest = matrix.map(row => Math.min(...row));
-// [6, -1, -7, 0]
+// Best camber per front position (closest to target across all rear)
+const frontBest = matrix.map(row => findClosestToTarget(row, TARGET));
+// [6, -1, -7, 0] -> picks closest to -9 target
 
-// Best camber per rear position (most negative across all front)
-const rearMeasured = [0,1,2].map(ri => Math.min(...matrix.map(row => row[ri])));
-// [-7, -5, -5]
+// Best camber per rear position (closest to target across all front)
+const rearMeasured = [0,1,2].map(ri => findClosestToTarget(matrix.map(row => row[ri]), TARGET));
+// [-7, -5, -5] -> picks closest to -9 target
 const rearExtrap = -4.5; // extrapolated D point
 
 // Expanded x-axis: all integer positions −6 to +6 (13 labels, matching caster report style)
@@ -574,7 +579,7 @@ function camberWasherAngle(pos) {
 
 const cw = document.getElementById('clockWrap');
 const clockColors = ['#58a6ff', '#d29922', '#3fb950', '#f5b8c0'];
-const bestCamber  = matrix.map(row => Math.min(...row));
+const bestCamber  = matrix.map(row => findClosestToTarget(row, TARGET));
 const frontPosNums = [-6, 0, 6, 12]; // numeric equivalents of frontPos
 
 frontPosNums.forEach((pos, i) => {

@@ -192,12 +192,15 @@ function toDeg(mm) {
   const d = (mm / CAMBER_MM_DEG).toFixed(2);
   return (d > 0 ? '+' : '') + d + '°';
 }
+function findClosestToTarget(values, targetValue) {
+  return values.reduce((closest, current) =>
+    Math.abs(current - targetValue) < Math.abs(closest - targetValue) ? current : closest
+  );
+}
 
-// ── Best camber per front bolt position (min across all rear positions) ──
-const frontBest = matrix.map(row => Math.min(...row));
-// [-7, -1 (rear=-6 best), -7, 0]  → actually: [6→best is 6, -1→best is -1, -7→best is -7, 0→best is 0]
-// correction: best = MIN (most negative)
-// front=-6: min(6, 12.5, 8)=6  front=0: min(-1,1,0)=-1  front=+6: min(-7,-5,-5)=-7  front=+12: min(0,0,2)=0
+// ── Best camber per front bolt position (closest to target across all rear positions) ──
+const frontBest = matrix.map(row => findClosestToTarget(row, TARGET_CAMBER));
+// front=-6: closest(6, 12.5, 8) to -9 = 6  front=0: closest(-1,1,0) to -9 = -1  front=+6: closest(-7,-5,-5) to -9 = -7  front=+12: closest(0,0,2) to -9 = 0
 
 // ── Expanded 13-label x-axis (−6 to +6) ──
 const allLabels = Array.from({length: 13}, (_, i) => { const v = i-6; return (v>0?'+':'')+v; });

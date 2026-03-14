@@ -168,9 +168,10 @@ const recDeg = casterSource.recommendedDegrees;
 const recWasherInt = casterSource.recommendedWasherInt;
 
 // ── Populate summary tiles ──
-// Sort casterDeg to find min/max degree values across the three measured positions
-const minDegIdx = casterDeg.indexOf(Math.min(...casterDeg));  // washer position with fewest degrees
-const maxDegIdx = casterDeg.indexOf(Math.max(...casterDeg));  // washer position with most degrees
+// Find washer position with caster degree closest to target, and maximum degree across measured positions
+const minDegIdx = casterDeg.reduce((closestIdx, deg, idx) =>
+  Math.abs(casterDeg[closestIdx] - TARGET_DEG) > Math.abs(deg - TARGET_DEG) ? idx : closestIdx, 0);
+const maxDegIdx = casterDeg.indexOf(Math.max(...casterDeg));
 document.getElementById('tile-best-val').textContent  = casterDeg[minDegIdx] + '°';
 document.getElementById('tile-best-sub').textContent  = 'Washer ' + washerLabels[minDegIdx] + ' · Δ = ' + casterDelta[minDegIdx] + ' mm';
 document.getElementById('tile-worst-val').textContent = casterDeg[maxDegIdx] + '°';
