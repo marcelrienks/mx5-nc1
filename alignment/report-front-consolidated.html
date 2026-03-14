@@ -17,18 +17,26 @@
 </div>
 <div class="subtitle">Front Left at −6 / Front Right at +6 (both at Rear −6) achieve −7mm symmetric measurement on both wheels. Left wheel sacrifices 2mm from its isolated best (−9mm achievable) to match right wheel's ceiling (−7mm). Individual wheel reports show isolated analysis; consolidated reports show per-corner trade-offs; this report shows front-wide symmetry priority.</div>
 
+<!-- ═══════════════════════════════ SECTION 1: SUMMARY ═══════════════════════════════ -->
+<div class="section-label">01 — Summary</div>
 <div class="card">
   <h2>Quick Reference</h2>
   <div class="tiles" id="summaryTiles"></div>
 </div>
 
+<!-- ═══════════════════════════════ SECTION 2: SYMMETRY ANALYSIS ═══════════════════════════════ -->
+<div class="section-label">02 — Symmetry Analysis</div>
 <div class="card" id="symmetryCard"></div>
 
+<!-- ═══════════════════════════════ SECTION 3: PERFORMANCE COMPARISON ═══════════════════════════════ -->
+<div class="section-label">03 — Performance Comparison: Best vs Symmetric</div>
 <div class="card">
   <h2>Camber at Recommended Setting vs Caster Target</h2>
   <div class="chart-wrap">
     <canvas id="summaryChart"></canvas>
-  </div>
+ !-- ═══════════════════════════════ SECTION 4: POSITION DIAGRAMS & RECOMMENDATIONS ═══════════════════════════════ -->
+<div class="section-label">04 — Position Diagrams & Recommendations</div>
+< </div>
   <p class="chart-note">Violet bars = estimated camber at recommended rear bolt position (symmetric −7 mm on both wheels). Blue bars = individual best per wheel (if asymmetry allowed: left −10 mm, right −7 mm). Green line = caster at the recommended rear bolt.</p>
 </div>
 
@@ -42,7 +50,25 @@
     <div class="dial-group">
       <div class="group-title">Front Right</div>
       <div class="dial-pair" id="dialsFR"></div>
-    </div>
+ !-- ═══════════════════════════════ SECTION 5: DETAILED INSTRUMENT DIALS ═══════════════════════════════ -->
+<div class="section-label">05 — Detailed Instrument Dials</div>
+<div class="card" id="dialDetail">
+  <h4>Large Interactive Dials (scroll down after page loads)</h4>
+  <p style="color: #8b949e; font-size: 0.9em; margin-top: 8px;">Detailed washer position visualization and calculation basis. Each dial shows the bolt hole at 12 o'clock with the adjustable eccentric lobe below. The reading on the dials reflects your adjustments.</p>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 6: KEY CONCLUSIONS ═══════════════════════════════ -->
+<div class="section-label">06 — Key Conclusions</div>
+<div class="card">
+  <h2>Summary of Symmetric Alignment Strategy</h2>
+  <div style="padding: 14px; border-left: 3px solid #58a6ff; background: #0d2438aa;">
+    <p><strong>Symmetric Measurement (Primary Goal):</strong> Both front wheels measure −7mm on a plumb line or string box when set to the recommended eccentric bolt positions above. This identical reading across both wheels demonstrates even load distribution and balanced suspension geometry, even though the underlying bolt positions differ (Left Front −6, Right Front +6 due to manufacturing tolerance stack and suspension geometry).</p>
+    <p style="margin-top: 8px;\"><strong>Performance Trade-off:</strong> Left wheel sacrifices 2mm from its isolated capability (−10mm achievable if set independently) to achieve symmetry. Right wheel is already at its ceiling (−7mm maximum), so it cannot contribute further to the compromise.</p>
+    <p style=\"margin-top: 8px;\"><strong>Caster Impact:</strong> All settings at Rear bolt −6 achieve approximately 5.0° caster (close to target) and ensure smooth highway stability without excessive feedback.</p>
+  </div>
+</div>
+
+<   </div>
   </div>
 
   <div class="instructions" id="instructionBlock"></div>
